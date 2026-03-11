@@ -4,253 +4,215 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MedEase – Hospital OPD Management</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --teal: #0ea5a0;
-    --teal-dark: #0c8a86;
-    --teal-light: #e0f7f6;
-    --navy: #0d1f2d;
-    --navy2: #162535;
-    --slate: #1e3448;
-    --accent: #f97316;
-    --white: #f8fafc;
-    --muted: #94a3b8;
+    --teal: #0a9396;
+    --teal-dark: #007f83;
+    --teal-light: #e0f5f5;
+    --teal-xlight: #f0fafa;
+    --white: #ffffff;
+    --gray: #f8f9fa;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #e5e7eb;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); overflow-x:hidden; }
+  body { font-family:'Inter',sans-serif; background:var(--white); color:var(--text); }
 
   /* NAV */
   nav {
     position:fixed; top:0; width:100%; z-index:100;
-    background:rgba(13,31,45,0.92); backdrop-filter:blur(12px);
-    border-bottom:1px solid rgba(14,165,160,0.15);
+    background:var(--white); border-bottom:1px solid var(--border);
     display:flex; align-items:center; justify-content:space-between;
-    padding:0 5vw; height:64px;
+    padding:0 6vw; height:68px; box-shadow:0 1px 8px rgba(0,0,0,0.06);
   }
-  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); letter-spacing:-0.5px; }
-  .logo span { color:var(--white); }
-  .nav-links { display:flex; gap:8px; }
-  .nav-links a {
-    color:var(--muted); text-decoration:none; font-size:0.875rem;
-    padding:6px 14px; border-radius:8px; transition:all 0.2s;
-    font-family:'DM Sans',sans-serif;
-  }
-  .nav-links a:hover, .nav-links a.active { color:var(--white); background:rgba(14,165,160,0.15); }
-  .nav-cta {
-    background:var(--teal); color:var(--white) !important;
-    border-radius:8px !important; padding:8px 18px !important;
-  }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo-icon { width:38px; height:38px; background:var(--teal); border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; }
+  .logo-text { font-family:'Merriweather',serif; font-weight:700; font-size:1.2rem; color:var(--text); }
+  .logo-text span { color:var(--teal); }
+  .nav-links { display:flex; align-items:center; gap:4px; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; font-weight:500; padding:8px 14px; border-radius:8px; transition:all 0.2s; }
+  .nav-links a:hover { color:var(--teal); background:var(--teal-xlight); }
+  .nav-links a.active { color:var(--teal); }
+  .nav-cta { background:var(--teal) !important; color:white !important; border-radius:8px; padding:8px 20px !important; }
   .nav-cta:hover { background:var(--teal-dark) !important; }
 
   /* HERO */
   .hero {
-    min-height:100vh; display:flex; align-items:center;
-    padding:80px 5vw 40px;
-    background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(14,165,160,0.12) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 40% at 10% 80%, rgba(249,115,22,0.06) 0%, transparent 60%),
-                var(--navy);
-    position:relative; overflow:hidden;
+    margin-top:68px;
+    background: linear-gradient(135deg, var(--teal-xlight) 0%, var(--white) 60%);
+    padding:70px 6vw 60px;
   }
-  .hero::before {
-    content:''; position:absolute; top:-200px; right:-200px;
-    width:600px; height:600px; border-radius:50%;
-    background:radial-gradient(circle, rgba(14,165,160,0.08) 0%, transparent 70%);
-    pointer-events:none;
-  }
-  .hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; max-width:1200px; margin:0 auto; width:100%; }
-  .hero-badge {
-    display:inline-flex; align-items:center; gap:8px;
-    background:rgba(14,165,160,0.15); border:1px solid rgba(14,165,160,0.3);
-    padding:6px 16px; border-radius:999px; font-size:0.8rem;
-    color:var(--teal); margin-bottom:24px; font-family:'Syne',sans-serif;
-  }
-  .hero-badge::before { content:'●'; font-size:8px; animation:pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  h1 { font-family:'Syne',sans-serif; font-size:clamp(2.2rem,4.5vw,3.8rem); font-weight:800; line-height:1.08; margin-bottom:20px; letter-spacing:-1px; }
-  h1 em { color:var(--teal); font-style:normal; }
-  .hero-sub { font-size:1.05rem; color:var(--muted); line-height:1.7; margin-bottom:36px; max-width:480px; }
+  .hero-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+  .hero-tag { display:inline-flex; align-items:center; gap:8px; background:var(--teal-light); color:var(--teal); padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:600; margin-bottom:20px; }
+  h1 { font-family:'Merriweather',serif; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:700; line-height:1.25; color:var(--text); margin-bottom:16px; }
+  h1 span { color:var(--teal); }
+  .hero-desc { font-size:1rem; color:var(--muted); line-height:1.75; margin-bottom:32px; max-width:460px; }
   .hero-btns { display:flex; gap:14px; flex-wrap:wrap; }
-  .btn-primary {
-    background:var(--teal); color:var(--white); padding:12px 28px;
-    border-radius:10px; text-decoration:none; font-weight:600;
-    font-family:'Syne',sans-serif; font-size:0.95rem; transition:all 0.2s;
-    box-shadow:0 4px 20px rgba(14,165,160,0.35);
-  }
-  .btn-primary:hover { background:var(--teal-dark); transform:translateY(-1px); box-shadow:0 6px 24px rgba(14,165,160,0.45); }
-  .btn-outline {
-    border:1px solid rgba(255,255,255,0.2); color:var(--white);
-    padding:12px 28px; border-radius:10px; text-decoration:none;
-    font-weight:500; font-size:0.95rem; transition:all 0.2s;
-  }
-  .btn-outline:hover { border-color:var(--teal); color:var(--teal); }
+  .btn-primary { background:var(--teal); color:white; padding:13px 28px; border-radius:8px; text-decoration:none; font-weight:600; font-size:0.95rem; transition:all 0.2s; box-shadow:0 2px 12px rgba(10,147,150,0.3); }
+  .btn-primary:hover { background:var(--teal-dark); transform:translateY(-1px); }
+  .btn-outline { border:2px solid var(--teal); color:var(--teal); padding:11px 28px; border-radius:8px; text-decoration:none; font-weight:600; font-size:0.95rem; transition:all 0.2s; }
+  .btn-outline:hover { background:var(--teal-xlight); }
 
-  /* Stats card */
-  .hero-stats {
-    background:var(--navy2); border:1px solid rgba(14,165,160,0.15);
-    border-radius:20px; padding:32px; position:relative;
-    box-shadow:0 24px 60px rgba(0,0,0,0.4);
-  }
-  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  .stat-card {
-    background:var(--slate); border-radius:12px; padding:20px;
-    border:1px solid rgba(255,255,255,0.05);
-    transition: transform 0.2s;
-  }
-  .stat-card:hover { transform:translateY(-2px); }
-  .stat-num { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--teal); }
-  .stat-label { font-size:0.8rem; color:var(--muted); margin-top:4px; }
-  .stat-icon { font-size:1.5rem; margin-bottom:8px; }
+  /* Hero card */
+  .hero-card { background:white; border-radius:16px; padding:28px; box-shadow:0 4px 24px rgba(0,0,0,0.08); border:1px solid var(--border); }
+  .hero-card-title { font-weight:700; font-size:1rem; margin-bottom:20px; color:var(--text); display:flex; align-items:center; gap:8px; }
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .stat-box { background:var(--gray); border-radius:10px; padding:18px; text-align:center; }
+  .stat-num { font-size:1.8rem; font-weight:700; color:var(--teal); font-family:'Merriweather',serif; }
+  .stat-label { font-size:0.78rem; color:var(--muted); margin-top:4px; }
+  .hero-card-divider { border:none; border-top:1px solid var(--border); margin:20px 0; }
+  .quick-links { display:flex; gap:10px; flex-wrap:wrap; }
+  .quick-link { background:var(--teal-xlight); color:var(--teal); padding:7px 14px; border-radius:6px; font-size:0.8rem; font-weight:600; text-decoration:none; transition:all 0.2s; }
+  .quick-link:hover { background:var(--teal); color:white; }
 
-  /* FEATURES */
-  .features { padding:80px 5vw; max-width:1200px; margin:0 auto; }
-  .section-label { font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:12px; }
-  .section-title { font-family:'Syne',sans-serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:800; margin-bottom:48px; }
-  .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-  .feature-card {
-    background:var(--navy2); border:1px solid rgba(255,255,255,0.06);
-    border-radius:16px; padding:28px; transition:all 0.3s; cursor:default;
-  }
-  .feature-card:hover { border-color:rgba(14,165,160,0.4); transform:translateY(-3px); background:var(--slate); }
-  .feature-icon {
-    width:48px; height:48px; background:rgba(14,165,160,0.15);
-    border-radius:12px; display:flex; align-items:center; justify-content:center;
-    font-size:1.4rem; margin-bottom:16px;
-  }
-  .feature-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:8px; }
-  .feature-desc { font-size:0.875rem; color:var(--muted); line-height:1.6; }
+  /* SERVICES */
+  .services { padding:70px 6vw; max-width:1100px; margin:0 auto; }
+  .section-tag { font-size:0.78rem; font-weight:600; color:var(--teal); text-transform:uppercase; letter-spacing:2px; margin-bottom:10px; }
+  .section-title { font-family:'Merriweather',serif; font-size:clamp(1.4rem,2.5vw,2rem); font-weight:700; margin-bottom:40px; color:var(--text); }
+  .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .service-card { background:white; border:1px solid var(--border); border-radius:12px; padding:28px; transition:all 0.2s; cursor:default; }
+  .service-card:hover { border-color:var(--teal); box-shadow:0 4px 20px rgba(10,147,150,0.1); transform:translateY(-2px); }
+  .service-icon { width:52px; height:52px; background:var(--teal-light); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:16px; }
+  .service-title { font-weight:700; font-size:0.95rem; margin-bottom:8px; color:var(--text); }
+  .service-desc { font-size:0.85rem; color:var(--muted); line-height:1.65; }
 
-  /* QUICK ACTIONS */
-  .quick-actions { padding:40px 5vw 80px; max-width:1200px; margin:0 auto; }
-  .actions-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-  .action-card {
-    background:var(--navy2); border:1px solid rgba(255,255,255,0.06);
-    border-radius:16px; padding:24px 20px; text-align:center;
-    text-decoration:none; color:var(--white); transition:all 0.3s;
-    display:flex; flex-direction:column; align-items:center; gap:12px;
-  }
-  .action-card:hover { border-color:var(--teal); background:rgba(14,165,160,0.08); transform:translateY(-3px); }
-  .action-icon { font-size:2rem; }
-  .action-label { font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; }
-  .action-sub { font-size:0.78rem; color:var(--muted); }
+  /* DOCTORS STRIP */
+  .doctors-strip { background:var(--teal-xlight); padding:50px 6vw; }
+  .doctors-inner { max-width:1100px; margin:0 auto; }
+  .doctors-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:16px; margin-top:28px; }
+  .doctor-chip { background:white; border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; transition:all 0.2s; }
+  .doctor-chip:hover { border-color:var(--teal); box-shadow:0 2px 12px rgba(10,147,150,0.1); }
+  .doc-emoji { font-size:2rem; margin-bottom:8px; }
+  .doc-name { font-weight:600; font-size:0.82rem; color:var(--text); }
+  .doc-spec { font-size:0.75rem; color:var(--muted); margin-top:3px; }
+  .doc-avail { font-size:0.72rem; margin-top:6px; padding:3px 8px; border-radius:999px; display:inline-block; font-weight:600; }
+  .avail-yes { background:rgba(16,185,129,0.1); color:#059669; }
+  .avail-no { background:rgba(239,68,68,0.1); color:#dc2626; }
 
-  footer {
-    border-top:1px solid rgba(255,255,255,0.06);
-    padding:24px 5vw; text-align:center;
-    font-size:0.8rem; color:var(--muted);
-  }
+  /* CTA BANNER */
+  .cta-banner { background:var(--teal); padding:50px 6vw; text-align:center; }
+  .cta-banner h2 { font-family:'Merriweather',serif; font-size:1.8rem; color:white; margin-bottom:12px; }
+  .cta-banner p { color:rgba(255,255,255,0.85); margin-bottom:28px; font-size:0.95rem; }
+  .btn-white { background:white; color:var(--teal); padding:13px 32px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.95rem; transition:all 0.2s; display:inline-block; }
+  .btn-white:hover { box-shadow:0 4px 16px rgba(0,0,0,0.15); transform:translateY(-1px); }
 
-  @media(max-width:768px) {
-    .hero-grid { grid-template-columns:1fr; }
-    .features-grid { grid-template-columns:1fr; }
-    .actions-grid { grid-template-columns:1fr 1fr; }
-    .stats-grid { grid-template-columns:1fr 1fr; }
-  }
+  /* FOOTER */
+  footer { background:var(--text); color:rgba(255,255,255,0.6); padding:30px 6vw; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:0.82rem; }
+  .footer-logo { font-family:'Merriweather',serif; color:white; font-weight:700; font-size:1rem; }
+  .footer-logo span { color:var(--teal); }
+
+  @media(max-width:768px) { .hero-inner { grid-template-columns:1fr; } .services-grid { grid-template-columns:1fr; } .nav-links { display:none; } }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">Med<span>Ease</span></div>
+  <a href="/" class="logo">
+    <div class="logo-icon">🏥</div>
+    <div class="logo-text">Med<span>Ease</span></div>
+  </a>
   <div class="nav-links">
     <a href="/" class="active">Home</a>
     <a href="/appointment">Appointments</a>
-    <a href="/queue">Queue</a>
+    <a href="/queue">Queue Status</a>
     <a href="/payment">Payment</a>
     <a href="/admin">Admin</a>
-    <a href="/chatbot">💬 Chatbot</a>
-    <a href="/appointment" class="nav-cta">Book Now</a>
+    <a href="/chatbot">💬 MedBot</a>
+    <a href="/appointment" class="nav-cta">Book Appointment</a>
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-grid">
+  <div class="hero-inner">
     <div>
-      <div class="hero-badge">MedEase OPD System — Live</div>
-      <h1>Smart Hospital <em>OPD Management</em> System</h1>
-      <p class="hero-sub">Digitize your hospital's outpatient department. Book appointments, manage queues, accept UPI payments, and get AI-powered support — all in one platform.</p>
+      <div class="hero-tag">🟢 OPD Services Available Now</div>
+      <h1>Quality Healthcare <span>Made Simple</span> for Everyone</h1>
+      <p class="hero-desc">Book appointments online, track your queue token, pay digitally, and get instant help from our AI assistant — all in one place.</p>
       <div class="hero-btns">
         <a href="/appointment" class="btn-primary">📅 Book Appointment</a>
-        <a href="/admin" class="btn-outline">📊 Admin Dashboard</a>
+        <a href="/queue" class="btn-outline">🔢 Check Queue</a>
       </div>
     </div>
-    <div class="hero-stats">
-      <div class="stats-grid" id="heroStats">
-        <div class="stat-card"><div class="stat-icon">🏥</div><div class="stat-num" id="sTotal">–</div><div class="stat-label">Total Appointments</div></div>
-        <div class="stat-card"><div class="stat-icon">👨‍⚕️</div><div class="stat-num" id="sDocs">–</div><div class="stat-label">Active Doctors</div></div>
-        <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-num" id="sQueue">–</div><div class="stat-label">In Queue Now</div></div>
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-num" id="sRev">–</div><div class="stat-label">Revenue Today</div></div>
+    <div class="hero-card">
+      <div class="hero-card-title">🏥 Today's OPD Status</div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-num" id="sTotal">–</div><div class="stat-label">Total Appointments</div></div>
+        <div class="stat-box"><div class="stat-num" id="sDocs">–</div><div class="stat-label">Doctors Available</div></div>
+        <div class="stat-box"><div class="stat-num" id="sQueue">–</div><div class="stat-label">In Queue</div></div>
+        <div class="stat-box"><div class="stat-num" id="sToday">–</div><div class="stat-label">Today's Bookings</div></div>
+      </div>
+      <hr class="hero-card-divider">
+      <div style="font-size:0.82rem;color:var(--muted);margin-bottom:10px;font-weight:500">Quick Access</div>
+      <div class="quick-links">
+        <a href="/appointment" class="quick-link">📅 Book Now</a>
+        <a href="/queue" class="quick-link">🔢 My Token</a>
+        <a href="/payment" class="quick-link">💳 Pay Fees</a>
+        <a href="/chatbot" class="quick-link">🤖 Ask MedBot</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="features">
-  <div class="section-label">What We Offer</div>
-  <div class="section-title">Everything Your OPD Needs</div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">📅</div>
-      <div class="feature-title">Smart Appointment Booking</div>
-      <div class="feature-desc">Patients book online with time slots. Auto-token generation reduces walk-in confusion and long queues.</div>
+<!-- SERVICES -->
+<section class="services">
+  <div class="section-tag">Our Services</div>
+  <div class="section-title">Everything You Need in One Place</div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">📅</div>
+      <div class="service-title">Online Appointment Booking</div>
+      <div class="service-desc">Book your OPD appointment online anytime. Choose your doctor, pick a time slot and get an instant token number.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">🔢</div>
-      <div class="feature-title">Live Queue Management</div>
-      <div class="feature-desc">Real-time token tracking. Patients see their position. Doctors manage flow efficiently.</div>
+    <div class="service-card">
+      <div class="service-icon">🔢</div>
+      <div class="service-title">Live Queue Tracking</div>
+      <div class="service-desc">Check your token position in real time. Know exactly how long before your turn so you don't have to wait unnecessarily.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">💳</div>
-      <div class="feature-title">UPI Payment Gateway</div>
-      <div class="feature-desc">Dynamic QR code generation for OPD fees. Instant confirmation and digital receipts.</div>
+    <div class="service-card">
+      <div class="service-icon">💳</div>
+      <div class="service-title">Digital UPI Payment</div>
+      <div class="service-desc">Pay your OPD fees quickly and securely using UPI QR code. No cash needed. Instant payment confirmation.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">📊</div>
-      <div class="feature-title">Admin Dashboard</div>
-      <div class="feature-desc">Complete hospital overview — appointments, revenue, doctor status, and patient reports.</div>
+    <div class="service-card">
+      <div class="service-icon">📊</div>
+      <div class="service-title">Admin Dashboard</div>
+      <div class="service-desc">Hospital staff can manage doctors, view appointments, track revenue and monitor OPD operations in real time.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">🤖</div>
-      <div class="feature-title">AI Chatbot (MedBot)</div>
-      <div class="feature-desc">24/7 virtual assistant for patients. Answers queries about doctors, booking, payments, and timings.</div>
+    <div class="service-card">
+      <div class="service-icon">🤖</div>
+      <div class="service-title">MedBot AI Assistant</div>
+      <div class="service-desc">Get instant answers about doctors, appointments, fees and timings from our 24/7 AI-powered chatbot.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">🏥</div>
-      <div class="feature-title">Doctor Availability</div>
-      <div class="feature-desc">Real-time doctor status updates. Patients see who's available before booking.</div>
+    <div class="service-card">
+      <div class="service-icon">📋</div>
+      <div class="service-title">Digital Patient Records</div>
+      <div class="service-desc">All patient and appointment records are stored digitally. No more paper records or risk of data loss.</div>
     </div>
   </div>
 </section>
 
-<section class="quick-actions">
-  <div class="section-label">Quick Access</div>
-  <div class="section-title">Jump To Any Module</div>
-  <div class="actions-grid">
-    <a href="/appointment" class="action-card">
-      <div class="action-icon">📅</div>
-      <div class="action-label">Book Appointment</div>
-      <div class="action-sub">Schedule your OPD visit</div>
-    </a>
-    <a href="/queue" class="action-card">
-      <div class="action-icon">🔢</div>
-      <div class="action-label">View Queue</div>
-      <div class="action-sub">Check your token status</div>
-    </a>
-    <a href="/payment" class="action-card">
-      <div class="action-icon">💳</div>
-      <div class="action-label">Make Payment</div>
-      <div class="action-sub">Pay via UPI QR code</div>
-    </a>
-    <a href="/chatbot" class="action-card">
-      <div class="action-icon">🤖</div>
-      <div class="action-label">Ask MedBot</div>
-      <div class="action-sub">AI-powered assistance</div>
-    </a>
+<!-- DOCTORS -->
+<section class="doctors-strip">
+  <div class="doctors-inner">
+    <div class="section-tag">Our Specialists</div>
+    <div class="section-title">Meet Our Doctors</div>
+    <div class="doctors-grid" id="doctorsGrid">Loading...</div>
   </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner">
+  <h2>Ready to Book Your Appointment?</h2>
+  <p>Skip the long queues. Book online in less than 2 minutes.</p>
+  <a href="/appointment" class="btn-white">Book Appointment Now →</a>
 </section>
 
 <footer>
-  © 2024 MedEase OPD Management System · Developed by Tanvi Badhe, Komal Barhate, Nilakshi Bhagirath, Yash Bhirud · Guided by Neha Raut
+  <div class="footer-logo">Med<span>Ease</span> Hospital OPD System</div>
+  <div>© 2025 MedEase Hospital. All rights reserved.</div>
 </footer>
 
 <script>
@@ -258,7 +220,18 @@
     document.getElementById('sTotal').textContent = d.total_appointments;
     document.getElementById('sDocs').textContent = d.active_doctors;
     document.getElementById('sQueue').textContent = d.in_queue;
-    document.getElementById('sRev').textContent = '₹' + d.total_revenue.toLocaleString();
+    document.getElementById('sToday').textContent = d.today_appointments;
+  });
+
+  fetch('/api/doctors').then(r=>r.json()).then(docs=>{
+    document.getElementById('doctorsGrid').innerHTML = docs.map(d=>`
+      <div class="doctor-chip">
+        <div class="doc-emoji">👨‍⚕️</div>
+        <div class="doc-name">${d.name}</div>
+        <div class="doc-spec">${d.specialty}</div>
+        <div class="doc-avail ${d.available?'avail-yes':'avail-no'}">${d.available?'● Available':'○ Unavailable'}</div>
+      </div>
+    `).join('');
   });
 </script>
 </body>
