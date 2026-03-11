@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPI Payment – MedEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- QR Code library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root { --teal:#0ea5a0; --teal-dark:#0c8a86; --navy:#0d1f2d; --navy2:#162535; --slate:#1e3448; --accent:#f97316; --white:#f8fafc; --muted:#94a3b8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); }
+  nav { position:fixed; top:0; width:100%; z-index:100; background:rgba(13,31,45,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(14,165,160,0.15); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:64px; }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
+  .logo span { color:var(--white); }
+  .nav-links { display:flex; gap:8px; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:6px 14px; border-radius:8px; transition:all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--white); background:rgba(14,165,160,0.15); }
+
+  main { padding:88px 5vw 60px; max-width:900px; margin:0 auto; }
+  .page-label { font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
+  h1 { font-family:'Syne',sans-serif; font-size:2.2rem; font-weight:800; margin-bottom:32px; }
+
+  .payment-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .panel { background:var(--navy2); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:28px; }
+  .panel-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1.05rem; margin-bottom:20px; color:var(--teal); }
+
+  .form-group { margin-bottom:16px; }
+  label { display:block; font-size:0.8rem; color:var(--muted); margin-bottom:6px; font-family:'Syne',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+  input, select { width:100%; background:var(--slate); border:1px solid rgba(255,255,255,0.1); color:var(--white); padding:11px 14px; border-radius:10px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; }
+  input:focus, select:focus { border-color:var(--teal); }
+
+  .fee-chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .fee-chip { background:var(--slate); border:1px solid rgba(255,255,255,0.1); color:var(--muted); padding:6px 14px; border-radius:8px; cursor:pointer; font-size:0.82rem; transition:all 0.2s; }
+  .fee-chip:hover, .fee-chip.active { background:rgba(14,165,160,0.15); border-color:var(--teal); color:var(--teal); }
+
+  .btn-generate { width:100%; background:var(--teal); color:var(--white); border:none; padding:13px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; cursor:pointer; margin-top:8px; transition:all 0.2s; }
+  .btn-generate:hover { background:var(--teal-dark); }
+
+  /* QR Panel */
+  .qr-container { text-align:center; }
+  .qr-box {
+    background:white; border-radius:16px; padding:20px;
+    display:inline-flex; align-items:center; justify-content:center;
+    margin:20px 0; min-width:180px; min-height:180px;
+  }
+  #qrcode { display:inline-block; }
+  .qr-placeholder { color:#94a3b8; font-size:0.875rem; padding:40px 20px; }
+  .amount-display { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--teal); }
+  .amount-label { font-size:0.8rem; color:var(--muted); margin-bottom:8px; }
+  .upi-id { font-size:0.8rem; color:var(--muted); margin-top:8px; }
+
+  .divider { border:none; border-top:1px solid rgba(255,255,255,0.07); margin:20px 0; }
+
+  /* Verify section */
+  .verify-section { margin-top:20px; }
+  .btn-verify { width:100%; background:rgba(249,115,22,0.15); color:var(--accent); border:1px solid rgba(249,115,22,0.4); padding:12px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; cursor:pointer; transition:all 0.2s; }
+  .btn-verify:hover { background:var(--accent); color:var(--white); }
+
+  /* Success */
+  .success-msg { background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); border-radius:10px; padding:14px 18px; text-align:center; display:none; }
+  .success-msg.show { display:block; }
+
+  /* History */
+  .history-section { margin-top:32px; }
+  .history-title { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:16px; color:var(--teal); }
+  .history-item { background:var(--slate); border-radius:10px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; }
+  .h-name { font-weight:500; font-size:0.9rem; }
+  .h-txn { font-size:0.75rem; color:var(--muted); }
+  .h-amount { font-family:'Syne',sans-serif; font-weight:700; color:var(--teal); }
+  .h-status { font-size:0.75rem; color:#4ade80; }
+
+  @media(max-width:700px) { .payment-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Med<span>Ease</span></div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/appointment">Appointments</a>
+    <a href="/queue">Queue</a>
+    <a href="/payment" class="active">Payment</a>
+    <a href="/admin">Admin</a>
+    <a href="/chatbot">💬 Chatbot</a>
+  </div>
+</nav>
+
+<main>
+  <div class="page-label">UPI Gateway</div>
+  <h1>💳 OPD Payment</h1>
+
+  <div class="payment-grid">
+    <!-- Form -->
+    <div class="panel">
+      <div class="panel-title">Payment Details</div>
+
+      <div class="form-group">
+        <label>Patient Name</label>
+        <input type="text" id="payName" placeholder="Enter patient name">
+      </div>
+
+      <div class="form-group">
+        <label>Department / Fee Type</label>
+        <select id="payType" onchange="setFeeFromType()">
+          <option value="">Select type</option>
+          <option value="300">General Medicine — ₹300</option>
+          <option value="450">Pediatrics — ₹450</option>
+          <option value="500">Dermatology — ₹500</option>
+          <option value="600">Orthopedics — ₹600</option>
+          <option value="700">Cardiology — ₹700</option>
+          <option value="800">Neurology — ₹800</option>
+          <option value="custom">Custom Amount</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Quick Select</label>
+        <div class="fee-chips">
+          <span class="fee-chip" onclick="setFee(300)">₹300</span>
+          <span class="fee-chip" onclick="setFee(450)">₹450</span>
+          <span class="fee-chip" onclick="setFee(500)">₹500</span>
+          <span class="fee-chip" onclick="setFee(600)">₹600</span>
+          <span class="fee-chip" onclick="setFee(700)">₹700</span>
+          <span class="fee-chip" onclick="setFee(800)">₹800</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Amount (₹)</label>
+        <input type="number" id="payAmount" placeholder="Enter amount" min="1">
+      </div>
+
+      <button class="btn-generate" onclick="generateQR()">⚡ Generate UPI QR Code</button>
+    </div>
+
+    <!-- QR -->
+    <div class="panel">
+      <div class="panel-title">Scan & Pay</div>
+      <div class="qr-container">
+        <div class="amount-label">Amount to Pay</div>
+        <div class="amount-display" id="qrAmount">₹0</div>
+        <div class="qr-box">
+          <div id="qrcode"><div class="qr-placeholder">QR code will appear here<br>after generating</div></div>
+        </div>
+        <div class="upi-id">UPI ID: medease@upi · Scan with any UPI app</div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="verify-section">
+        <div class="form-group">
+          <label>Enter UPI Transaction ID</label>
+          <input type="text" id="txnId" placeholder="e.g. TXN123456789">
+        </div>
+        <button class="btn-verify" onclick="submitPayment()">✅ Confirm Payment</button>
+        <div class="success-msg" id="successMsg">
+          🎉 Payment recorded successfully! Receipt generated.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="history-section">
+    <div class="history-title">📋 Recent Payments</div>
+    <div id="payHistory">Loading...</div>
+  </div>
+</main>
+
+<script>
+  let qrInstance = null;
+
+  function setFee(amount) {
+    document.getElementById('payAmount').value = amount;
+    document.querySelectorAll('.fee-chip').forEach(c=>c.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  function setFeeFromType() {
+    const val = document.getElementById('payType').value;
+    if (val && val !== 'custom') document.getElementById('payAmount').value = val;
+  }
+
+  function generateQR() {
+    const name = document.getElementById('payName').value.trim();
+    const amount = document.getElementById('payAmount').value;
+    if (!name || !amount || amount <= 0) { alert('Please enter patient name and amount.'); return; }
+
+    const upiString = `upi://pay?pa=medease@upi&pn=MedEase Hospital&am=${amount}&cu=INR&tn=OPD Fee - ${name}`;
+    document.getElementById('qrAmount').textContent = '₹' + parseFloat(amount).toLocaleString();
+
+    const qrDiv = document.getElementById('qrcode');
+    qrDiv.innerHTML = '';
+    new QRCode(qrDiv, { text: upiString, width: 160, height: 160, colorDark:'#0d1f2d', colorLight:'#ffffff' });
+  }
+
+  function submitPayment() {
+    const name = document.getElementById('payName').value.trim();
+    const amount = document.getElementById('payAmount').value;
+    const txn = document.getElementById('txnId').value.trim();
+    if (!name || !amount || !txn) { alert('Please fill all fields and enter transaction ID.'); return; }
+
+    fetch('/api/payments', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ patient_name:name, amount:parseFloat(amount), transaction_id:txn })
+    }).then(r=>r.json()).then(()=>{
+      document.getElementById('successMsg').classList.add('show');
+      setTimeout(()=>{ document.getElementById('successMsg').classList.remove('show'); loadHistory(); }, 3000);
+    });
+  }
+
+  function loadHistory() {
+    fetch('/api/payments').then(r=>r.json()).then(payments => {
+      const div = document.getElementById('payHistory');
+      if (!payments.length) { div.innerHTML = '<p style="color:var(--muted);font-size:0.875rem">No payments yet.</p>'; return; }
+      div.innerHTML = payments.slice(0,8).map(p=>`
+        <div class="history-item">
+          <div>
+            <div class="h-name">${p.patient_name}</div>
+            <div class="h-txn">TXN: ${p.transaction_id} · ${p.created_at.split(' ')[0]}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="h-amount">₹${parseFloat(p.amount).toLocaleString()}</div>
+            <div class="h-status">✅ ${p.status}</div>
+          </div>
+        </div>
+      `).join('');
+    });
+  }
+
+  loadHistory();
+</script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard – MedEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --teal:#0ea5a0; --teal-dark:#0c8a86; --navy:#0d1f2d; --navy2:#162535; --slate:#1e3448; --accent:#f97316; --white:#f8fafc; --muted:#94a3b8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); }
+  nav { position:fixed; top:0; width:100%; z-index:100; background:rgba(13,31,45,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(14,165,160,0.15); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:64px; }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
+  .logo span { color:var(--white); }
+  .nav-links { display:flex; gap:8px; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:6px 14px; border-radius:8px; transition:all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--white); background:rgba(14,165,160,0.15); }
+
+  main { padding:88px 5vw 60px; max-width:1200px; margin:0 auto; }
+  .page-label { font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
+  h1 { font-family:'Syne',sans-serif; font-size:2.2rem; font-weight:800; margin-bottom:32px; }
+
+  /* KPI cards */
+  .kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:32px; }
+  .kpi { background:var(--navy2); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:20px; transition:transform 0.2s; }
+  .kpi:hover { transform:translateY(-2px); }
+  .kpi-icon { font-size:1.6rem; margin-bottom:10px; }
+  .kpi-val { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; color:var(--teal); }
+  .kpi-label { font-size:0.78rem; color:var(--muted); margin-top:4px; }
+
+  /* Two column layout */
+  .dash-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:24px; margin-bottom:24px; }
+  .panel { background:var(--navy2); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:24px; }
+  .panel-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:16px; color:var(--teal); display:flex; align-items:center; justify-content:space-between; }
+
+  /* Appointments table */
+  table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+  th { text-align:left; padding:8px 12px; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.07); font-family:'Syne',sans-serif; }
+  td { padding:10px 12px; border-bottom:1px solid rgba(255,255,255,0.04); }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:rgba(255,255,255,0.02); }
+  .status-badge { font-size:0.7rem; padding:3px 9px; border-radius:999px; font-weight:600; }
+  .status-pending { background:rgba(251,191,36,0.15); color:#fbbf24; }
+  .status-confirmed { background:rgba(34,197,94,0.15); color:#4ade80; }
+
+  /* Doctors management */
+  .doctor-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .doctor-row:last-child { border-bottom:none; }
+  .doc-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--teal),#0ea5e9); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .doc-info { flex:1; }
+  .doc-name { font-size:0.9rem; font-weight:600; }
+  .doc-spec { font-size:0.75rem; color:var(--muted); }
+  .toggle-btn { padding:6px 14px; border-radius:8px; border:none; font-size:0.75rem; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; transition:all 0.2s; }
+  .toggle-on { background:rgba(34,197,94,0.15); color:#4ade80; border:1px solid rgba(34,197,94,0.3); }
+  .toggle-on:hover { background:#4ade80; color:var(--navy); }
+  .toggle-off { background:rgba(239,68,68,0.15); color:#f87171; border:1px solid rgba(239,68,68,0.3); }
+  .toggle-off:hover { background:#f87171; color:var(--white); }
+
+  /* Revenue */
+  .pay-item { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .pay-item:last-child { border-bottom:none; }
+  .pay-name { font-size:0.875rem; }
+  .pay-txn { font-size:0.72rem; color:var(--muted); }
+  .pay-amt { font-family:'Syne',sans-serif; font-weight:700; color:var(--teal); font-size:0.95rem; }
+
+  @media(max-width:900px) { .kpis { grid-template-columns:repeat(3,1fr); } .dash-grid { grid-template-columns:1fr; } }
+  @media(max-width:600px) { .kpis { grid-template-columns:1fr 1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Med<span>Ease</span></div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/appointment">Appointments</a>
+    <a href="/queue">Queue</a>
+    <a href="/payment">Payment</a>
+    <a href="/admin" class="active">Admin</a>
+    <a href="/chatbot">💬 Chatbot</a>
+  </div>
+</nav>
+
+<main>
+  <div class="page-label">Hospital Admin</div>
+  <h1>📊 Dashboard</h1>
+
+  <!-- KPI Row -->
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-icon">📅</div><div class="kpi-val" id="kTotal">–</div><div class="kpi-label">Total Appointments</div></div>
+    <div class="kpi"><div class="kpi-icon">🗓️</div><div class="kpi-val" id="kToday">–</div><div class="kpi-label">Today's Appointments</div></div>
+    <div class="kpi"><div class="kpi-icon">👨‍⚕️</div><div class="kpi-val" id="kDocs">–</div><div class="kpi-label">Active Doctors</div></div>
+    <div class="kpi"><div class="kpi-icon">⏳</div><div class="kpi-val" id="kQueue">–</div><div class="kpi-label">In Queue</div></div>
+    <div class="kpi"><div class="kpi-icon">💰</div><div class="kpi-val" id="kRev">–</div><div class="kpi-label">Total Revenue</div></div>
+  </div>
+
+  <div class="dash-grid">
+    <!-- Appointments table -->
+    <div class="panel">
+      <div class="panel-title">Recent Appointments</div>
+      <table>
+        <thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Token</th><th>Status</th></tr></thead>
+        <tbody id="apptTable"><tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">Loading...</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- Doctors management -->
+    <div class="panel">
+      <div class="panel-title">Doctor Availability</div>
+      <div id="doctorRows">Loading...</div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+    <!-- Revenue -->
+    <div class="panel">
+      <div class="panel-title">Recent Payments</div>
+      <div id="payRows">Loading...</div>
+    </div>
+
+    <!-- Summary stats -->
+    <div class="panel">
+      <div class="panel-title">Quick Stats</div>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px" id="statsPanel">Loading...</div>
+    </div>
+  </div>
+</main>
+
+<script>
+  function loadDashboard() {
+    fetch('/api/stats').then(r=>r.json()).then(d => {
+      document.getElementById('kTotal').textContent = d.total_appointments;
+      document.getElementById('kToday').textContent = d.today_appointments;
+      document.getElementById('kDocs').textContent = d.active_doctors;
+      document.getElementById('kQueue').textContent = d.in_queue;
+      document.getElementById('kRev').textContent = '₹' + parseFloat(d.total_revenue).toLocaleString();
+
+      // Appointments table
+      document.getElementById('apptTable').innerHTML = d.recent_appointments.length
+        ? d.recent_appointments.map(a=>`
+          <tr>
+            <td>${a.patient_name}</td>
+            <td style="color:var(--muted);font-size:0.8rem">${a.doctor_name}</td>
+            <td style="color:var(--muted);font-size:0.8rem">${a.date}</td>
+            <td style="color:var(--teal);font-family:'Syne',sans-serif;font-weight:700">${a.token}</td>
+            <td><span class="status-badge status-${a.status}">${a.status}</span></td>
+          </tr>`).join('')
+        : '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">No appointments yet</td></tr>';
+
+      // Payments
+      document.getElementById('payRows').innerHTML = d.recent_payments.length
+        ? d.recent_payments.map(p=>`
+          <div class="pay-item">
+            <div><div class="pay-name">${p.patient_name}</div><div class="pay-txn">${p.transaction_id}</div></div>
+            <div class="pay-amt">₹${parseFloat(p.amount).toLocaleString()}</div>
+          </div>`).join('')
+        : '<p style="color:var(--muted);font-size:0.875rem">No payments yet.</p>';
+
+      // Stats panel
+      const avgRev = d.total_appointments > 0 ? (d.total_revenue / Math.max(d.recent_payments.length,1)).toFixed(0) : 0;
+      document.getElementById('statsPanel').innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--slate);border-radius:10px">
+          <span style="color:var(--muted);font-size:0.875rem">Avg Revenue/Patient</span>
+          <span style="font-family:'Syne',sans-serif;font-weight:700;color:var(--teal)">₹${parseFloat(avgRev).toLocaleString()}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--slate);border-radius:10px">
+          <span style="color:var(--muted);font-size:0.875rem">Today's Bookings</span>
+          <span style="font-family:'Syne',sans-serif;font-weight:700;color:#fbbf24">${d.today_appointments}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--slate);border-radius:10px">
+          <span style="color:var(--muted);font-size:0.875rem">Patients in Queue</span>
+          <span style="font-family:'Syne',sans-serif;font-weight:700;color:#f87171">${d.in_queue}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--slate);border-radius:10px">
+          <span style="color:var(--muted);font-size:0.875rem">Active Doctors</span>
+          <span style="font-family:'Syne',sans-serif;font-weight:700;color:#4ade80">${d.active_doctors}</span>
+        </div>
+      `;
+    });
+  }
+
+  function loadDoctors() {
+    fetch('/api/doctors').then(r=>r.json()).then(docs => {
+      document.getElementById('doctorRows').innerHTML = docs.map(d=>`
+        <div class="doctor-row">
+          <div class="doc-avatar">👨‍⚕️</div>
+          <div class="doc-info">
+            <div class="doc-name">${d.name}</div>
+            <div class="doc-spec">${d.specialty} · Queue: ${d.queue_count}</div>
+          </div>
+          <button class="toggle-btn ${d.available?'toggle-on':'toggle-off'}" onclick="toggleDoc(${d.id})" id="tog-${d.id}">
+            ${d.available ? '● Online' : '○ Offline'}
+          </button>
+        </div>
+      `).join('');
+    });
+  }
+
+  function toggleDoc(id) {
+    fetch(`/api/doctors/${id}/toggle`, {method:'POST'}).then(r=>r.json()).then(()=>{
+      loadDoctors(); loadDashboard();
+    });
+  }
+
+  loadDashboard();
+  loadDoctors();
+  setInterval(() => { loadDashboard(); loadDoctors(); }, 20000);
+</script>
+</body>
+</html>
