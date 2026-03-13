@@ -4,168 +4,139 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Queue Status – MedEase</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root { --teal:#0a9396; --teal-dark:#007f83; --teal-light:#e0f5f5; --teal-xlight:#f0fafa; --white:#ffffff; --gray:#f8f9fa; --text:#1a1a2e; --muted:#6b7280; --border:#e5e7eb; }
+  :root { --teal:#0ea5a0; --teal-dark:#0c8a86; --bg:#f0f4f8; --white:#ffffff; --border:#e2e8f0; --text:#1a2332; --muted:#64748b; --accent:#f97316; --light-teal:#e6f7f6; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Inter',sans-serif; background:var(--gray); color:var(--text); }
-  nav { position:fixed; top:0; width:100%; z-index:100; background:white; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 6vw; height:68px; box-shadow:0 1px 8px rgba(0,0,0,0.06); }
-  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-  .logo-icon { width:38px; height:38px; background:var(--teal); border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; }
-  .logo-text { font-family:'Merriweather',serif; font-weight:700; font-size:1.2rem; color:var(--text); }
-  .logo-text span { color:var(--teal); }
-  .nav-links { display:flex; align-items:center; gap:4px; }
-  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; font-weight:500; padding:8px 14px; border-radius:8px; transition:all 0.2s; }
-  .nav-links a:hover { color:var(--teal); background:var(--teal-xlight); }
-  .nav-links a.active { color:var(--teal); font-weight:600; }
-  .nav-cta { background:var(--teal) !important; color:white !important; border-radius:8px !important; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); }
+  nav { position:fixed; top:0; width:100%; z-index:100; background:var(--white); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:68px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
+  .logo span { color:var(--text); }
+  .nav-links { display:flex; gap:4px; align-items:center; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:7px 14px; border-radius:8px; transition:all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--teal); background:var(--light-teal); }
+  .nav-cta { background:var(--teal) !important; color:var(--white) !important; font-weight:600; }
 
-  main { padding-top:68px; }
-  .page-banner { background:linear-gradient(135deg,var(--teal-xlight),white); padding:36px 6vw; border-bottom:1px solid var(--border); }
-  .page-banner-inner { max-width:1100px; margin:0 auto; }
-  .breadcrumb { font-size:0.8rem; color:var(--muted); margin-bottom:8px; }
-  .breadcrumb a { color:var(--teal); text-decoration:none; }
-  h1 { font-family:'Merriweather',serif; font-size:1.8rem; font-weight:700; }
-  .page-sub { color:var(--muted); margin-top:6px; font-size:0.9rem; }
+  main { padding:88px 5vw 60px; max-width:1100px; margin:0 auto; }
+  .page-label { font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
+  h1 { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; margin-bottom:6px; color:var(--text); }
+  .subtitle { color:var(--muted); margin-bottom:28px; font-size:0.95rem; }
 
-  .content { max-width:1100px; margin:0 auto; padding:32px 6vw; }
-
-  /* Token lookup */
-  .lookup-card { background:white; border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:24px; }
-  .card-title { font-weight:700; font-size:1rem; color:var(--text); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-  .lookup-row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
-  .lookup-row input { flex:1; min-width:180px; background:var(--gray); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:8px; font-size:0.9rem; font-family:'Inter',sans-serif; outline:none; }
-  .lookup-row input:focus { border-color:var(--teal); background:white; }
-  .btn-check { background:var(--teal); color:white; border:none; padding:11px 22px; border-radius:8px; font-weight:600; cursor:pointer; font-size:0.9rem; white-space:nowrap; }
-  .btn-check:hover { background:var(--teal-dark); }
-  .token-result { margin-top:12px; padding:12px 16px; border-radius:8px; font-size:0.875rem; display:none; }
+  .lookup-bar { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px 24px; margin-bottom:24px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  .lookup-bar input { flex:1; min-width:180px; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:8px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; }
+  .lookup-bar input:focus { border-color:var(--teal); }
+  .btn-lookup { background:var(--teal); color:var(--white); border:none; padding:10px 22px; border-radius:8px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; font-size:0.9rem; }
+  .token-result { background:var(--light-teal); border:1px solid rgba(14,165,160,0.3); border-radius:10px; padding:12px 16px; font-size:0.9rem; display:none; color:var(--text); width:100%; }
   .token-result.show { display:block; }
-  .result-found { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); color:#065f46; }
-  .result-notfound { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); color:#991b1b; }
 
-  .top-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
-  .refresh-btn { background:white; border:1px solid var(--border); color:var(--muted); padding:8px 16px; border-radius:8px; font-size:0.85rem; cursor:pointer; transition:all 0.2s; }
-  .refresh-btn:hover { border-color:var(--teal); color:var(--teal); }
-  .live-dot { display:inline-flex; align-items:center; gap:6px; font-size:0.8rem; color:#059669; font-weight:500; }
-  .live-dot::before { content:'●'; font-size:8px; animation:pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
-
-  .queues-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; }
-  .queue-card { background:white; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
-  .queue-header { padding:16px 20px; border-bottom:1px solid var(--border); background:var(--teal-xlight); display:flex; align-items:center; justify-content:space-between; }
-  .q-doc-name { font-weight:700; font-size:0.9rem; color:var(--text); }
-  .q-doc-spec { font-size:0.78rem; color:var(--muted); margin-top:2px; }
-  .q-count { background:var(--teal); color:white; padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:700; }
+  .queues-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px; }
+  .queue-panel { background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  .queue-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:var(--bg); }
+  .queue-doc-name { font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; color:var(--text); }
+  .queue-doc-spec { font-size:0.78rem; color:var(--muted); margin-top:2px; }
+  .queue-count-badge { background:var(--light-teal); color:var(--teal); padding:4px 12px; border-radius:999px; font-size:0.8rem; font-family:'Syne',sans-serif; font-weight:700; }
   .queue-body { padding:16px 20px; }
   .queue-item { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
   .queue-item:last-child { border-bottom:none; }
-  .pos-num { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; flex-shrink:0; }
-  .pos-1 { background:#fef3c7; color:#d97706; }
-  .pos-2 { background:var(--gray); color:var(--muted); }
-  .pos-other { background:var(--gray); color:var(--muted); }
-  .q-patient-name { font-size:0.875rem; font-weight:500; flex:1; }
-  .q-token { font-size:0.75rem; color:var(--teal); font-weight:600; }
-  .btn-done { background:var(--teal-xlight); color:var(--teal); border:1px solid var(--teal-light); padding:5px 11px; border-radius:6px; font-size:0.75rem; font-weight:600; cursor:pointer; }
-  .btn-done:hover { background:var(--teal); color:white; }
-  .empty-msg { text-align:center; padding:24px; color:var(--muted); font-size:0.875rem; }
+  .pos-badge { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; font-size:0.85rem; flex-shrink:0; }
+  .pos-1 { background:#fef9c3; color:#ca8a04; }
+  .pos-2 { background:#f1f5f9; color:var(--muted); }
+  .pos-other { background:var(--bg); color:var(--muted); }
+  .queue-patient { flex:1; }
+  .q-name { font-size:0.9rem; font-weight:500; color:var(--text); }
+  .q-token { font-size:0.75rem; color:var(--teal); font-family:'Syne',sans-serif; }
+  .btn-next { background:var(--light-teal); color:var(--teal); border:1px solid rgba(14,165,160,0.3); padding:5px 12px; border-radius:6px; font-size:0.75rem; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; }
+  .btn-next:hover { background:var(--teal); color:var(--white); }
+  .empty-queue { text-align:center; padding:24px; color:var(--muted); font-size:0.875rem; }
+  .refresh-btn { background:var(--white); color:var(--muted); border:1px solid var(--border); padding:8px 18px; border-radius:8px; font-size:0.85rem; cursor:pointer; font-family:'DM Sans',sans-serif; margin-bottom:20px; }
+  .refresh-btn:hover { color:var(--teal); border-color:var(--teal); }
 
-  @media(max-width:600px) { .queues-grid { grid-template-columns:1fr; } .nav-links { display:none; } }
+  footer { background:#1a2332; color:#94a3b8; padding:24px 5vw; text-align:center; font-size:0.8rem; }
+  @media(max-width:600px) { .queues-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 <nav>
-  <a href="/" class="logo"><div class="logo-icon">🏥</div><div class="logo-text">Med<span>Ease</span></div></a>
+  <div class="logo">Med<span>Ease</span></div>
   <div class="nav-links">
-    <a href="/">Home</a><a href="/appointment">Appointments</a>
-    <a href="/queue" class="active">Queue Status</a>
-    <a href="/payment">Payment</a><a href="/admin">Admin</a><a href="/chatbot">💬 MedBot</a>
-    <a href="/appointment" class="nav-cta">Book Appointment</a>
+    <a href="/">Home</a>
+    <a href="/appointment">Appointments</a>
+    <a href="/queue" class="active">Queue</a>
+    <a href="/payment">Payment</a>
+    <a href="/admin">Admin</a>
+    <a href="/about">About Us</a>
+    <a href="/chatbot">💬 Chatbot</a>
+    <a href="/appointment" class="nav-cta">Book Now</a>
   </div>
 </nav>
 
 <main>
-  <div class="page-banner">
-    <div class="page-banner-inner">
-      <div class="breadcrumb"><a href="/">Home</a> › Queue Status</div>
-      <h1>🔢 Live Queue Status</h1>
-      <p class="page-sub">Check your token position and estimated waiting time</p>
-    </div>
+  <div class="page-label">Live Queue</div>
+  <h1>🔢 Token & Queue Status</h1>
+  <p class="subtitle">Real-time queue tracker for all OPD departments</p>
+
+  <div class="lookup-bar">
+    <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;white-space:nowrap;color:var(--text)">🔍 Check Your Token</span>
+    <input type="text" id="tokenInput" placeholder="Enter token e.g. TKN1234" maxlength="8">
+    <button class="btn-lookup" onclick="lookupToken()">Check Status</button>
+    <div class="token-result" id="tokenResult"></div>
   </div>
 
-  <div class="content">
-    <div class="lookup-card">
-      <div class="card-title">🔍 Check Your Token Status</div>
-      <div class="lookup-row">
-        <input type="text" id="tokenInput" placeholder="Enter your token number e.g. TKN1234" maxlength="8">
-        <button class="btn-check" onclick="lookupToken()">Check Status</button>
-      </div>
-      <div class="token-result" id="tokenResult"></div>
-    </div>
-
-    <div class="top-bar">
-      <div class="live-dot">Live Queue Updates</div>
-      <button class="refresh-btn" onclick="loadQueue()">🔄 Refresh</button>
-    </div>
-
-    <div class="queues-grid" id="queuesGrid">Loading queue...</div>
-  </div>
+  <button class="refresh-btn" onclick="loadQueue()">🔄 Refresh Queue</button>
+  <div class="queues-grid" id="queuesGrid">Loading queue...</div>
 </main>
+
+<footer>© MedEase OPD Management System · Vasai, Maharashtra</footer>
 
 <script>
   let queueData = [];
-
-  function loadQueue(){
-    Promise.all([fetch('/api/queue').then(r=>r.json()), fetch('/api/doctors').then(r=>r.json())])
-    .then(([queue,doctors])=>{
-      queueData=queue;
-      const avail=doctors.filter(d=>d.available);
-      const grid=document.getElementById('queuesGrid');
-      if(!avail.length){grid.innerHTML='<p style="color:var(--muted)">No active doctors right now.</p>';return;}
-      grid.innerHTML=avail.map(doc=>{
-        const dq=queue.filter(q=>q.doctor_id===doc.id);
-        return `
-          <div class="queue-card">
-            <div class="queue-header">
-              <div><div class="q-doc-name">👨‍⚕️ ${doc.name}</div><div class="q-doc-spec">${doc.specialty}</div></div>
-              <div class="q-count">${dq.length} waiting</div>
-            </div>
-            <div class="queue-body">
-              ${dq.length===0
-                ?'<div class="empty-msg">✅ No patients waiting</div>'
-                :dq.map((p,i)=>`
-                  <div class="queue-item">
-                    <div class="pos-num ${i===0?'pos-1':i===1?'pos-2':'pos-other'}">${i+1}</div>
-                    <div style="flex:1">
-                      <div class="q-patient-name">${p.patient_name}</div>
-                      <div class="q-token">${p.token}</div>
-                    </div>
-                    <button class="btn-done" onclick="markDone(${p.id})">✓ Done</button>
-                  </div>`).join('')
-              }
-            </div>
-          </div>`;
+  function loadQueue() {
+    Promise.all([fetch('/api/queue').then(r=>r.json()), fetch('/api/doctors').then(r=>r.json())]).then(([queue, doctors]) => {
+      queueData = queue;
+      const avail = doctors.filter(d=>d.available);
+      const grid = document.getElementById('queuesGrid');
+      if (!avail.length) { grid.innerHTML = '<p style="color:var(--muted)">No active doctors.</p>'; return; }
+      grid.innerHTML = avail.map(doc => {
+        const docQueue = queue.filter(q=>q.doctor_id===doc.id);
+        return `<div class="queue-panel">
+          <div class="queue-header">
+            <div><div class="queue-doc-name">👨‍⚕️ ${doc.name}</div><div class="queue-doc-spec">${doc.specialty}</div></div>
+            <div class="queue-count-badge">${docQueue.length} waiting</div>
+          </div>
+          <div class="queue-body">
+            ${docQueue.length===0 ? '<div class="empty-queue">✅ No patients waiting</div>' :
+              docQueue.map((p,i) => `<div class="queue-item">
+                <div class="pos-badge ${i===0?'pos-1':i===1?'pos-2':'pos-other'}">${i+1}</div>
+                <div class="queue-patient"><div class="q-name">${p.patient_name}</div><div class="q-token">${p.token}</div></div>
+                <button class="btn-next" onclick="markDone(${p.id})">✓ Done</button>
+              </div>`).join('')}
+          </div>
+        </div>`;
       }).join('');
     });
   }
 
-  function markDone(qid){fetch(`/api/queue/${qid}/next`,{method:'POST'}).then(()=>loadQueue());}
+  function markDone(qid) { fetch(`/api/queue/${qid}/next`,{method:'POST'}).then(()=>loadQueue()); }
 
-  function lookupToken(){
-    const token=document.getElementById('tokenInput').value.trim().toUpperCase();
-    const result=document.getElementById('tokenResult');
-    if(!token)return;
-    const found=queueData.find(q=>q.token===token);
-    if(found){
-      result.className='token-result show result-found';
-      result.innerHTML=`✅ Token <strong>${token}</strong> is at position <strong>#${found.position}</strong> for <strong>${found.doctor_name}</strong>. Estimated wait: ~${found.position*10} minutes.`;
+  function lookupToken() {
+    const token = document.getElementById('tokenInput').value.trim().toUpperCase();
+    const result = document.getElementById('tokenResult');
+    if (!token) return;
+    const found = queueData.find(q=>q.token===token);
+    if (found) {
+      result.className = 'token-result show';
+      result.style.background = 'var(--light-teal)';
+      result.innerHTML = `✅ Token <strong>${token}</strong> — Position <strong>#${found.position}</strong> for <strong>${found.doctor_name}</strong>. Est. wait: ~${found.position*10} min`;
     } else {
-      result.className='token-result show result-notfound';
-      result.innerHTML=`❌ Token <strong>${token}</strong> not found in active queue. You may have already been called in.`;
+      result.className = 'token-result show';
+      result.style.background = '#fee2e2';
+      result.style.borderColor = '#fecaca';
+      result.innerHTML = `❌ Token <strong>${token}</strong> not found in active queue. You may have already been called.`;
     }
   }
 
   loadQueue();
-  setInterval(loadQueue,15000);
+  setInterval(loadQueue, 15000);
 </script>
 </body>
 </html>

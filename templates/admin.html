@@ -4,169 +4,187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard – MedEase</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root { --teal:#0a9396; --teal-dark:#007f83; --teal-light:#e0f5f5; --teal-xlight:#f0fafa; --white:#ffffff; --gray:#f8f9fa; --text:#1a1a2e; --muted:#6b7280; --border:#e5e7eb; }
+  :root { --teal:#0ea5a0; --teal-dark:#0c8a86; --bg:#f0f4f8; --white:#ffffff; --border:#e2e8f0; --text:#1a2332; --muted:#64748b; --accent:#f97316; --light-teal:#e6f7f6; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Inter',sans-serif; background:var(--gray); color:var(--text); }
-  nav { position:fixed; top:0; width:100%; z-index:100; background:white; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 6vw; height:68px; box-shadow:0 1px 8px rgba(0,0,0,0.06); }
-  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-  .logo-icon { width:38px; height:38px; background:var(--teal); border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; }
-  .logo-text { font-family:'Merriweather',serif; font-weight:700; font-size:1.2rem; color:var(--text); }
-  .logo-text span { color:var(--teal); }
-  .nav-links { display:flex; align-items:center; gap:4px; }
-  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; font-weight:500; padding:8px 14px; border-radius:8px; transition:all 0.2s; }
-  .nav-links a:hover { color:var(--teal); background:var(--teal-xlight); }
-  .nav-links a.active { color:var(--teal); font-weight:600; }
-  .nav-cta { background:var(--teal) !important; color:white !important; border-radius:8px !important; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); }
+  nav { position:fixed; top:0; width:100%; z-index:100; background:var(--white); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:68px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
+  .logo span { color:var(--text); }
+  .nav-links { display:flex; gap:4px; align-items:center; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:7px 14px; border-radius:8px; transition:all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--teal); background:var(--light-teal); }
+  .nav-cta { background:var(--teal) !important; color:var(--white) !important; font-weight:600; }
 
-  main { padding-top:68px; }
-  .page-banner { background:linear-gradient(135deg,var(--teal-xlight),white); padding:36px 6vw; border-bottom:1px solid var(--border); }
-  .page-banner-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-  h1 { font-family:'Merriweather',serif; font-size:1.8rem; font-weight:700; }
-  .page-sub { color:var(--muted); margin-top:6px; font-size:0.9rem; }
-  .refresh-btn { background:white; border:1px solid var(--border); color:var(--muted); padding:9px 18px; border-radius:8px; font-size:0.85rem; cursor:pointer; }
-  .refresh-btn:hover { border-color:var(--teal); color:var(--teal); }
+  main { padding:88px 5vw 60px; max-width:1200px; margin:0 auto; }
+  .page-label { font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
+  h1 { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; margin-bottom:28px; color:var(--text); }
 
-  .content { max-width:1200px; margin:0 auto; padding:28px 6vw; }
+  .kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:28px; }
+  .kpi { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); transition:transform 0.2s; }
+  .kpi:hover { transform:translateY(-2px); }
+  .kpi-icon { font-size:1.6rem; margin-bottom:10px; }
+  .kpi-val { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; color:var(--teal); }
+  .kpi-label { font-size:0.78rem; color:var(--muted); margin-top:4px; }
 
-  /* KPI */
-  .kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:24px; }
-  .kpi { background:white; border:1px solid var(--border); border-radius:12px; padding:20px; display:flex; align-items:center; gap:14px; }
-  .kpi-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
-  .kpi-icon-teal { background:var(--teal-light); }
-  .kpi-icon-blue { background:#dbeafe; }
-  .kpi-icon-green { background:#d1fae5; }
-  .kpi-icon-yellow { background:#fef3c7; }
-  .kpi-icon-red { background:#fee2e2; }
-  .kpi-val { font-family:'Merriweather',serif; font-size:1.6rem; font-weight:700; color:var(--text); }
-  .kpi-label { font-size:0.75rem; color:var(--muted); margin-top:2px; }
-
-  /* Grid */
-  .dash-grid { display:grid; grid-template-columns:1.5fr 1fr; gap:18px; margin-bottom:18px; }
-  .card { background:white; border:1px solid var(--border); border-radius:12px; padding:22px; }
-  .card-title { font-weight:700; font-size:0.95rem; color:var(--text); margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .dash-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:20px; margin-bottom:20px; }
+  .panel { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  .panel-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:16px; color:var(--text); }
 
   table { width:100%; border-collapse:collapse; font-size:0.85rem; }
-  th { text-align:left; padding:8px 10px; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted); border-bottom:1px solid var(--border); font-weight:600; }
-  td { padding:11px 10px; border-bottom:1px solid var(--border); }
+  th { text-align:left; padding:8px 12px; font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted); border-bottom:2px solid var(--border); font-family:'Syne',sans-serif; }
+  td { padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text); }
   tr:last-child td { border-bottom:none; }
-  tr:hover td { background:var(--gray); }
-  .badge { font-size:0.7rem; padding:3px 9px; border-radius:999px; font-weight:600; }
-  .badge-pending { background:#fef3c7; color:#92400e; }
-  .badge-confirmed { background:#d1fae5; color:#065f46; }
+  tr:hover td { background:var(--bg); }
+  .status-badge { font-size:0.7rem; padding:3px 9px; border-radius:999px; font-weight:600; }
+  .status-pending { background:#fef9c3; color:#ca8a04; }
+  .status-confirmed { background:#dcfce7; color:#16a34a; }
 
-  .doc-row { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--border); }
-  .doc-row:last-child { border-bottom:none; }
-  .doc-av { width:36px; height:36px; border-radius:50%; background:var(--teal-light); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .doc-nm { font-weight:600; font-size:0.875rem; }
-  .doc-sp { font-size:0.75rem; color:var(--muted); }
-  .tog-on { background:#d1fae5; color:#065f46; border:1px solid #a7f3d0; padding:5px 12px; border-radius:6px; font-size:0.75rem; font-weight:600; cursor:pointer; }
-  .tog-on:hover { background:#059669; color:white; }
-  .tog-off { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; padding:5px 12px; border-radius:6px; font-size:0.75rem; font-weight:600; cursor:pointer; }
-  .tog-off:hover { background:#dc2626; color:white; }
+  .doctor-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+  .doctor-row:last-child { border-bottom:none; }
+  .doc-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--teal),#0ea5e9); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .doc-info { flex:1; }
+  .doc-name { font-size:0.9rem; font-weight:600; color:var(--text); }
+  .doc-spec { font-size:0.75rem; color:var(--muted); }
+  .toggle-btn { padding:6px 14px; border-radius:8px; border:none; font-size:0.75rem; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; transition:all 0.2s; }
+  .toggle-on { background:#dcfce7; color:#16a34a; border:1px solid #bbf7d0; }
+  .toggle-on:hover { background:#16a34a; color:white; }
+  .toggle-off { background:#fee2e2; color:#dc2626; border:1px solid #fecaca; }
+  .toggle-off:hover { background:#dc2626; color:white; }
 
-  .pay-row { display:flex; align-items:center; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--border); }
-  .pay-row:last-child { border-bottom:none; }
-  .pay-nm { font-weight:500; font-size:0.875rem; }
-  .pay-txn { font-size:0.73rem; color:var(--muted); }
-  .pay-amt { font-weight:700; color:var(--teal); }
-  .pay-ok { font-size:0.72rem; color:#059669; font-weight:600; }
+  .pay-item { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); }
+  .pay-item:last-child { border-bottom:none; }
+  .pay-name { font-size:0.875rem; color:var(--text); }
+  .pay-txn { font-size:0.72rem; color:var(--muted); }
+  .pay-amt { font-family:'Syne',sans-serif; font-weight:700; color:var(--teal); }
 
-  .stat-row { display:flex; justify-content:space-between; align-items:center; padding:12px; background:var(--gray); border-radius:8px; margin-bottom:8px; }
-  .stat-row:last-child { margin-bottom:0; }
-  .stat-lbl { font-size:0.85rem; color:var(--muted); }
-  .stat-val { font-weight:700; color:var(--text); }
-
-  @media(max-width:900px) { .kpis { grid-template-columns:repeat(3,1fr); } .dash-grid { grid-template-columns:1fr; } .nav-links { display:none; } }
+  footer { background:#1a2332; color:#94a3b8; padding:24px 5vw; text-align:center; font-size:0.8rem; }
+  @media(max-width:900px) { .kpis { grid-template-columns:repeat(3,1fr); } .dash-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 <nav>
-  <a href="/" class="logo"><div class="logo-icon">🏥</div><div class="logo-text">Med<span>Ease</span></div></a>
+  <div class="logo">Med<span>Ease</span></div>
   <div class="nav-links">
-    <a href="/">Home</a><a href="/appointment">Appointments</a>
-    <a href="/queue">Queue Status</a><a href="/payment">Payment</a>
-    <a href="/admin" class="active">Admin</a><a href="/chatbot">💬 MedBot</a>
-    <a href="/appointment" class="nav-cta">Book Appointment</a>
+    <a href="/">Home</a>
+    <a href="/appointment">Appointments</a>
+    <a href="/queue">Queue</a>
+    <a href="/payment">Payment</a>
+    <a href="/admin" class="active">Admin</a>
+    <a href="/about">About Us</a>
+    <a href="/chatbot">💬 Chatbot</a>
+    <a href="/appointment" class="nav-cta">Book Now</a>
   </div>
 </nav>
 
 <main>
-  <div class="page-banner">
-    <div class="page-banner-inner">
-      <div><h1>📊 Admin Dashboard</h1><p class="page-sub">Hospital OPD operations overview</p></div>
-      <button class="refresh-btn" onclick="loadAll()">🔄 Refresh Data</button>
+  <div class="page-label">Hospital Admin</div>
+  <h1>📊 Dashboard</h1>
+
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-icon">📅</div><div class="kpi-val" id="kTotal">–</div><div class="kpi-label">Total Appointments</div></div>
+    <div class="kpi"><div class="kpi-icon">🗓️</div><div class="kpi-val" id="kToday">–</div><div class="kpi-label">Today's Appointments</div></div>
+    <div class="kpi"><div class="kpi-icon">👨‍⚕️</div><div class="kpi-val" id="kDocs">–</div><div class="kpi-label">Active Doctors</div></div>
+    <div class="kpi"><div class="kpi-icon">⏳</div><div class="kpi-val" id="kQueue">–</div><div class="kpi-label">In Queue</div></div>
+    <div class="kpi"><div class="kpi-icon">💰</div><div class="kpi-val" id="kRev">–</div><div class="kpi-label">Total Revenue</div></div>
+  </div>
+
+  <div class="dash-grid">
+    <div class="panel">
+      <div class="panel-title">📋 Recent Appointments</div>
+      <table>
+        <thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Token</th><th>Status</th></tr></thead>
+        <tbody id="apptTable"><tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">Loading...</td></tr></tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <div class="panel-title">👨‍⚕️ Doctor Availability</div>
+      <div id="doctorRows">Loading...</div>
     </div>
   </div>
 
-  <div class="content">
-    <div class="kpis">
-      <div class="kpi"><div class="kpi-icon kpi-icon-teal">📅</div><div><div class="kpi-val" id="kTotal">–</div><div class="kpi-label">Total Appointments</div></div></div>
-      <div class="kpi"><div class="kpi-icon kpi-icon-blue">🗓️</div><div><div class="kpi-val" id="kToday">–</div><div class="kpi-label">Today's Bookings</div></div></div>
-      <div class="kpi"><div class="kpi-icon kpi-icon-green">👨‍⚕️</div><div><div class="kpi-val" id="kDocs">–</div><div class="kpi-label">Active Doctors</div></div></div>
-      <div class="kpi"><div class="kpi-icon kpi-icon-yellow">⏳</div><div><div class="kpi-val" id="kQueue">–</div><div class="kpi-label">In Queue</div></div></div>
-      <div class="kpi"><div class="kpi-icon kpi-icon-teal">💰</div><div><div class="kpi-val" id="kRev">–</div><div class="kpi-label">Total Revenue</div></div></div>
+  <div class="dash-grid">
+    <div class="panel">
+      <div class="panel-title">💰 Recent Payments</div>
+      <div id="payRows">Loading...</div>
     </div>
-
-    <div class="dash-grid">
-      <div class="card">
-        <div class="card-title">Recent Appointments</div>
-        <table><thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Token</th><th>Status</th></tr></thead>
-        <tbody id="apptTable"><tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">Loading...</td></tr></tbody></table>
-      </div>
-      <div class="card">
-        <div class="card-title">Doctor Availability</div>
-        <div id="docRows">Loading...</div>
-      </div>
-    </div>
-
-    <div class="dash-grid">
-      <div class="card">
-        <div class="card-title">Recent Payments</div>
-        <div id="payRows">Loading...</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Summary</div>
-        <div id="summaryRows">Loading...</div>
-      </div>
+    <div class="panel">
+      <div class="panel-title">📈 Quick Stats</div>
+      <div id="statsPanel">Loading...</div>
     </div>
   </div>
 </main>
 
+<footer>© MedEase OPD Management System · Vasai, Maharashtra</footer>
+
 <script>
-  function loadAll(){
-    fetch('/api/stats').then(r=>r.json()).then(d=>{
-      document.getElementById('kTotal').textContent=d.total_appointments;
-      document.getElementById('kToday').textContent=d.today_appointments;
-      document.getElementById('kDocs').textContent=d.active_doctors;
-      document.getElementById('kQueue').textContent=d.in_queue;
-      document.getElementById('kRev').textContent='₹'+parseFloat(d.total_revenue).toLocaleString();
-      document.getElementById('apptTable').innerHTML=d.recent_appointments.length
-        ?d.recent_appointments.map(a=>`<tr><td style="font-weight:500">${a.patient_name}</td><td style="color:var(--muted);font-size:0.8rem">${a.doctor_name}</td><td style="color:var(--muted);font-size:0.8rem">${a.date}</td><td style="color:var(--teal);font-weight:700">${a.token}</td><td><span class="badge badge-${a.status}">${a.status}</span></td></tr>`).join('')
-        :'<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No appointments yet</td></tr>';
-      document.getElementById('payRows').innerHTML=d.recent_payments.length
-        ?d.recent_payments.map(p=>`<div class="pay-row"><div><div class="pay-nm">${p.patient_name}</div><div class="pay-txn">${p.transaction_id}</div></div><div style="text-align:right"><div class="pay-amt">₹${parseFloat(p.amount).toLocaleString()}</div><div class="pay-ok">✅ Confirmed</div></div></div>`).join('')
-        :'<p style="color:var(--muted);font-size:0.875rem;padding:8px 0">No payments yet.</p>';
-      document.getElementById('summaryRows').innerHTML=`
-        <div class="stat-row"><span class="stat-lbl">Today's Appointments</span><span class="stat-val">${d.today_appointments}</span></div>
-        <div class="stat-row"><span class="stat-lbl">Patients in Queue</span><span class="stat-val">${d.in_queue}</span></div>
-        <div class="stat-row"><span class="stat-lbl">Active Doctors</span><span class="stat-val">${d.active_doctors}</span></div>
-        <div class="stat-row"><span class="stat-lbl">Total Revenue</span><span class="stat-val" style="color:var(--teal)">₹${parseFloat(d.total_revenue).toLocaleString()}</span></div>
-        <div class="stat-row"><span class="stat-lbl">Total Appointments</span><span class="stat-val">${d.total_appointments}</span></div>`;
+  function loadDashboard() {
+    fetch('/api/stats').then(r=>r.json()).then(d => {
+      document.getElementById('kTotal').textContent = d.total_appointments;
+      document.getElementById('kToday').textContent = d.today_appointments;
+      document.getElementById('kDocs').textContent = d.active_doctors;
+      document.getElementById('kQueue').textContent = d.in_queue;
+      document.getElementById('kRev').textContent = '₹' + parseFloat(d.total_revenue).toLocaleString();
+
+      document.getElementById('apptTable').innerHTML = d.recent_appointments.length
+        ? d.recent_appointments.map(a=>`<tr>
+            <td>${a.patient_name}</td>
+            <td style="color:var(--muted);font-size:0.8rem">${a.doctor_name}</td>
+            <td style="color:var(--muted);font-size:0.8rem">${a.date}</td>
+            <td style="color:var(--teal);font-family:'Syne',sans-serif;font-weight:700">${a.token}</td>
+            <td><span class="status-badge status-${a.status}">${a.status}</span></td>
+          </tr>`).join('')
+        : '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">No appointments yet</td></tr>';
+
+      document.getElementById('payRows').innerHTML = d.recent_payments.length
+        ? d.recent_payments.map(p=>`<div class="pay-item">
+            <div><div class="pay-name">${p.patient_name}</div><div class="pay-txn">${p.transaction_id}</div></div>
+            <div class="pay-amt">₹${parseFloat(p.amount).toLocaleString()}</div>
+          </div>`).join('')
+        : '<p style="color:var(--muted);font-size:0.875rem">No payments yet.</p>';
+
+      document.getElementById('statsPanel').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;padding:12px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+            <span style="color:var(--muted);font-size:0.875rem">Today's Bookings</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;color:var(--teal)">${d.today_appointments}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:12px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+            <span style="color:var(--muted);font-size:0.875rem">Patients in Queue</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;color:#dc2626">${d.in_queue}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:12px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+            <span style="color:var(--muted);font-size:0.875rem">Active Doctors</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;color:#16a34a">${d.active_doctors}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:12px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
+            <span style="color:var(--muted);font-size:0.875rem">Total Revenue</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;color:var(--teal)">₹${parseFloat(d.total_revenue).toLocaleString()}</span>
+          </div>
+        </div>`;
     });
-    fetch('/api/doctors').then(r=>r.json()).then(docs=>{
-      document.getElementById('docRows').innerHTML=docs.map(d=>`
-        <div class="doc-row">
-          <div class="doc-av">👨‍⚕️</div>
-          <div style="flex:1"><div class="doc-nm">${d.name}</div><div class="doc-sp">${d.specialty} · Queue: ${d.queue_count}</div></div>
-          <button class="${d.available?'tog-on':'tog-off'}" onclick="toggleDoc(${d.id})">${d.available?'● Online':'○ Offline'}</button>
+  }
+
+  function loadDoctors() {
+    fetch('/api/doctors').then(r=>r.json()).then(docs => {
+      document.getElementById('doctorRows').innerHTML = docs.map(d=>`
+        <div class="doctor-row">
+          <div class="doc-avatar">👨‍⚕️</div>
+          <div class="doc-info"><div class="doc-name">${d.name}</div><div class="doc-spec">${d.specialty} · Queue: ${d.queue_count}</div></div>
+          <button class="toggle-btn ${d.available?'toggle-on':'toggle-off'}" onclick="toggleDoc(${d.id})">
+            ${d.available ? '● Online' : '○ Offline'}
+          </button>
         </div>`).join('');
     });
   }
-  function toggleDoc(id){fetch(`/api/doctors/${id}/toggle`,{method:'POST'}).then(()=>loadAll());}
-  loadAll();
-  setInterval(loadAll,20000);
+
+  function toggleDoc(id) {
+    fetch(`/api/doctors/${id}/toggle`,{method:'POST'}).then(()=>{ loadDoctors(); loadDashboard(); });
+  }
+
+  loadDashboard(); loadDoctors();
+  setInterval(()=>{ loadDashboard(); loadDoctors(); }, 20000);
 </script>
 </body>
 </html>

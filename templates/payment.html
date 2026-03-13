@@ -3,189 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment – MedEase</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<title>UPI Payment – MedEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-  :root { --teal:#0a9396; --teal-dark:#007f83; --teal-light:#e0f5f5; --teal-xlight:#f0fafa; --white:#ffffff; --gray:#f8f9fa; --text:#1a1a2e; --muted:#6b7280; --border:#e5e7eb; }
+  :root { --teal:#0ea5a0; --teal-dark:#0c8a86; --bg:#f0f4f8; --white:#ffffff; --border:#e2e8f0; --text:#1a2332; --muted:#64748b; --accent:#f97316; --light-teal:#e6f7f6; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Inter',sans-serif; background:var(--gray); color:var(--text); }
-  nav { position:fixed; top:0; width:100%; z-index:100; background:white; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 6vw; height:68px; box-shadow:0 1px 8px rgba(0,0,0,0.06); }
-  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-  .logo-icon { width:38px; height:38px; background:var(--teal); border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; }
-  .logo-text { font-family:'Merriweather',serif; font-weight:700; font-size:1.2rem; color:var(--text); }
-  .logo-text span { color:var(--teal); }
-  .nav-links { display:flex; align-items:center; gap:4px; }
-  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; font-weight:500; padding:8px 14px; border-radius:8px; transition:all 0.2s; }
-  .nav-links a:hover { color:var(--teal); background:var(--teal-xlight); }
-  .nav-links a.active { color:var(--teal); font-weight:600; }
-  .nav-cta { background:var(--teal) !important; color:white !important; border-radius:8px !important; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); }
+  nav { position:fixed; top:0; width:100%; z-index:100; background:var(--white); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:68px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
+  .logo span { color:var(--text); }
+  .nav-links { display:flex; gap:4px; align-items:center; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:7px 14px; border-radius:8px; transition:all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--teal); background:var(--light-teal); }
+  .nav-cta { background:var(--teal) !important; color:var(--white) !important; font-weight:600; }
 
-  main { padding-top:68px; }
-  .page-banner { background:linear-gradient(135deg,var(--teal-xlight),white); padding:36px 6vw; border-bottom:1px solid var(--border); }
-  .page-banner-inner { max-width:1100px; margin:0 auto; }
-  .breadcrumb { font-size:0.8rem; color:var(--muted); margin-bottom:8px; }
-  .breadcrumb a { color:var(--teal); text-decoration:none; }
-  h1 { font-family:'Merriweather',serif; font-size:1.8rem; font-weight:700; }
-  .page-sub { color:var(--muted); margin-top:6px; font-size:0.9rem; }
+  main { padding:88px 5vw 60px; max-width:900px; margin:0 auto; }
+  .page-label { font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
+  h1 { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; margin-bottom:28px; color:var(--text); }
 
-  .content { max-width:1100px; margin:0 auto; padding:32px 6vw; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
-  .card { background:white; border:1px solid var(--border); border-radius:12px; padding:24px; }
-  .card-title { font-weight:700; font-size:1rem; color:var(--text); margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+  .payment-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .panel { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:28px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  .panel-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1.05rem; margin-bottom:20px; color:var(--teal); }
 
   .form-group { margin-bottom:16px; }
-  label { display:block; font-size:0.82rem; font-weight:600; color:var(--text); margin-bottom:6px; }
-  input, select { width:100%; background:var(--gray); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:8px; font-size:0.9rem; font-family:'Inter',sans-serif; outline:none; transition:all 0.2s; }
-  input:focus, select:focus { border-color:var(--teal); background:white; }
+  label { display:block; font-size:0.8rem; color:var(--muted); margin-bottom:6px; font-family:'Syne',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+  input, select { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:10px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; }
+  input:focus, select:focus { border-color:var(--teal); background:var(--white); }
 
-  .fee-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
-  .fee-btn { background:var(--gray); border:1px solid var(--border); color:var(--muted); padding:8px; border-radius:8px; cursor:pointer; font-size:0.82rem; font-weight:500; text-align:center; transition:all 0.2s; }
-  .fee-btn:hover, .fee-btn.active { background:var(--teal-xlight); border-color:var(--teal); color:var(--teal); font-weight:600; }
+  .fee-chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .fee-chip { background:var(--bg); border:1px solid var(--border); color:var(--muted); padding:6px 14px; border-radius:8px; cursor:pointer; font-size:0.82rem; transition:all 0.2s; }
+  .fee-chip:hover, .fee-chip.active { background:var(--light-teal); border-color:var(--teal); color:var(--teal); }
 
-  .btn-generate { width:100%; background:var(--teal); color:white; border:none; padding:13px; border-radius:8px; font-weight:700; font-size:1rem; cursor:pointer; margin-top:4px; transition:all 0.2s; }
+  .btn-generate { width:100%; background:var(--teal); color:var(--white); border:none; padding:13px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; cursor:pointer; margin-top:8px; transition:all 0.2s; box-shadow:0 4px 16px rgba(14,165,160,0.25); }
   .btn-generate:hover { background:var(--teal-dark); }
 
-  /* QR */
-  .qr-section { text-align:center; }
-  .amount-label { font-size:0.82rem; color:var(--muted); margin-bottom:6px; }
-  .amount-big { font-family:'Merriweather',serif; font-size:2.2rem; font-weight:700; color:var(--teal); margin-bottom:16px; }
-  .qr-wrapper { background:white; border:2px solid var(--border); border-radius:12px; padding:20px; display:inline-flex; align-items:center; justify-content:center; min-width:180px; min-height:180px; margin-bottom:12px; }
-  .qr-placeholder { color:var(--muted); font-size:0.82rem; padding:30px; }
-  .upi-label { font-size:0.8rem; color:var(--muted); margin-bottom:20px; }
+  .qr-container { text-align:center; }
+  .qr-box { background:white; border:2px solid var(--border); border-radius:16px; padding:16px; display:inline-flex; align-items:center; justify-content:center; margin:16px 0; min-width:180px; min-height:180px; }
+  .amount-display { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--teal); }
+  .amount-label { font-size:0.8rem; color:var(--muted); margin-bottom:4px; }
+  .upi-id { font-size:0.8rem; color:var(--muted); margin-top:8px; }
   .divider { border:none; border-top:1px solid var(--border); margin:20px 0; }
-  .btn-confirm { width:100%; background:#059669; color:white; border:none; padding:13px; border-radius:8px; font-weight:700; font-size:1rem; cursor:pointer; transition:all 0.2s; }
-  .btn-confirm:hover { background:#047857; }
-  .success-alert { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); color:#065f46; border-radius:8px; padding:12px 16px; text-align:center; margin-top:12px; display:none; font-size:0.875rem; font-weight:500; }
-  .success-alert.show { display:block; }
 
-  /* History */
-  .history-section { max-width:1100px; margin:0 auto; padding:0 6vw 40px; }
-  .history-title { font-weight:700; font-size:1rem; margin-bottom:14px; color:var(--text); }
-  .history-card { background:white; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
-  .history-item { display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid var(--border); }
-  .history-item:last-child { border-bottom:none; }
-  .h-name { font-weight:600; font-size:0.875rem; }
-  .h-txn { font-size:0.75rem; color:var(--muted); margin-top:2px; }
-  .h-right { text-align:right; }
-  .h-amount { font-weight:700; color:var(--teal); font-size:0.95rem; }
-  .h-status { font-size:0.72rem; color:#059669; font-weight:600; margin-top:2px; }
+  .btn-verify { width:100%; background:#fff7ed; color:var(--accent); border:1px solid #fed7aa; padding:12px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; cursor:pointer; transition:all 0.2s; }
+  .btn-verify:hover { background:var(--accent); color:var(--white); }
 
-  @media(max-width:700px) { .content { grid-template-columns:1fr; } .nav-links { display:none; } }
+  .success-msg { background:#dcfce7; border:1px solid #bbf7d0; border-radius:10px; padding:14px 18px; text-align:center; display:none; color:#16a34a; font-weight:600; }
+  .success-msg.show { display:block; }
+
+  .history-section { margin-top:28px; }
+  .history-title { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:14px; color:var(--text); }
+  .history-item { background:var(--white); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; }
+  .h-name { font-weight:500; font-size:0.9rem; color:var(--text); }
+  .h-txn { font-size:0.75rem; color:var(--muted); }
+  .h-amount { font-family:'Syne',sans-serif; font-weight:700; color:var(--teal); }
+  .h-status { font-size:0.75rem; color:#16a34a; }
+
+  footer { background:#1a2332; color:#94a3b8; padding:24px 5vw; text-align:center; font-size:0.8rem; }
+  @media(max-width:700px) { .payment-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 <nav>
-  <a href="/" class="logo"><div class="logo-icon">🏥</div><div class="logo-text">Med<span>Ease</span></div></a>
+  <div class="logo">Med<span>Ease</span></div>
   <div class="nav-links">
-    <a href="/">Home</a><a href="/appointment">Appointments</a>
-    <a href="/queue">Queue Status</a>
+    <a href="/">Home</a>
+    <a href="/appointment">Appointments</a>
+    <a href="/queue">Queue</a>
     <a href="/payment" class="active">Payment</a>
-    <a href="/admin">Admin</a><a href="/chatbot">💬 MedBot</a>
-    <a href="/appointment" class="nav-cta">Book Appointment</a>
+    <a href="/admin">Admin</a>
+    <a href="/about">About Us</a>
+    <a href="/chatbot">💬 Chatbot</a>
+    <a href="/appointment" class="nav-cta">Book Now</a>
   </div>
 </nav>
 
 <main>
-  <div class="page-banner">
-    <div class="page-banner-inner">
-      <div class="breadcrumb"><a href="/">Home</a> › Payment</div>
-      <h1>💳 OPD Fee Payment</h1>
-      <p class="page-sub">Pay your consultation fees quickly and securely via UPI</p>
-    </div>
-  </div>
-
-  <div class="content">
-    <div class="card">
-      <div class="card-title">📋 Payment Details</div>
-      <div class="form-group"><label>Patient Name</label><input type="text" id="payName" placeholder="Enter patient name"></div>
+  <div class="page-label">UPI Gateway</div>
+  <h1>💳 OPD Payment</h1>
+  <div class="payment-grid">
+    <div class="panel">
+      <div class="panel-title">Payment Details</div>
       <div class="form-group">
-        <label>Department</label>
+        <label>Patient Name</label>
+        <input type="text" id="payName" placeholder="Enter patient name">
+      </div>
+      <div class="form-group">
+        <label>Department / Fee Type</label>
         <select id="payType" onchange="setFeeFromType()">
-          <option value="">Select department</option>
+          <option value="">Select type</option>
           <option value="300">General Medicine — ₹300</option>
           <option value="450">Pediatrics — ₹450</option>
           <option value="500">Dermatology — ₹500</option>
           <option value="600">Orthopedics — ₹600</option>
           <option value="700">Cardiology — ₹700</option>
           <option value="800">Neurology — ₹800</option>
+          <option value="custom">Custom Amount</option>
         </select>
       </div>
       <div class="form-group">
-        <label>Quick Select Amount</label>
-        <div class="fee-grid">
-          <div class="fee-btn" onclick="setFee(300,this)">₹300</div>
-          <div class="fee-btn" onclick="setFee(450,this)">₹450</div>
-          <div class="fee-btn" onclick="setFee(500,this)">₹500</div>
-          <div class="fee-btn" onclick="setFee(600,this)">₹600</div>
-          <div class="fee-btn" onclick="setFee(700,this)">₹700</div>
-          <div class="fee-btn" onclick="setFee(800,this)">₹800</div>
+        <label>Quick Select</label>
+        <div class="fee-chips">
+          <span class="fee-chip" onclick="setFee(300,this)">₹300</span>
+          <span class="fee-chip" onclick="setFee(450,this)">₹450</span>
+          <span class="fee-chip" onclick="setFee(500,this)">₹500</span>
+          <span class="fee-chip" onclick="setFee(600,this)">₹600</span>
+          <span class="fee-chip" onclick="setFee(700,this)">₹700</span>
+          <span class="fee-chip" onclick="setFee(800,this)">₹800</span>
         </div>
       </div>
-      <div class="form-group"><label>Amount (₹)</label><input type="number" id="payAmount" placeholder="Enter amount" min="1"></div>
-      <button class="btn-generate" onclick="generateQR()">Generate UPI QR Code →</button>
+      <div class="form-group">
+        <label>Amount (₹)</label>
+        <input type="number" id="payAmount" placeholder="Enter amount" min="1">
+      </div>
+      <button class="btn-generate" onclick="generateQR()">⚡ Generate UPI QR Code</button>
     </div>
 
-    <div class="card">
-      <div class="card-title">📱 Scan & Pay via UPI</div>
-      <div class="qr-section">
+    <div class="panel">
+      <div class="panel-title">Scan & Pay</div>
+      <div class="qr-container">
         <div class="amount-label">Amount to Pay</div>
-        <div class="amount-big" id="qrAmount">₹0</div>
-        <div class="qr-wrapper"><div id="qrcode"><div class="qr-placeholder">Generate QR code<br>from the left panel</div></div></div>
-        <div class="upi-label">Scan with PhonePe, GPay, Paytm or any UPI app</div>
+        <div class="amount-display" id="qrAmount">₹0</div>
+        <div class="qr-box"><div id="qrcode"><p style="color:var(--muted);font-size:0.8rem;padding:20px;text-align:center">QR code will appear here after generating</p></div></div>
+        <div class="upi-id">UPI ID: medease@upi · Scan with any UPI app</div>
       </div>
       <hr class="divider">
-      <div class="form-group"><label>Enter UPI Transaction ID</label><input type="text" id="txnId" placeholder="e.g. TXN123456789012"></div>
-      <button class="btn-confirm" onclick="submitPayment()">✅ Confirm Payment</button>
-      <div class="success-alert" id="successAlert">🎉 Payment confirmed successfully! Receipt has been recorded.</div>
+      <div class="form-group">
+        <label>Enter UPI Transaction ID</label>
+        <input type="text" id="txnId" placeholder="e.g. TXN123456789">
+      </div>
+      <button class="btn-verify" onclick="submitPayment()">✅ Confirm Payment</button>
+      <div class="success-msg" id="successMsg">🎉 Payment recorded successfully!</div>
     </div>
   </div>
 
   <div class="history-section">
-    <div class="history-title">📋 Recent Payment Records</div>
-    <div class="history-card" id="payHistory"><div style="padding:20px;text-align:center;color:var(--muted)">Loading...</div></div>
+    <div class="history-title">📋 Recent Payments</div>
+    <div id="payHistory">Loading...</div>
   </div>
 </main>
 
+<footer>© MedEase OPD Management System · Vasai, Maharashtra</footer>
+
 <script>
-  function setFee(amount,el){
-    document.getElementById('payAmount').value=amount;
-    document.querySelectorAll('.fee-btn').forEach(b=>b.classList.remove('active'));
+  function setFee(amount, el) {
+    document.getElementById('payAmount').value = amount;
+    document.querySelectorAll('.fee-chip').forEach(c=>c.classList.remove('active'));
     el.classList.add('active');
   }
-  function setFeeFromType(){
-    const val=document.getElementById('payType').value;
-    if(val)document.getElementById('payAmount').value=val;
+  function setFeeFromType() {
+    const val = document.getElementById('payType').value;
+    if (val && val !== 'custom') document.getElementById('payAmount').value = val;
   }
-  function generateQR(){
-    const name=document.getElementById('payName').value.trim();
-    const amount=document.getElementById('payAmount').value;
-    if(!name||!amount||amount<=0){alert('Please enter patient name and amount.');return;}
-    const upi=`upi://pay?pa=medease@upi&pn=MedEase Hospital&am=${amount}&cu=INR&tn=OPD Fee - ${name}`;
-    document.getElementById('qrAmount').textContent='₹'+parseFloat(amount).toLocaleString();
-    document.getElementById('qrcode').innerHTML='';
-    new QRCode(document.getElementById('qrcode'),{text:upi,width:160,height:160,colorDark:'#1a1a2e',colorLight:'#ffffff'});
+  function generateQR() {
+    const name = document.getElementById('payName').value.trim();
+    const amount = document.getElementById('payAmount').value;
+    if (!name || !amount || amount <= 0) { alert('Please enter patient name and amount.'); return; }
+    const upiString = `upi://pay?pa=medease@upi&pn=MedEase Hospital&am=${amount}&cu=INR&tn=OPD Fee - ${name}`;
+    document.getElementById('qrAmount').textContent = '₹' + parseFloat(amount).toLocaleString();
+    const qrDiv = document.getElementById('qrcode');
+    qrDiv.innerHTML = '';
+    new QRCode(qrDiv, { text: upiString, width: 160, height: 160, colorDark:'#1a2332', colorLight:'#ffffff' });
   }
-  function submitPayment(){
-    const name=document.getElementById('payName').value.trim();
-    const amount=document.getElementById('payAmount').value;
-    const txn=document.getElementById('txnId').value.trim();
-    if(!name||!amount||!txn){alert('Please fill all fields and enter transaction ID.');return;}
-    fetch('/api/payments',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({patient_name:name,amount:parseFloat(amount),transaction_id:txn})
-    }).then(r=>r.json()).then(()=>{
-      const alert=document.getElementById('successAlert');
-      alert.classList.add('show');
-      setTimeout(()=>{alert.classList.remove('show');loadHistory();},3000);
+  function submitPayment() {
+    const name = document.getElementById('payName').value.trim();
+    const amount = document.getElementById('payAmount').value;
+    const txn = document.getElementById('txnId').value.trim();
+    if (!name || !amount || !txn) { alert('Please fill all fields and enter transaction ID.'); return; }
+    fetch('/api/payments', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ patient_name:name, amount:parseFloat(amount), transaction_id:txn }) })
+    .then(r=>r.json()).then(()=>{
+      document.getElementById('successMsg').classList.add('show');
+      setTimeout(()=>{ document.getElementById('successMsg').classList.remove('show'); loadHistory(); }, 3000);
     });
   }
-  function loadHistory(){
-    fetch('/api/payments').then(r=>r.json()).then(payments=>{
-      const div=document.getElementById('payHistory');
-      if(!payments.length){div.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:0.875rem">No payment records yet.</div>';return;}
-      div.innerHTML=payments.slice(0,8).map(p=>`
+  function loadHistory() {
+    fetch('/api/payments').then(r=>r.json()).then(payments => {
+      const div = document.getElementById('payHistory');
+      if (!payments.length) { div.innerHTML = '<p style="color:var(--muted);font-size:0.875rem">No payments yet.</p>'; return; }
+      div.innerHTML = payments.slice(0,8).map(p=>`
         <div class="history-item">
-          <div><div class="h-name">${p.patient_name}</div><div class="h-txn">TXN: ${p.transaction_id}</div></div>
-          <div class="h-right"><div class="h-amount">₹${parseFloat(p.amount).toLocaleString()}</div><div class="h-status">✅ Confirmed</div></div>
+          <div><div class="h-name">${p.patient_name}</div><div class="h-txn">TXN: ${p.transaction_id} · ${p.created_at.split(' ')[0]}</div></div>
+          <div style="text-align:right"><div class="h-amount">₹${parseFloat(p.amount).toLocaleString()}</div><div class="h-status">✅ ${p.status}</div></div>
         </div>`).join('');
     });
   }

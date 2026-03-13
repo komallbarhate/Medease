@@ -3,161 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedBot Assistant – MedEase</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<title>MedBot Chatbot – MedEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root { --teal:#0a9396; --teal-dark:#007f83; --teal-light:#e0f5f5; --teal-xlight:#f0fafa; --white:#ffffff; --gray:#f8f9fa; --text:#1a1a2e; --muted:#6b7280; --border:#e5e7eb; }
+  :root { --teal:#0ea5a0; --teal-dark:#0c8a86; --bg:#f0f4f8; --white:#ffffff; --border:#e2e8f0; --text:#1a2332; --muted:#64748b; --accent:#f97316; --light-teal:#e6f7f6; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Inter',sans-serif; background:var(--gray); color:var(--text); height:100vh; display:flex; flex-direction:column; overflow:hidden; }
-  nav { width:100%; z-index:100; background:white; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 6vw; height:68px; box-shadow:0 1px 8px rgba(0,0,0,0.06); flex-shrink:0; }
-  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-  .logo-icon { width:38px; height:38px; background:var(--teal); border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; }
-  .logo-text { font-family:'Merriweather',serif; font-weight:700; font-size:1.2rem; color:var(--text); }
-  .logo-text span { color:var(--teal); }
-  .nav-links { display:flex; align-items:center; gap:4px; }
-  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; font-weight:500; padding:8px 14px; border-radius:8px; transition:all 0.2s; }
-  .nav-links a:hover { color:var(--teal); background:var(--teal-xlight); }
-  .nav-links a.active { color:var(--teal); font-weight:600; }
-  .nav-cta { background:var(--teal) !important; color:white !important; border-radius:8px !important; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); height:100vh; display:flex; flex-direction:column; }
+  nav { position:fixed; top:0; width:100%; z-index:100; background:var(--white); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:68px; box-shadow:0 2px 8px rgba(0,0,0,0.06); flex-shrink:0; }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
+  .logo span { color:var(--text); }
+  .nav-links { display:flex; gap:4px; align-items:center; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:7px 14px; border-radius:8px; transition:all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--teal); background:var(--light-teal); }
+  .nav-cta { background:var(--teal) !important; color:var(--white) !important; font-weight:600; }
 
-  .chat-layout { flex:1; display:flex; overflow:hidden; }
-
-  /* Sidebar */
-  .sidebar { width:260px; background:white; border-right:1px solid var(--border); padding:24px 16px; flex-shrink:0; overflow-y:auto; }
-  .sidebar-title { font-weight:700; font-size:0.85rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
-  .sug-btn { width:100%; text-align:left; background:var(--gray); border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:8px; font-size:0.85rem; cursor:pointer; margin-bottom:8px; transition:all 0.2s; font-family:'Inter',sans-serif; }
-  .sug-btn:hover { background:var(--teal-xlight); border-color:var(--teal); color:var(--teal); }
-  .sidebar-divider { border:none; border-top:1px solid var(--border); margin:16px 0; }
-  .info-box { background:var(--teal-xlight); border:1px solid var(--teal-light); border-radius:8px; padding:14px; font-size:0.8rem; color:var(--teal); line-height:1.6; }
-  .info-box strong { display:block; margin-bottom:6px; }
-
-  /* Chat area */
-  .chat-area { flex:1; display:flex; flex-direction:column; overflow:hidden; }
-  .chat-header { background:white; border-bottom:1px solid var(--border); padding:16px 24px; display:flex; align-items:center; gap:14px; flex-shrink:0; }
-  .bot-avatar { width:44px; height:44px; background:var(--teal); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; }
-  .bot-name { font-weight:700; font-size:1rem; }
-  .bot-status { font-size:0.78rem; color:#059669; display:flex; align-items:center; gap:5px; margin-top:2px; }
+  .chat-wrapper { flex:1; display:flex; flex-direction:column; padding-top:68px; max-width:800px; width:100%; margin:0 auto; padding-left:20px; padding-right:20px; }
+  .chat-header { padding:20px 0 14px; border-bottom:1px solid var(--border); }
+  .bot-info { display:flex; align-items:center; gap:14px; }
+  .bot-avatar { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--teal),#0ea5e9); display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+  .bot-name { font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; color:var(--text); }
+  .bot-status { font-size:0.78rem; color:#16a34a; display:flex; align-items:center; gap:5px; }
   .bot-status::before { content:'●'; font-size:8px; animation:pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
-  .bot-desc { font-size:0.78rem; color:var(--muted); margin-left:auto; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  .messages { flex:1; overflow-y:auto; padding:24px; display:flex; flex-direction:column; gap:16px; background:var(--gray); }
-  .messages::-webkit-scrollbar { width:4px; }
-  .messages::-webkit-scrollbar-thumb { background:var(--border); border-radius:999px; }
-
-  .msg { display:flex; gap:10px; align-items:flex-end; animation:fadeUp 0.25s ease; }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none} }
+  .chat-messages { flex:1; overflow-y:auto; padding:20px 0; display:flex; flex-direction:column; gap:14px; }
+  .msg { display:flex; gap:10px; align-items:flex-start; animation:fadeUp 0.3s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
   .msg.user { flex-direction:row-reverse; }
-  .msg-av { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.9rem; flex-shrink:0; }
-  .bot-av { background:var(--teal); color:white; }
-  .user-av { background:var(--border); }
-  .bubble { max-width:72%; padding:12px 16px; border-radius:16px; font-size:0.875rem; line-height:1.65; white-space:pre-line; }
-  .bot-bubble { background:white; border:1px solid var(--border); border-bottom-left-radius:4px; color:var(--text); }
-  .user-bubble { background:var(--teal); color:white; border-bottom-right-radius:4px; }
+  .msg-avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .bot-msg-avatar { background:linear-gradient(135deg,var(--teal),#0ea5e9); }
+  .user-msg-avatar { background:var(--bg); border:1px solid var(--border); }
+  .msg-bubble { max-width:75%; padding:12px 16px; border-radius:16px; font-size:0.9rem; line-height:1.6; white-space:pre-line; }
+  .bot-bubble { background:var(--white); border:1px solid var(--border); border-top-left-radius:4px; color:var(--text); }
+  .user-bubble { background:var(--teal); color:var(--white); border-top-right-radius:4px; }
 
-  .typing-row { display:none; align-items:center; gap:10px; }
-  .typing-row.show { display:flex; }
-  .typing-bubble { background:white; border:1px solid var(--border); border-radius:16px; border-bottom-left-radius:4px; padding:12px 16px; display:flex; gap:4px; align-items:center; }
-  .dot { width:7px; height:7px; background:var(--muted); border-radius:50%; animation:bounce 1.4s infinite; }
-  .dot:nth-child(2){animation-delay:0.2s}
-  .dot:nth-child(3){animation-delay:0.4s}
-  @keyframes bounce { 0%,80%,100%{transform:scale(0.7);opacity:0.4}40%{transform:scale(1);opacity:1} }
+  .suggestions { padding:10px 0; display:flex; flex-wrap:wrap; gap:8px; }
+  .sug-chip { background:var(--white); border:1px solid var(--border); color:var(--muted); padding:7px 14px; border-radius:999px; font-size:0.8rem; cursor:pointer; transition:all 0.2s; }
+  .sug-chip:hover { border-color:var(--teal); color:var(--teal); background:var(--light-teal); }
 
-  .input-bar { background:white; border-top:1px solid var(--border); padding:16px 24px; display:flex; gap:10px; flex-shrink:0; }
-  .chat-input { flex:1; background:var(--gray); border:1px solid var(--border); color:var(--text); padding:12px 16px; border-radius:10px; font-size:0.9rem; font-family:'Inter',sans-serif; outline:none; transition:border-color 0.2s; }
-  .chat-input:focus { border-color:var(--teal); background:white; }
-  .send-btn { background:var(--teal); color:white; border:none; width:46px; height:46px; border-radius:10px; font-size:1.1rem; cursor:pointer; flex-shrink:0; transition:all 0.2s; }
+  .chat-input-bar { padding:14px 0 20px; border-top:1px solid var(--border); display:flex; gap:10px; }
+  .chat-input { flex:1; background:var(--white); border:1px solid var(--border); color:var(--text); padding:12px 16px; border-radius:12px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; height:48px; }
+  .chat-input:focus { border-color:var(--teal); }
+  .send-btn { background:var(--teal); color:var(--white); border:none; width:48px; height:48px; border-radius:12px; font-size:1.2rem; cursor:pointer; flex-shrink:0; transition:all 0.2s; }
   .send-btn:hover { background:var(--teal-dark); }
-
-  @media(max-width:700px) { .sidebar { display:none; } .nav-links { display:none; } }
+  .typing { display:none; align-items:center; gap:6px; color:var(--muted); font-size:0.8rem; padding:4px 0; }
+  .typing.show { display:flex; }
 </style>
 </head>
 <body>
 <nav>
-  <a href="/" class="logo"><div class="logo-icon">🏥</div><div class="logo-text">Med<span>Ease</span></div></a>
+  <div class="logo">Med<span>Ease</span></div>
   <div class="nav-links">
-    <a href="/">Home</a><a href="/appointment">Appointments</a>
-    <a href="/queue">Queue Status</a><a href="/payment">Payment</a>
-    <a href="/admin">Admin</a><a href="/chatbot" class="active">💬 MedBot</a>
-    <a href="/appointment" class="nav-cta">Book Appointment</a>
+    <a href="/">Home</a>
+    <a href="/appointment">Appointments</a>
+    <a href="/queue">Queue</a>
+    <a href="/payment">Payment</a>
+    <a href="/admin">Admin</a>
+    <a href="/about">About Us</a>
+    <a href="/chatbot" class="active">💬 Chatbot</a>
+    <a href="/appointment" class="nav-cta">Book Now</a>
   </div>
 </nav>
 
-<div class="chat-layout">
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="sidebar-title">Quick Questions</div>
-    <button class="sug-btn" onclick="send('Available doctors')">👨‍⚕️ Available doctors</button>
-    <button class="sug-btn" onclick="send('How to book appointment')">📅 How to book appointment</button>
-    <button class="sug-btn" onclick="send('Payment information')">💳 Payment information</button>
-    <button class="sug-btn" onclick="send('Queue status')">🔢 Queue status</button>
-    <button class="sug-btn" onclick="send('Hospital timings')">🕐 Hospital timings</button>
-    <hr class="sidebar-divider">
-    <div class="info-box">
-      <strong>🏥 OPD Hours</strong>
-      Morning: 8 AM – 1 PM<br>
-      Evening: 4 PM – 8 PM<br>
-      Emergency: 24/7
+<div class="chat-wrapper">
+  <div class="chat-header">
+    <div class="bot-info">
+      <div class="bot-avatar">🤖</div>
+      <div><div class="bot-name">MedBot</div><div class="bot-status">Online — Ready to help</div></div>
     </div>
   </div>
 
-  <!-- Chat -->
-  <div class="chat-area">
-    <div class="chat-header">
-      <div class="bot-avatar">🤖</div>
-      <div>
-        <div class="bot-name">MedBot</div>
-        <div class="bot-status">Online — Ready to help</div>
-      </div>
-      <div class="bot-desc">AI-powered hospital assistant</div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg">
+      <div class="msg-avatar bot-msg-avatar">🤖</div>
+      <div class="msg-bubble bot-bubble">👋 Hello! I'm MedBot, your MedEase virtual assistant.
+
+I can help you with:
+• Finding available doctors & specialties
+• Booking appointments
+• Payment info & UPI fees
+• Queue & waiting time status
+• Hospital timings & services
+
+What can I help you with today?</div>
     </div>
+  </div>
 
-    <div class="messages" id="messages">
-      <div class="msg">
-        <div class="msg-av bot-av">🤖</div>
-        <div class="bubble bot-bubble">Hello! 👋 I'm MedBot, your MedEase virtual assistant.
+  <div class="suggestions">
+    <span class="sug-chip" onclick="sendSug(this)">👨‍⚕️ Available doctors</span>
+    <span class="sug-chip" onclick="sendSug(this)">📅 Book appointment</span>
+    <span class="sug-chip" onclick="sendSug(this)">💳 Payment info</span>
+    <span class="sug-chip" onclick="sendSug(this)">⏳ Queue status</span>
+    <span class="sug-chip" onclick="sendSug(this)">🕐 Hospital timings</span>
+  </div>
 
-I can help you with doctor availability, appointment booking, payment information, queue status, and hospital timings.
+  <div class="typing" id="typing">
+    <div class="msg-avatar bot-msg-avatar" style="width:28px;height:28px;font-size:0.9rem">🤖</div>
+    MedBot is typing...
+  </div>
 
-How can I help you today?</div>
-      </div>
-    </div>
-
-    <div class="typing-row" id="typing" style="padding:0 24px 8px">
-      <div class="msg-av bot-av">🤖</div>
-      <div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-    </div>
-
-    <div class="input-bar">
-      <input class="chat-input" id="chatInput" placeholder="Type your question here..." onkeydown="if(event.key==='Enter')sendMsg()">
-      <button class="send-btn" onclick="sendMsg()">➤</button>
-    </div>
+  <div class="chat-input-bar">
+    <input class="chat-input" id="chatInput" placeholder="Ask me anything about MedEase..." onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="send-btn" onclick="sendMsg()">➤</button>
   </div>
 </div>
 
 <script>
-  function addMsg(text,isUser){
-    const box=document.getElementById('messages');
-    const d=document.createElement('div');
-    d.className='msg'+(isUser?' user':'');
-    d.innerHTML=`<div class="msg-av ${isUser?'user-av':'bot-av'}">${isUser?'🧑':'🤖'}</div><div class="bubble ${isUser?'user-bubble':'bot-bubble'}">${text}</div>`;
-    box.appendChild(d);
-    box.scrollTop=box.scrollHeight;
+  function appendMsg(text, isUser) {
+    const box = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'msg' + (isUser ? ' user' : '');
+    div.innerHTML = `<div class="msg-avatar ${isUser?'user-msg-avatar':'bot-msg-avatar'}">${isUser?'🧑':'🤖'}</div><div class="msg-bubble ${isUser?'user-bubble':'bot-bubble'}">${text}</div>`;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
   }
-  function send(text){ document.getElementById('chatInput').value=text; sendMsg(); }
-  function sendMsg(){
-    const input=document.getElementById('chatInput');
-    const msg=input.value.trim();
-    if(!msg)return;
-    input.value='';
-    addMsg(msg,true);
+  function sendMsg() {
+    const input = document.getElementById('chatInput');
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    appendMsg(msg, true);
     document.getElementById('typing').classList.add('show');
-    fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})})
-    .then(r=>r.json()).then(d=>{
-      document.getElementById('typing').classList.remove('show');
-      addMsg(d.reply,false);
-    });
+    fetch('/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ message: msg }) })
+    .then(r=>r.json()).then(d=>{ document.getElementById('typing').classList.remove('show'); appendMsg(d.reply, false); });
   }
+  function sendSug(el) { document.getElementById('chatInput').value = el.textContent.replace(/^[^\w]+/, '').trim(); sendMsg(); }
 </script>
 </body>
 </html>
