@@ -187,11 +187,16 @@
     const date=document.getElementById('apptDate').value;
     const slot=document.getElementById('timeSlot').value;
     if(!name||!phone||!date||!slot||!selectedDoctor){alert('Please fill all required fields and select a doctor.');return;}
-    fetch('/api/appointments',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({patient_name:name,patient_phone:phone,doctor_id:selectedDoctor.id,doctor_name:selectedDoctor.name,date,time_slot:slot})
-    }).then(r=>r.json()).then(d=>{
-      document.getElementById('tokenNum').textContent=d.token;
-      document.getElementById('apptSummary').textContent=`${selectedDoctor.name} · ${date} · ${slot}`;
+    fetch('/api/appointments', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ patient_name:name, patient_phone:phone, doctor_id:selectedDoctor.id, doctor_name:selectedDoctor.name, date, time_slot:slot })
+    }).then(r=>r.json()).then(d => {
+      if(!d.success) {
+        alert('❌ ' + d.message);
+        return;
+      }
+      document.getElementById('tokenNum').textContent = d.token;
+      document.getElementById('apptSummary').textContent = `Dr. ${selectedDoctor.name} · ${date} · ${slot}`;
       document.getElementById('modal').classList.add('show');
     });
   }

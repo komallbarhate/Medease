@@ -137,9 +137,33 @@ def get_appointments():
 @app.route("/api/appointments", methods=["POST"])
 def book_appointment():
     data = request.json
-    token = "TKN" + "".join(random.choices(string.digits, k=4))
     db = get_db()
+    
+    # Check if slot already booked
+    existing = db.execute(
+        "SELECT id FROM appointments WHERE doctor_id=? AND date=? AND time_slot=?",
+        (data["doctor_id"], data["date"], data["time_slot"])
+    ).fetchone()
+    
+    if existing:
+        db.close()
+        return jsonify({"success": False, "message": "This time slot is already booked for this doctor. Please choose a different time."})
+    
+    token = "TKN" + "".join(random.choices(string.digits, k=4))
     db.execute(
+        "INSERT INTO appointments (patient_name, patient_phone, doctor_id, doctor_name, date, time_slot, token) VALUES (?,?,?,?,?,?,?)",
+        (data["patient_name"], data["patient_phone"], data["doctor_id"],
+         data["doctor_name"], data["date"], data["time_slot"], token)
+    )
+    pos = db.execute("SELECT COUNT(*) FROM queue WHERE doctor_id=? AND status='waiting'", (data["doctor_id"],)).fetchone()[0] + 1
+    db.execute(
+        "INSERT INTO queue (doctor_id, patient_name, token, position) VALUES (?,?,?,?)",
+        (data["doctor_id"], data["patient_name"], token, pos)
+    )
+    db.execute("UPDATE doctors SET queue_count=queue_count+1 WHERE id=?", (data["doctor_id"],))
+    db.commit()
+    db.close()
+    return jsonify({"success": True, "token": token})
         "INSERT INTO appointments (patient_name, patient_phone, doctor_id, doctor_name, date, time_slot, token) VALUES (?,?,?,?,?,?,?)",
         (data["patient_name"], data["patient_phone"], data["doctor_id"],
          data["doctor_name"], data["date"], data["time_slot"], token)
