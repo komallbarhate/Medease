@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us – MedEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --teal:#0ea5a0; --teal-dark:#0c8a86; --navy:#0d1f2d; --navy2:#162535; --slate:#1e3448; --accent:#f97316; --white:#f8fafc; --muted:#94a3b8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--navy); color:var(--white); }
+  nav { position:fixed; top:0; width:100%; z-index:100; background:rgba(13,31,45,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(14,165,160,0.15); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:64px; }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
+  .logo span { color:var(--white); }
+  .nav-links { display:flex; gap:8px; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:6px 14px; border-radius:8px; transition:all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--white); background:rgba(14,165,160,0.15); }
+  .nav-cta { background:var(--teal) !important; color:var(--white) !important; }
+
+  main { padding:88px 5vw 60px; max-width:1100px; margin:0 auto; }
+  .page-label { font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
+  h1 { font-family:'Syne',sans-serif; font-size:2.5rem; font-weight:800; margin-bottom:16px; }
+  .subtitle { color:var(--muted); font-size:1.05rem; line-height:1.7; max-width:700px; margin-bottom:48px; }
+
+  /* Hero banner */
+  .about-hero {
+    background: linear-gradient(135deg, rgba(14,165,160,0.15), rgba(14,165,160,0.05));
+    border:1px solid rgba(14,165,160,0.2); border-radius:20px;
+    padding:48px; margin-bottom:48px; position:relative; overflow:hidden;
+  }
+  .about-hero::before {
+    content:'🏥'; position:absolute; right:40px; top:50%; transform:translateY(-50%);
+    font-size:8rem; opacity:0.08;
+  }
+  .founded-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(14,165,160,0.15); border:1px solid rgba(14,165,160,0.3);
+    padding:6px 16px; border-radius:999px; font-size:0.8rem;
+    color:var(--teal); margin-bottom:20px; font-family:'Syne',sans-serif;
+  }
+  .about-hero h2 { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin-bottom:16px; }
+  .about-hero p { color:var(--muted); line-height:1.8; font-size:1rem; max-width:650px; }
+
+  /* Stats row */
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:48px; }
+  .stat-box { background:var(--navy2); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:24px; text-align:center; }
+  .stat-box-num { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--teal); }
+  .stat-box-label { font-size:0.8rem; color:var(--muted); margin-top:6px; }
+
+  /* Mission Vision */
+  .mv-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:48px; }
+  .mv-card { background:var(--navy2); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:28px; }
+  .mv-icon { font-size:2rem; margin-bottom:12px; }
+  .mv-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; margin-bottom:12px; color:var(--teal); }
+  .mv-text { color:var(--muted); line-height:1.7; font-size:0.9rem; }
+
+  /* Timeline */
+  .timeline-section { margin-bottom:48px; }
+  .section-title { font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:800; margin-bottom:28px; }
+  .timeline { position:relative; padding-left:32px; }
+  .timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:rgba(14,165,160,0.3); }
+  .timeline-item { position:relative; margin-bottom:28px; }
+  .timeline-item::before { content:''; position:absolute; left:-28px; top:6px; width:12px; height:12px; border-radius:50%; background:var(--teal); border:2px solid var(--navy); }
+  .timeline-year { font-family:'Syne',sans-serif; font-weight:800; color:var(--teal); font-size:0.9rem; margin-bottom:4px; }
+  .timeline-text { color:var(--muted); font-size:0.875rem; line-height:1.6; }
+
+  /* Values */
+  .values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:48px; }
+  .value-card { background:var(--navy2); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:22px; text-align:center; }
+  .value-icon { font-size:1.8rem; margin-bottom:10px; }
+  .value-title { font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:6px; }
+  .value-text { font-size:0.8rem; color:var(--muted); line-height:1.5; }
+
+  footer { border-top:1px solid rgba(255,255,255,0.06); padding:24px 5vw; text-align:center; font-size:0.8rem; color:var(--muted); }
+
+  @media(max-width:768px) { .stats-row { grid-template-columns:1fr 1fr; } .mv-grid { grid-template-columns:1fr; } .values-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Med<span>Ease</span></div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/appointment">Appointments</a>
+    <a href="/queue">Queue</a>
+    <a href="/payment">Payment</a>
+    <a href="/admin">Admin</a>
+    <a href="/about" class="active">About</a>
+    <a href="/chatbot">💬 Chatbot</a>
+    <a href="/appointment" class="nav-cta">Book Now</a>
+  </div>
+</nav>
+
+<main>
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="founded-badge">🏥 Founded 2011 · Vasai, Maharashtra</div>
+    <h2>Healing Lives Since 2011</h2>
+    <p>MedEase was founded with a single powerful belief — that quality healthcare should never be a privilege. Born in the heart of Vasai, Maharashtra, we started as a small OPD clinic with 3 doctors and a dream to serve the underprivileged. Today, we are a full-fledged hospital serving thousands of patients every year with compassion, technology, and minimal cost.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-box-num">13+</div><div class="stat-box-label">Years of Service</div></div>
+    <div class="stat-box"><div class="stat-box-num">50,000+</div><div class="stat-box-label">Patients Treated</div></div>
+    <div class="stat-box"><div class="stat-box-num">20+</div><div class="stat-box-label">Expert Doctors</div></div>
+    <div class="stat-box"><div class="stat-box-num">10+</div><div class="stat-box-label">Departments</div></div>
+  </div>
+
+  <!-- Mission & Vision -->
+  <div class="mv-grid">
+    <div class="mv-card">
+      <div class="mv-icon">🎯</div>
+      <div class="mv-title">Our Mission</div>
+      <div class="mv-text">To provide affordable, accessible and high-quality healthcare to every individual regardless of their financial background. We believe no one should suffer due to lack of money or resources. MedEase is committed to bridging the gap between quality medical care and the common people of Vasai and surrounding areas.</div>
+    </div>
+    <div class="mv-card">
+      <div class="mv-icon">🔭</div>
+      <div class="mv-title">Our Vision</div>
+      <div class="mv-text">To become the most trusted and technology-driven community hospital in Maharashtra — where every patient walks in with worry and walks out with hope. We aim to digitize healthcare delivery and make the OPD experience seamless, fast, and transparent for every patient and doctor.</div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline-section">
+    <div class="section-title">Our Journey 📖</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2011 — The Beginning</div>
+        <div class="timeline-text">MedEase was founded in Vasai by Dr. Ramesh Nair with a small OPD clinic, 3 doctors, and a vision to provide affordable healthcare to the local community.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2013 — Expansion</div>
+        <div class="timeline-text">Opened 3 new departments — Pediatrics, Dermatology, and Orthopedics. Patient footfall crossed 5,000 annually.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2016 — Community Outreach</div>
+        <div class="timeline-text">Launched free health camps in rural areas around Vasai. Treated over 2,000 underprivileged patients at zero cost.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2019 — Digital Push</div>
+        <div class="timeline-text">Introduced digital records and online appointment booking for the first time. Reduced average patient wait time by 40%.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2022 — New Building</div>
+        <div class="timeline-text">Inaugurated a new 3-floor hospital building with 50 beds, modern OT, and a dedicated emergency ward.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2024 — MedEase Digital System</div>
+        <div class="timeline-text">Launched this fully digital OPD Management System with AI chatbot, UPI payments, and live queue tracking — making MedEase one of the most tech-forward community hospitals in the region.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Values -->
+  <div class="section-title">Our Core Values 💙</div>
+  <div class="values-grid">
+    <div class="value-card">
+      <div class="value-icon">❤️</div>
+      <div class="value-title">Compassion First</div>
+      <div class="value-text">Every patient is treated with empathy, dignity and respect — regardless of background.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">💰</div>
+      <div class="value-title">Affordable Care</div>
+      <div class="value-text">We keep our fees minimal so that cost is never a barrier to getting good treatment.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🔬</div>
+      <div class="value-title">Medical Excellence</div>
+      <div class="value-text">Our doctors are highly qualified and committed to providing the best clinical outcomes.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🤝</div>
+      <div class="value-title">Community Focus</div>
+      <div class="value-text">We are deeply rooted in Vasai and regularly run free health camps for the underprivileged.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">💻</div>
+      <div class="value-title">Technology Driven</div>
+      <div class="value-text">We use modern technology to make healthcare faster, smarter and more transparent.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🌿</div>
+      <div class="value-title">Holistic Wellness</div>
+      <div class="value-text">We care for the whole person — body, mind and spirit — not just the illness.</div>
+    </div>
+  </div>
+</main>
+
+<footer>© MedEase OPD Management System</footer>
+</body>
+</html>

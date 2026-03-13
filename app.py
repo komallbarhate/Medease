@@ -105,6 +105,10 @@ def admin():
 def chatbot():
     return render_template("chatbot.html")
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 @app.route("/api/doctors")
 def get_doctors():
     db = get_db()
