@@ -7,7 +7,6 @@ app = Flask(__name__)
 app.secret_key = "medease_secret_key_2024"
 DB = "database/medease.db"
 
-# ─── Database Init ────────────────────────────────────────────────────────────
 def get_db():
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
@@ -65,16 +64,15 @@ def init_db():
         );
     """)
 
-    # Seed doctors if empty
     count = db.execute("SELECT COUNT(*) FROM doctors").fetchone()[0]
     if count == 0:
         doctors = [
-            ("Dr. Priya Sharma",   "Cardiology",      1, 0, 700),
-            ("Dr. Rahul Mehta",    "Orthopedics",     1, 2, 600),
-            ("Dr. Sneha Kulkarni", "Dermatology",     1, 1, 500),
-            ("Dr. Amit Desai",     "Neurology",       0, 0, 800),
-            ("Dr. Pooja Joshi",    "Pediatrics",      1, 3, 450),
-            ("Dr. Vijay Nair",     "General Medicine",1, 4, 300),
+            ("Dr. Priya Sharma",   "Cardiology",       1, 0, 700),
+            ("Dr. Rahul Mehta",    "Orthopedics",      1, 2, 600),
+            ("Dr. Sneha Kulkarni", "Dermatology",      1, 1, 500),
+            ("Dr. Amit Desai",     "Neurology",        1, 0, 800),
+            ("Dr. Pooja Joshi",    "Pediatrics",       1, 3, 450),
+            ("Dr. Vijay Nair",     "General Medicine", 1, 4, 300),
         ]
         db.executemany(
             "INSERT INTO doctors (name, specialty, available, queue_count, fee) VALUES (?,?,?,?,?)",
@@ -83,7 +81,6 @@ def init_db():
     db.commit()
     db.close()
 
-# ─── Pages ────────────────────────────────────────────────────────────────────
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -108,7 +105,6 @@ def admin():
 def chatbot():
     return render_template("chatbot.html")
 
-# ─── API: Doctors ─────────────────────────────────────────────────────────────
 @app.route("/api/doctors")
 def get_doctors():
     db = get_db()
@@ -126,7 +122,6 @@ def toggle_doctor(doc_id):
     db.close()
     return jsonify({"success": True, "available": new_val})
 
-# ─── API: Appointments ────────────────────────────────────────────────────────
 @app.route("/api/appointments", methods=["GET"])
 def get_appointments():
     db = get_db()
@@ -138,17 +133,16 @@ def get_appointments():
 def book_appointment():
     data = request.json
     db = get_db()
-    
-    # Check if slot already booked
+
     existing = db.execute(
         "SELECT id FROM appointments WHERE doctor_id=? AND date=? AND time_slot=?",
         (data["doctor_id"], data["date"], data["time_slot"])
     ).fetchone()
-    
+
     if existing:
         db.close()
         return jsonify({"success": False, "message": "This time slot is already booked for this doctor. Please choose a different time."})
-    
+
     token = "TKN" + "".join(random.choices(string.digits, k=4))
     db.execute(
         "INSERT INTO appointments (patient_name, patient_phone, doctor_id, doctor_name, date, time_slot, token) VALUES (?,?,?,?,?,?,?)",
@@ -164,22 +158,7 @@ def book_appointment():
     db.commit()
     db.close()
     return jsonify({"success": True, "token": token})
-        "INSERT INTO appointments (patient_name, patient_phone, doctor_id, doctor_name, date, time_slot, token) VALUES (?,?,?,?,?,?,?)",
-        (data["patient_name"], data["patient_phone"], data["doctor_id"],
-         data["doctor_name"], data["date"], data["time_slot"], token)
-    )
-    # Add to queue
-    pos = db.execute("SELECT COUNT(*) FROM queue WHERE doctor_id=? AND status='waiting'", (data["doctor_id"],)).fetchone()[0] + 1
-    db.execute(
-        "INSERT INTO queue (doctor_id, patient_name, token, position) VALUES (?,?,?,?)",
-        (data["doctor_id"], data["patient_name"], token, pos)
-    )
-    db.execute("UPDATE doctors SET queue_count=queue_count+1 WHERE id=?", (data["doctor_id"],))
-    db.commit()
-    db.close()
-    return jsonify({"success": True, "token": token})
 
-# ─── API: Queue ───────────────────────────────────────────────────────────────
 @app.route("/api/queue")
 def get_queue():
     db = get_db()
@@ -203,7 +182,6 @@ def next_patient(qid):
     db.close()
     return jsonify({"success": True})
 
-# ─── API: Payments ────────────────────────────────────────────────────────────
 @app.route("/api/payments", methods=["GET"])
 def get_payments():
     db = get_db()
@@ -223,7 +201,6 @@ def submit_payment():
     db.close()
     return jsonify({"success": True})
 
-# ─── API: Stats (Admin) ───────────────────────────────────────────────────────
 @app.route("/api/stats")
 def get_stats():
     db = get_db()
@@ -245,7 +222,6 @@ def get_stats():
         "recent_payments": [dict(p) for p in recent_payments],
     })
 
-# ─── API: Chatbot ─────────────────────────────────────────────────────────────
 @app.route("/api/chat", methods=["POST"])
 def chat():
     msg = request.json.get("message", "").lower()
@@ -285,7 +261,5 @@ def chat():
 if __name__ == "__main__":
     os.makedirs("database", exist_ok=True)
     init_db()
-    import os
-port = int(os.environ.get("PORT", 5000))
-app.run(debug=False, host="0.0.0.0", port=port)
-
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host="0.0.0.0", port=port)
