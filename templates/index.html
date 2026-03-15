@@ -112,11 +112,44 @@
       </div>
     </div>
     <div class="hero-stats">
-      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--muted);margin-bottom:16px;">Live Hospital Stats</div>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon">🏥</div><div class="stat-num" id="sTotal">–</div><div class="stat-label">Total Appointments</div></div>
-        <div class="stat-card"><div class="stat-icon">👨‍⚕️</div><div class="stat-num" id="sDocs">–</div><div class="stat-label">Active Doctors</div></div>
-        <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-num" id="sQueue">–</div><div class="stat-label">In Queue Now</div></div>
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:16px;">🏥 MedEase Hospital</div>
+
+      <!-- SERVICES -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Our Services</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span style="background:var(--light-teal);color:var(--teal);border:1px solid rgba(14,165,160,0.25);padding:4px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;">Cardiology</span>
+          <span style="background:var(--light-teal);color:var(--teal);border:1px solid rgba(14,165,160,0.25);padding:4px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;">Orthopaedics</span>
+          <span style="background:var(--light-teal);color:var(--teal);border:1px solid rgba(14,165,160,0.25);padding:4px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;">Dermatology</span>
+          <span style="background:var(--light-teal);color:var(--teal);border:1px solid rgba(14,165,160,0.25);padding:4px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;">Neurology</span>
+          <span style="background:var(--light-teal);color:var(--teal);border:1px solid rgba(14,165,160,0.25);padding:4px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;">Paediatrics</span>
+          <span style="background:var(--light-teal);color:var(--teal);border:1px solid rgba(14,165,160,0.25);padding:4px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;">General Medicine</span>
+          <span style="background:var(--light-teal);color:var(--teal);border:1px solid rgba(14,165,160,0.25);padding:4px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;">Free Health Camps</span>
+          <span style="background:var(--light-teal);color:var(--teal);border:1px solid rgba(14,165,160,0.25);padding:4px 10px;border-radius:999px;font-size:0.75rem;font-weight:600;">UPI Payments</span>
+        </div>
+      </div>
+
+      <!-- MEDICLAIM -->
+      <div style="margin-bottom:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;">
+        <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Mediclaim / Insurance Accepted</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;">
+          <span style="font-size:0.76rem;color:var(--text);background:var(--white);border:1px solid var(--border);padding:3px 9px;border-radius:6px;">Star Health</span>
+          <span style="font-size:0.76rem;color:var(--text);background:var(--white);border:1px solid var(--border);padding:3px 9px;border-radius:6px;">HDFC Ergo</span>
+          <span style="font-size:0.76rem;color:var(--text);background:var(--white);border:1px solid var(--border);padding:3px 9px;border-radius:6px;">New India Assurance</span>
+          <span style="font-size:0.76rem;color:var(--text);background:var(--white);border:1px solid var(--border);padding:3px 9px;border-radius:6px;">Bajaj Allianz</span>
+          <span style="font-size:0.76rem;color:var(--text);background:var(--white);border:1px solid var(--border);padding:3px 9px;border-radius:6px;">ICICI Lombard</span>
+          <span style="font-size:0.76rem;color:var(--text);background:var(--white);border:1px solid var(--border);padding:3px 9px;border-radius:6px;">Ayushman Bharat</span>
+        </div>
+      </div>
+
+      <!-- FOUNDER -->
+      <div style="margin-bottom:16px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:1.8rem;flex-shrink:0;">👨‍⚕️</div>
+        <div>
+          <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-family:'Syne',sans-serif;font-weight:700;margin-bottom:4px;">Founded By</div>
+          <div style="font-size:0.88rem;font-weight:700;color:var(--text);font-family:'Syne',sans-serif;">Dr. Vijay Nair</div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:2px;line-height:1.5;">MBBS, MD – General Medicine · 20 years experience. Founded MedEase in 2011 with a mission to make quality healthcare affordable for every family in Vasai.</div>
+        </div>
       </div>
 
       <!-- CONTACT US -->
@@ -163,11 +196,6 @@
         <div class="feature-icon">💳</div>
         <div class="feature-title">UPI Payment Gateway</div>
         <div class="feature-desc">Dynamic QR code generation for OPD fees. Instant confirmation and digital receipts.</div>
-      </a>
-      <a href="/admin" class="feature-card">
-        <div class="feature-icon">📊</div>
-        <div class="feature-title">Admin Dashboard</div>
-        <div class="feature-desc">Complete hospital overview — appointments, revenue, doctor status, and patient reports.</div>
       </a>
       <a href="/chatbot" class="feature-card">
         <div class="feature-icon">🤖</div>
