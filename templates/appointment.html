@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root { --teal:#0ea5a0; --teal-dark:#0c8a86; --bg:#f0f4f8; --white:#ffffff; --border:#e2e8f0; --text:#1a2332; --muted:#64748b; --accent:#f97316; --light-teal:#e6f7f6; }
+
+  /* DARK MODE */
+  [data-theme="dark"] {
+    --teal:#2dd4cf; --teal-dark:#0ea5a0; --bg:#0f172a; --white:#1e293b;
+    --border:#334155; --text:#e2e8f0; --muted:#94a3b8; --accent:#fb923c;
+    --light-teal:#0f2d2d; --card:#1e293b;
+  }
+  [data-theme="dark"] body { background:#0f172a; color:#e2e8f0; }
+  [data-theme="dark"] nav { background:#1e293b; border-bottom:1px solid #334155; }
+  [data-theme="dark"] footer { background:#020617; }
+  [data-theme="dark"] .login-screen { background:linear-gradient(135deg,#0f2d2d,#0f172a,#0c1a3a); }
+  [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea { background:#0f172a; border-color:#334155; color:#e2e8f0; }
+  [data-theme="dark"] input:focus, [data-theme="dark"] select:focus, [data-theme="dark"] textarea:focus { border-color:var(--teal); }
+  [data-theme="dark"] .hero { background:linear-gradient(135deg,#0f2d2d,#0f172a,#0c1a3a); }
+
+  /* DARK MODE TOGGLE BUTTON */
+  .dark-toggle { background:transparent; border:1px solid var(--border); color:var(--muted); padding:6px 12px; border-radius:8px; cursor:pointer; font-size:1rem; transition:all 0.2s; flex-shrink:0; }
+  .dark-toggle:hover { border-color:var(--teal); color:var(--teal); }
+
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); }
   nav { position:fixed; top:0; width:100%; z-index:100; background:var(--white); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:68px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
@@ -105,6 +124,7 @@
   <div class="logo">Med<span>Ease</span></div>
   <div class="nav-links">
     <a href="/">Home</a><a href="/appointment" class="active">Appointments</a><a href="/queue">Queue</a><a href="/payment">Payment</a><a href="/admin">Admin</a><a href="/about">About Us</a><a href="/chatbot">💬 Chatbot</a>
+    <button class="dark-toggle" id="darkToggle" onclick="toggleDark()">🌙</button>
     <a href="/appointment" class="nav-cta">Book Now</a>
   </div>
 </nav>
