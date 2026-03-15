@@ -121,6 +121,38 @@
   .role-admin { background:#ede9fe; color:#7c3aed; border:1px solid #ddd6fe; }
   .role-receptionist { background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; }
 
+
+  /* ANALYTICS, FEEDBACK, LEAVES */
+  .section-panel { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:24px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  .section-panel-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:16px; color:var(--text); display:flex; align-items:center; justify-content:space-between; }
+  .analytics-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+  .analytics-card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:16px; }
+  .ac-doctor { font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; color:var(--text); margin-bottom:4px; }
+  .ac-spec { font-size:0.75rem; color:var(--muted); margin-bottom:10px; }
+  .ac-stats { display:flex; gap:10px; flex-wrap:wrap; }
+  .ac-stat { background:var(--white); border:1px solid var(--border); border-radius:8px; padding:8px 12px; text-align:center; flex:1; }
+  .ac-stat-num { font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; color:var(--teal); }
+  .ac-stat-label { font-size:0.68rem; color:var(--muted); margin-top:2px; }
+  .stars-display { color:#f59e0b; font-size:0.9rem; }
+  .feedback-item { padding:12px 0; border-bottom:1px solid var(--border); }
+  .feedback-item:last-child { border-bottom:none; }
+  .fb-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px; }
+  .fb-patient { font-size:0.875rem; font-weight:600; color:var(--text); }
+  .fb-doctor { font-size:0.78rem; color:var(--muted); }
+  .fb-comment { font-size:0.82rem; color:var(--muted); line-height:1.5; margin-top:4px; }
+  .leave-item { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); gap:10px; }
+  .leave-item:last-child { border-bottom:none; }
+  .leave-info { flex:1; }
+  .leave-doctor { font-size:0.875rem; font-weight:600; color:var(--text); }
+  .leave-date { font-size:0.78rem; color:var(--muted); }
+  .leave-reason { font-size:0.78rem; color:var(--muted); font-style:italic; }
+  .btn-del-leave { background:#fff1f2; color:#e11d48; border:1px solid #fecdd3; padding:4px 10px; border-radius:6px; font-size:0.72rem; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; }
+  .btn-del-leave:hover { background:#e11d48; color:white; }
+  .add-leave-form { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:16px; display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; align-items:end; }
+  .add-leave-form select, .add-leave-form input { background:var(--white); border:1px solid var(--border); color:var(--text); padding:9px 12px; border-radius:8px; font-size:0.85rem; font-family:'DM Sans',sans-serif; outline:none; width:100%; }
+  .btn-add-leave { background:var(--teal); color:white; border:none; padding:9px 18px; border-radius:8px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; cursor:pointer; white-space:nowrap; }
+  @media(max-width:700px) { .add-leave-form { grid-template-columns:1fr; } }
+
   footer { background:#1a2332; color:#94a3b8; padding:24px 5vw; text-align:center; font-size:0.8rem; }
   @media(max-width:900px) { .kpis { grid-template-columns:repeat(2,1fr); } .dash-grid { grid-template-columns:1fr; } }
 </style>
@@ -280,6 +312,46 @@
       <thead><tr><th>#</th><th>Patient</th><th>Token</th><th>Doctor</th><th>Action</th></tr></thead>
       <tbody id="liveQueueTable"><tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">Loading queue...</td></tr></tbody>
     </table>
+  </div>
+
+
+  <!-- DOCTOR ANALYTICS -->
+  <div class="section-panel">
+    <div class="section-panel-title">
+      <span>📊 Doctor Analytics</span>
+      <button onclick="loadAnalytics()" style="background:transparent;border:1px solid var(--border);padding:5px 12px;border-radius:8px;font-size:0.78rem;cursor:pointer;color:var(--muted)">🔄 Refresh</button>
+    </div>
+    <div class="analytics-grid" id="analyticsGrid">Loading...</div>
+  </div>
+
+  <!-- DOCTOR LEAVE MANAGEMENT -->
+  <div class="section-panel">
+    <div class="section-panel-title">🏖️ Doctor Leave Management</div>
+    <div class="add-leave-form">
+      <div>
+        <label style="font-size:0.72rem;color:var(--muted);font-family:'Syne',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:5px;">Doctor</label>
+        <select id="leaveDoctor"><option value="">Select doctor</option></select>
+      </div>
+      <div>
+        <label style="font-size:0.72rem;color:var(--muted);font-family:'Syne',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:5px;">Leave Date</label>
+        <input type="date" id="leaveDate">
+      </div>
+      <div>
+        <label style="font-size:0.72rem;color:var(--muted);font-family:'Syne',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:5px;">Reason (optional)</label>
+        <input type="text" id="leaveReason" placeholder="e.g. Personal leave">
+      </div>
+      <button class="btn-add-leave" onclick="addLeave()">+ Add Leave</button>
+    </div>
+    <div id="leavesList"><p style="color:var(--muted);font-size:0.875rem">No leaves scheduled.</p></div>
+  </div>
+
+  <!-- PATIENT FEEDBACK -->
+  <div class="section-panel">
+    <div class="section-panel-title">
+      <span>⭐ Patient Feedback & Ratings</span>
+      <button onclick="loadFeedback()" style="background:transparent;border:1px solid var(--border);padding:5px 12px;border-radius:8px;font-size:0.78rem;cursor:pointer;color:var(--muted)">🔄 Refresh</button>
+    </div>
+    <div id="feedbackList"><p style="color:var(--muted);font-size:0.875rem">No feedback yet.</p></div>
   </div>
 
 </main>
@@ -579,8 +651,98 @@
     fetch(`/api/doctors/${id}/toggle`,{method:'POST'}).then(()=>{ loadDoctors(); loadDashboard(); });
   }
 
+  
+  // ── ANALYTICS ─────────────────────────────────────────────────────────────
+  function loadAnalytics() {
+    Promise.all([
+      fetch('/api/stats').then(r=>r.json()),
+      fetch('/api/doctors').then(r=>r.json())
+    ]).then(([stats, doctors]) => {
+      const statMap = {};
+      (stats.doctor_stats||[]).forEach(d => statMap[d.doctor_name] = d);
+      const ratingMap = {};
+      (stats.avg_ratings||[]).forEach(d => ratingMap[d.doctor_name] = d);
+      document.getElementById('analyticsGrid').innerHTML = doctors.map(d => {
+        const ds = statMap[d.name] || {total:0, completed:0};
+        const dr = ratingMap[d.name] || {avg_rating:0, reviews:0};
+        const stars = '★'.repeat(Math.round(dr.avg_rating||0)) + '☆'.repeat(5-Math.round(dr.avg_rating||0));
+        return `<div class="analytics-card">
+          <div class="ac-doctor">${d.name}</div>
+          <div class="ac-spec">${d.specialty}</div>
+          <div class="ac-stats">
+            <div class="ac-stat"><div class="ac-stat-num">${ds.total||0}</div><div class="ac-stat-label">Total</div></div>
+            <div class="ac-stat"><div class="ac-stat-num">${ds.completed||0}</div><div class="ac-stat-label">Done</div></div>
+            <div class="ac-stat"><div class="ac-stat-num" style="font-size:0.85rem;color:#f59e0b">${dr.avg_rating||'–'}</div><div class="ac-stat-label">${dr.reviews||0} reviews</div></div>
+          </div>
+        </div>`;
+      }).join('');
+    });
+  }
+
+  // ── LEAVES ────────────────────────────────────────────────────────────────
+  function loadLeaves() {
+    fetch('/api/doctors').then(r=>r.json()).then(docs => {
+      const sel = document.getElementById('leaveDoctor');
+      sel.innerHTML = '<option value="">Select doctor</option>' +
+        docs.map(d=>`<option value="${d.id}">${d.name}</option>`).join('');
+    });
+    fetch('/api/doctors/leaves').then(r=>r.json()).then(leaves => {
+      const el = document.getElementById('leavesList');
+      if (!leaves.length) { el.innerHTML = '<p style="color:var(--muted);font-size:0.875rem">No leaves scheduled.</p>'; return; }
+      el.innerHTML = leaves.map(l=>`
+        <div class="leave-item">
+          <div class="leave-info">
+            <div class="leave-doctor">👨‍⚕️ ${l.doctor_name}</div>
+            <div class="leave-date">📅 ${l.leave_date}</div>
+            ${l.reason ? `<div class="leave-reason">${l.reason}</div>` : ''}
+          </div>
+          <button class="btn-del-leave" onclick="deleteLeave(${l.id})">🗑️ Remove</button>
+        </div>`).join('');
+    });
+  }
+
+  function addLeave() {
+    const doctor_id = document.getElementById('leaveDoctor').value;
+    const leave_date = document.getElementById('leaveDate').value;
+    const reason = document.getElementById('leaveReason').value;
+    if (!doctor_id || !leave_date) { alert('Please select a doctor and date.'); return; }
+    fetch('/api/doctors/leaves', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({doctor_id, leave_date, reason})
+    }).then(r=>r.json()).then(d=>{
+      if(d.success){ loadLeaves(); document.getElementById('leaveDate').value=''; document.getElementById('leaveReason').value=''; }
+    });
+  }
+
+  function deleteLeave(id) {
+    if (!confirm('Remove this leave?')) return;
+    fetch(`/api/doctors/leaves/${id}/delete`, {method:'POST'})
+    .then(r=>r.json()).then(()=>loadLeaves());
+  }
+
+  // ── FEEDBACK ──────────────────────────────────────────────────────────────
+  function loadFeedback() {
+    fetch('/api/feedback').then(r=>r.json()).then(feedback => {
+      const el = document.getElementById('feedbackList');
+      if (!feedback.length) { el.innerHTML = '<p style="color:var(--muted);font-size:0.875rem">No feedback yet.</p>'; return; }
+      el.innerHTML = feedback.map(f => {
+        const stars = '★'.repeat(f.rating) + '☆'.repeat(5-f.rating);
+        return `<div class="feedback-item">
+          <div class="fb-meta">
+            <div>
+              <span class="fb-patient">${f.patient_name}</span>
+              <span class="fb-doctor"> · ${f.doctor_name}</span>
+            </div>
+            <span class="stars-display">${stars} (${f.rating}/5)</span>
+          </div>
+          ${f.comment ? `<div class="fb-comment">"${f.comment}"</div>` : ''}
+        </div>`;
+      }).join('');
+    });
+  }
+
   if (sessionStorage.getItem('medease_admin')) {
-    loadDashboard(); loadDoctors(); loadQueue();
+    loadDashboard(); loadDoctors(); loadQueue(); loadAnalytics(); loadLeaves(); loadFeedback();
     setInterval(()=>{ loadDashboard(); loadDoctors(); }, 20000);
     setInterval(loadQueue, 15000);
   }

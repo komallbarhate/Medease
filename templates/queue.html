@@ -16,19 +16,50 @@
   .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:7px 14px; border-radius:8px; transition:all 0.2s; }
   .nav-links a:hover, .nav-links a.active { color:var(--teal); background:var(--light-teal); }
   .nav-cta { background:var(--teal) !important; color:var(--white) !important; font-weight:600; }
-
   main { padding:88px 5vw 60px; max-width:1100px; margin:0 auto; }
   .page-label { font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
   h1 { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; margin-bottom:6px; color:var(--text); }
   .subtitle { color:var(--muted); margin-bottom:28px; font-size:0.95rem; }
 
-  .lookup-bar { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px 24px; margin-bottom:24px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  /* LOOKUP BAR */
+  .lookup-bar { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px 24px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+  .lookup-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
   .lookup-bar input { flex:1; min-width:180px; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:8px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; }
   .lookup-bar input:focus { border-color:var(--teal); }
   .btn-lookup { background:var(--teal); color:var(--white); border:none; padding:10px 22px; border-radius:8px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; font-size:0.9rem; }
-  .token-result { background:var(--light-teal); border:1px solid rgba(14,165,160,0.3); border-radius:10px; padding:12px 16px; font-size:0.9rem; display:none; color:var(--text); width:100%; }
-  .token-result.show { display:block; }
 
+  /* TOKEN RESULT CARD */
+  .token-card { margin-top:16px; display:none; }
+  .token-card.show { display:block; }
+  .tc-found { background:var(--light-teal); border:1px solid rgba(14,165,160,0.3); border-radius:12px; padding:16px 20px; }
+  .tc-notfound { background:#fee2e2; border:1px solid #fecaca; border-radius:12px; padding:16px 20px; }
+  .tc-done { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:16px 20px; }
+  .tc-cancelled { background:#fff5f5; border:1px solid #fecaca; border-radius:12px; padding:16px 20px; }
+  .tc-top { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  .tc-info { font-size:0.9rem; color:var(--text); line-height:1.7; }
+  .tc-token { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
+  .tc-actions { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+
+  /* ACTION BUTTONS */
+  .btn-cancel-appt { background:#fee2e2; color:#dc2626; border:1px solid #fecaca; padding:8px 18px; border-radius:8px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.82rem; cursor:pointer; transition:all 0.2s; }
+  .btn-cancel-appt:hover { background:#dc2626; color:white; }
+  .btn-feedback { background:var(--light-teal); color:var(--teal); border:1px solid rgba(14,165,160,0.3); padding:8px 18px; border-radius:8px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.82rem; cursor:pointer; transition:all 0.2s; }
+  .btn-feedback:hover { background:var(--teal); color:white; }
+
+  /* FEEDBACK FORM */
+  .feedback-form { margin-top:14px; background:var(--white); border:1px solid var(--border); border-radius:10px; padding:16px; display:none; }
+  .feedback-form.show { display:block; }
+  .fb-title { font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:12px; color:var(--text); }
+  .stars { display:flex; gap:6px; margin-bottom:12px; }
+  .star { font-size:1.6rem; cursor:pointer; opacity:0.3; transition:all 0.15s; }
+  .star.active { opacity:1; }
+  .fb-textarea { width:100%; border:1px solid var(--border); border-radius:8px; padding:10px 13px; font-size:0.875rem; font-family:'DM Sans',sans-serif; outline:none; resize:vertical; min-height:72px; background:var(--bg); }
+  .fb-textarea:focus { border-color:var(--teal); }
+  .btn-submit-fb { background:var(--teal); color:white; border:none; padding:10px 22px; border-radius:8px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.875rem; cursor:pointer; margin-top:10px; }
+  .fb-success { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px 14px; font-size:0.85rem; color:#16a34a; margin-top:10px; display:none; }
+  .fb-success.show { display:block; }
+
+  /* QUEUE GRID */
   .queues-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px; }
   .queue-panel { background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
   .queue-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:var(--bg); }
@@ -45,11 +76,19 @@
   .queue-patient { flex:1; }
   .q-name { font-size:0.9rem; font-weight:500; color:var(--text); }
   .q-token { font-size:0.75rem; color:var(--teal); font-family:'Syne',sans-serif; }
-  .btn-next { background:var(--light-teal); color:var(--teal); border:1px solid rgba(14,165,160,0.3); padding:5px 12px; border-radius:6px; font-size:0.75rem; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; }
-  .btn-next:hover { background:var(--teal); color:var(--white); }
   .empty-queue { text-align:center; padding:24px; color:var(--muted); font-size:0.875rem; }
   .refresh-btn { background:var(--white); color:var(--muted); border:1px solid var(--border); padding:8px 18px; border-radius:8px; font-size:0.85rem; cursor:pointer; font-family:'DM Sans',sans-serif; margin-bottom:20px; }
   .refresh-btn:hover { color:var(--teal); border-color:var(--teal); }
+
+  /* MODAL */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center; }
+  .modal-overlay.show { display:flex; }
+  .modal-box { background:var(--white); border-radius:16px; padding:32px; max-width:380px; width:90%; text-align:center; box-shadow:0 24px 60px rgba(0,0,0,0.15); }
+  .modal-box h3 { font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; margin-bottom:10px; color:var(--text); }
+  .modal-box p { font-size:0.875rem; color:var(--muted); margin-bottom:20px; line-height:1.6; }
+  .modal-btn-row { display:flex; gap:10px; }
+  .btn-confirm-cancel { flex:1; background:#dc2626; color:white; border:none; padding:11px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; }
+  .btn-go-back { flex:1; background:transparent; color:var(--muted); border:1px solid var(--border); padding:11px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; }
 
   footer { background:#1a2332; color:#94a3b8; padding:24px 5vw; text-align:center; font-size:0.8rem; }
   @media(max-width:600px) { .queues-grid { grid-template-columns:1fr; } }
@@ -73,26 +112,114 @@
 <main>
   <div class="page-label">Live Queue</div>
   <h1>🔢 Token & Queue Status</h1>
-  <p class="subtitle">Real-time queue tracker for all OPD departments</p>
+  <p class="subtitle">Real-time queue tracker · Check status · Cancel · Give feedback</p>
 
+  <!-- LOOKUP BAR -->
   <div class="lookup-bar">
-    <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;white-space:nowrap;color:var(--text)">🔍 Check Your Token</span>
-    <input type="text" id="tokenInput" placeholder="Enter token e.g. TKN1234" maxlength="8">
-    <button class="btn-lookup" onclick="lookupToken()">Check Status</button>
-    <div class="token-result" id="tokenResult"></div>
+    <div class="lookup-row">
+      <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;white-space:nowrap;color:var(--text)">🔍 Check Your Token</span>
+      <input type="text" id="tokenInput" placeholder="Enter token e.g. TKN1234" maxlength="8">
+      <button class="btn-lookup" onclick="lookupToken()">Check Status</button>
+    </div>
+
+    <!-- TOKEN RESULT CARD -->
+    <div class="token-card" id="tokenCard">
+
+      <!-- Found & Waiting -->
+      <div id="tcFound" style="display:none">
+        <div class="tc-found">
+          <div class="tc-top">
+            <div>
+              <div class="tc-token" id="tcTokenNum">–</div>
+              <div class="tc-info" id="tcInfo">–</div>
+            </div>
+            <div style="background:var(--teal);color:white;padding:4px 14px;border-radius:999px;font-size:0.78rem;font-family:'Syne',sans-serif;font-weight:700;">Waiting</div>
+          </div>
+          <div class="tc-actions">
+            <button class="btn-cancel-appt" onclick="openCancelModal()">❌ Cancel Appointment</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Done — show feedback -->
+      <div id="tcDone" style="display:none">
+        <div class="tc-done">
+          <div class="tc-top">
+            <div>
+              <div class="tc-token" id="tcTokenNumDone" style="color:#16a34a">–</div>
+              <div class="tc-info" id="tcInfoDone">–</div>
+            </div>
+            <div style="background:#dcfce7;color:#16a34a;padding:4px 14px;border-radius:999px;font-size:0.78rem;font-family:'Syne',sans-serif;font-weight:700;border:1px solid #bbf7d0;">✅ Completed</div>
+          </div>
+          <div class="tc-actions">
+            <button class="btn-feedback" onclick="toggleFeedback()">⭐ Rate Your Experience</button>
+          </div>
+          <!-- FEEDBACK FORM -->
+          <div class="feedback-form" id="feedbackForm">
+            <div class="fb-title">How was your experience?</div>
+            <div class="stars" id="starsRow">
+              <span class="star" onclick="setStar(1)">★</span>
+              <span class="star" onclick="setStar(2)">★</span>
+              <span class="star" onclick="setStar(3)">★</span>
+              <span class="star" onclick="setStar(4)">★</span>
+              <span class="star" onclick="setStar(5)">★</span>
+            </div>
+            <textarea class="fb-textarea" id="fbComment" placeholder="Write a comment about your doctor (optional)..."></textarea>
+            <button class="btn-submit-fb" onclick="submitFeedback()">Submit Feedback</button>
+            <div class="fb-success" id="fbSuccess">🎉 Thank you for your feedback!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cancelled -->
+      <div id="tcCancelled" style="display:none">
+        <div class="tc-cancelled">
+          <div class="tc-info">❌ Token <strong id="tcTokenNumCancelled">–</strong> — This appointment has been cancelled.</div>
+        </div>
+      </div>
+
+      <!-- Not Found -->
+      <div id="tcNotFound" style="display:none">
+        <div class="tc-notfound">
+          <div class="tc-info">❌ Token <strong id="tcTokenNumNotFound">–</strong> not found. Please check and try again.</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <button class="refresh-btn" onclick="loadQueue()">🔄 Refresh Queue</button>
   <div class="queues-grid" id="queuesGrid">Loading queue...</div>
 </main>
 
+<!-- CANCEL CONFIRMATION MODAL -->
+<div class="modal-overlay" id="cancelModal">
+  <div class="modal-box">
+    <h3>❌ Cancel Appointment?</h3>
+    <p>Are you sure you want to cancel your appointment? This cannot be undone.</p>
+    <div class="modal-btn-row">
+      <button class="btn-go-back" onclick="closeCancelModal()">Go Back</button>
+      <button class="btn-confirm-cancel" onclick="confirmCancel()">Yes, Cancel</button>
+    </div>
+  </div>
+</div>
+
 <footer>© MedEase OPD Management System</footer>
 
 <script>
   let queueData = [];
+  let allAppointments = [];
+  let currentAppt = null;
+  let selectedStar = 0;
+
   function loadQueue() {
-    Promise.all([fetch('/api/queue').then(r=>r.json()), fetch('/api/doctors').then(r=>r.json())]).then(([queue, doctors]) => {
+    Promise.all([
+      fetch('/api/queue').then(r=>r.json()),
+      fetch('/api/doctors').then(r=>r.json()),
+      fetch('/api/appointments').then(r=>r.json())
+    ]).then(([queue, doctors, appts]) => {
       queueData = queue;
+      allAppointments = appts;
       const avail = doctors.filter(d=>d.available);
       const grid = document.getElementById('queuesGrid');
       if (!avail.length) { grid.innerHTML = '<p style="color:var(--muted)">No active doctors.</p>'; return; }
@@ -108,7 +235,6 @@
               docQueue.map((p,i) => `<div class="queue-item">
                 <div class="pos-badge ${i===0?'pos-1':i===1?'pos-2':'pos-other'}">${i+1}</div>
                 <div class="queue-patient"><div class="q-name">${p.patient_name}</div><div class="q-token">${p.token}</div></div>
-
               </div>`).join('')}
           </div>
         </div>`;
@@ -116,23 +242,108 @@
     });
   }
 
-  function markDone(qid) { fetch(`/api/queue/${qid}/next`,{method:'POST'}).then(()=>loadQueue()); }
-
   function lookupToken() {
     const token = document.getElementById('tokenInput').value.trim().toUpperCase();
-    const result = document.getElementById('tokenResult');
     if (!token) return;
-    const found = queueData.find(q=>q.token===token);
-    if (found) {
-      result.className = 'token-result show';
-      result.style.background = 'var(--light-teal)';
-      result.innerHTML = `✅ Token <strong>${token}</strong> — Position <strong>#${found.position}</strong> for <strong>${found.doctor_name}</strong>. Est. wait: ~${found.position*10} min`;
-    } else {
-      result.className = 'token-result show';
-      result.style.background = '#fee2e2';
-      result.style.borderColor = '#fecaca';
-      result.innerHTML = `❌ Token <strong>${token}</strong> not found in active queue. You may have already been called.`;
+
+    // Check in queue (waiting)
+    const inQueue = queueData.find(q => q.token === token);
+    // Check in all appointments
+    const appt = allAppointments.find(a => a.token === token);
+
+    document.getElementById('tcFound').style.display     = 'none';
+    document.getElementById('tcDone').style.display      = 'none';
+    document.getElementById('tcCancelled').style.display = 'none';
+    document.getElementById('tcNotFound').style.display  = 'none';
+    document.getElementById('tokenCard').classList.add('show');
+    document.getElementById('feedbackForm').classList.remove('show');
+    document.getElementById('fbSuccess').classList.remove('show');
+    selectedStar = 0;
+    document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+
+    if (!appt) {
+      document.getElementById('tcTokenNumNotFound').textContent = token;
+      document.getElementById('tcNotFound').style.display = 'block';
+      return;
     }
+
+    currentAppt = appt;
+
+    if (appt.status === 'cancelled') {
+      document.getElementById('tcTokenNumCancelled').textContent = token;
+      document.getElementById('tcCancelled').style.display = 'block';
+    } else if (appt.status === 'done') {
+      document.getElementById('tcTokenNumDone').textContent = token;
+      document.getElementById('tcInfoDone').innerHTML = `
+        <strong>${appt.patient_name}</strong> · Dr. ${appt.doctor_name}<br>
+        📅 ${appt.date} · 🕐 ${appt.time_slot}`;
+      document.getElementById('tcDone').style.display = 'block';
+    } else {
+      // Waiting or pending
+      const pos = inQueue ? inQueue.position : '–';
+      const wait = inQueue ? inQueue.position * 10 : '–';
+      document.getElementById('tcTokenNum').textContent = token;
+      document.getElementById('tcInfo').innerHTML = `
+        <strong>${appt.patient_name}</strong> · Dr. ${appt.doctor_name}<br>
+        📅 ${appt.date} · 🕐 ${appt.time_slot}<br>
+        Position: <strong>#${pos}</strong> · Est. wait: ~${wait} min`;
+      document.getElementById('tcFound').style.display = 'block';
+    }
+  }
+
+  // ── CANCEL ────────────────────────────────────────────────────────────────
+  function openCancelModal() {
+    document.getElementById('cancelModal').classList.add('show');
+  }
+  function closeCancelModal() {
+    document.getElementById('cancelModal').classList.remove('show');
+  }
+  function confirmCancel() {
+    if (!currentAppt) return;
+    fetch(`/api/appointments/${currentAppt.id}/cancel`, { method:'POST' })
+    .then(r=>r.json()).then(d=>{
+      closeCancelModal();
+      if (d.success) {
+        loadQueue();
+        lookupToken();
+      } else {
+        alert('❌ ' + d.message);
+      }
+    });
+  }
+
+  // ── FEEDBACK ──────────────────────────────────────────────────────────────
+  function toggleFeedback() {
+    document.getElementById('feedbackForm').classList.toggle('show');
+  }
+
+  function setStar(n) {
+    selectedStar = n;
+    document.querySelectorAll('.star').forEach((s,i) => {
+      s.classList.toggle('active', i < n);
+    });
+  }
+
+  function submitFeedback() {
+    if (!selectedStar) { alert('Please select a star rating.'); return; }
+    if (!currentAppt) return;
+    const comment = document.getElementById('fbComment').value.trim();
+    fetch('/api/feedback', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        appointment_id: currentAppt.id,
+        patient_name:   currentAppt.patient_name,
+        doctor_name:    currentAppt.doctor_name,
+        rating:         selectedStar,
+        comment:        comment
+      })
+    }).then(r=>r.json()).then(d=>{
+      if (d.success) {
+        document.getElementById('fbSuccess').classList.add('show');
+        document.getElementById('fbComment').value = '';
+        setTimeout(()=>{ document.getElementById('feedbackForm').classList.remove('show'); }, 2000);
+      }
+    });
   }
 
   loadQueue();
