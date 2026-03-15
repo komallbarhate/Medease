@@ -111,6 +111,10 @@
         <div><label>Full Name</label><input type="text" id="patientName" placeholder="e.g. Rahul Sharma"></div>
         <div><label>Phone Number</label><input type="tel" id="patientPhone" placeholder="9876543210"></div>
       </div>
+      <div class="form-group">
+        <label>Email Address <span style="color:#16a34a;font-size:0.72rem;font-weight:600">✉️ Reminders will be sent here</span></label>
+        <input type="email" id="patientEmail" placeholder="e.g. rahul@gmail.com">
+      </div>
       <div class="form-group two-inputs">
         <div><label>Age</label><input type="number" id="patientAge" placeholder="25" min="1" max="120"></div>
         <div><label>Gender</label>
@@ -348,6 +352,7 @@
   function bookAppointment() {
     const name = document.getElementById('patientName').value.trim();
     const phone = document.getElementById('patientPhone').value.trim();
+    const email = document.getElementById('patientEmail').value.trim();
     const date = document.getElementById('apptDate').value;
     const slot = document.getElementById('timeSlot').value;
     if (!name || !phone || !date || !slot || !selectedDoctor) { alert('Please fill all fields and select a doctor.'); return; }
@@ -355,7 +360,7 @@
     fetch('/api/appointments', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        patient_name:name, patient_phone:phone,
+        patient_name:name, patient_phone:phone, patient_email:email,
         doctor_id:selectedDoctor.id, doctor_name:selectedDoctor.name,
         date, time_slot:slot,
         intake_data: JSON.stringify(intakeData)

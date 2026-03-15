@@ -117,8 +117,29 @@
         <div class="stat-card"><div class="stat-icon">🏥</div><div class="stat-num" id="sTotal">–</div><div class="stat-label">Total Appointments</div></div>
         <div class="stat-card"><div class="stat-icon">👨‍⚕️</div><div class="stat-num" id="sDocs">–</div><div class="stat-label">Active Doctors</div></div>
         <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-num" id="sQueue">–</div><div class="stat-label">In Queue Now</div></div>
-
       </div>
+
+      <!-- CONTACT US -->
+      <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border);">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--text);margin-bottom:12px;">📞 Contact Us</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="tel:+919404501044" style="display:flex;align-items:center;gap:10px;text-decoration:none;background:var(--light-teal);border:1px solid rgba(14,165,160,0.25);border-radius:10px;padding:10px 14px;transition:all 0.2s;" onmouseover="this.style.background='#d0f0ee'" onmouseout="this.style.background='var(--light-teal)'">
+            <span style="font-size:1.1rem">📱</span>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:var(--teal);">Call / WhatsApp</div>
+              <div style="font-size:0.88rem;color:var(--text);font-weight:500;">+91 94045 01044</div>
+            </div>
+          </a>
+          <a href="/cdn-cgi/l/email-protection#761b1312131705131517041336111b171f1a5815191b" style="display:flex;align-items:center;gap:10px;text-decoration:none;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;transition:all 0.2s;" onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'">
+            <span style="font-size:1.1rem">✉️</span>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;color:#2563eb;">Email Us</div>
+              <div style="font-size:0.88rem;color:var(--text);font-weight:500;"><span class="__cf_email__" data-cfemail="355850515054465056544750755258545c591b565a58">[email&#160;protected]</span></div>
+            </div>
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -256,13 +277,5 @@
 
 <footer>© MedEase OPD Management System</footer>
 
-<script>
-  fetch('/api/stats').then(r=>r.json()).then(d=>{
-    document.getElementById('sTotal').textContent = d.total_appointments;
-    document.getElementById('sDocs').textContent = d.active_doctors;
-    document.getElementById('sQueue').textContent = d.in_queue;
-
-  });
-</script>
-</body>
-</html>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  fetch('/api/stats').then(r=>r.json()).the
