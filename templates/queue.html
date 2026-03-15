@@ -108,7 +108,7 @@
               docQueue.map((p,i) => `<div class="queue-item">
                 <div class="pos-badge ${i===0?'pos-1':i===1?'pos-2':'pos-other'}">${i+1}</div>
                 <div class="queue-patient"><div class="q-name">${p.patient_name}</div><div class="q-token">${p.token}</div></div>
-                <button class="btn-next" onclick="markDone(${p.id})">✓ Done</button>
+
               </div>`).join('')}
           </div>
         </div>`;

@@ -137,10 +137,6 @@
     </div>
   </div>
 
-  <div class="history-section">
-    <div class="history-title">📋 Recent Payments</div>
-    <div id="payHistory">Loading...</div>
-  </div>
 </main>
 
 <footer>© MedEase OPD Management System · Vasai, Maharashtra</footer>
@@ -173,21 +169,9 @@
     fetch('/api/payments', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ patient_name:name, amount:parseFloat(amount), transaction_id:txn }) })
     .then(r=>r.json()).then(()=>{
       document.getElementById('successMsg').classList.add('show');
-      setTimeout(()=>{ document.getElementById('successMsg').classList.remove('show'); loadHistory(); }, 3000);
+      setTimeout(()=>{ document.getElementById('successMsg').classList.remove('show'); }, 3000);
     });
   }
-  function loadHistory() {
-    fetch('/api/payments').then(r=>r.json()).then(payments => {
-      const div = document.getElementById('payHistory');
-      if (!payments.length) { div.innerHTML = '<p style="color:var(--muted);font-size:0.875rem">No payments yet.</p>'; return; }
-      div.innerHTML = payments.slice(0,8).map(p=>`
-        <div class="history-item">
-          <div><div class="h-name">${p.patient_name}</div><div class="h-txn">TXN: ${p.transaction_id} · ${p.created_at.split(' ')[0]}</div></div>
-          <div style="text-align:right"><div class="h-amount">₹${parseFloat(p.amount).toLocaleString()}</div><div class="h-status">✅ ${p.status}</div></div>
-        </div>`).join('');
-    });
-  }
-  loadHistory();
 </script>
 </body>
 </html>

@@ -109,6 +109,16 @@ def chatbot():
 def about():
     return render_template("about.html")
 
+@app.route("/api/appointments/<int:appt_id>/status", methods=["POST"])
+def update_appointment_status(appt_id):
+    data = request.get_json()
+    new_status = data.get("status", "pending")
+    db = get_db()
+    db.execute("UPDATE appointments SET status=? WHERE id=?", (new_status, appt_id))
+    db.commit()
+    db.close()
+    return jsonify({"success": True})
+
 @app.route("/api/doctors")
 def get_doctors():
     db = get_db()

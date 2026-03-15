@@ -104,7 +104,6 @@
 <section class="hero">
   <div class="hero-grid">
     <div>
-      <div class="hero-badge">🟢 MedEase OPD System — Live</div>
       <h1>Smart Hospital <em>OPD Management</em> System</h1>
       <p class="hero-sub">Digitize your hospital's outpatient department. Book appointments, manage queues, accept UPI payments, and get AI-powered support — all in one platform.</p>
       <div class="hero-btns">
@@ -118,7 +117,7 @@
         <div class="stat-card"><div class="stat-icon">🏥</div><div class="stat-num" id="sTotal">–</div><div class="stat-label">Total Appointments</div></div>
         <div class="stat-card"><div class="stat-icon">👨‍⚕️</div><div class="stat-num" id="sDocs">–</div><div class="stat-label">Active Doctors</div></div>
         <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-num" id="sQueue">–</div><div class="stat-label">In Queue Now</div></div>
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-num" id="sRev">–</div><div class="stat-label">Revenue Today</div></div>
+
       </div>
     </div>
   </div>
@@ -262,7 +261,7 @@
     document.getElementById('sTotal').textContent = d.total_appointments;
     document.getElementById('sDocs').textContent = d.active_doctors;
     document.getElementById('sQueue').textContent = d.in_queue;
-    document.getElementById('sRev').textContent = '₹' + d.total_revenue.toLocaleString();
+
   });
 </script>
 </body>

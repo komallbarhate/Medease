@@ -9,6 +9,24 @@
   :root { --teal:#0ea5a0; --teal-dark:#0c8a86; --bg:#f0f4f8; --white:#ffffff; --border:#e2e8f0; --text:#1a2332; --muted:#64748b; --accent:#f97316; --light-teal:#e6f7f6; }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); }
+
+  /* LOGIN SCREEN */
+  .login-screen { position:fixed; inset:0; background:linear-gradient(135deg,#e6f7f6,#f0f4f8,#e8f4fd); display:flex; align-items:center; justify-content:center; z-index:9999; }
+  .login-box { background:var(--white); border:1px solid var(--border); border-radius:20px; padding:40px; width:380px; box-shadow:0 8px 32px rgba(0,0,0,0.1); text-align:center; }
+  .login-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.6rem; color:var(--teal); margin-bottom:4px; }
+  .login-logo span { color:var(--text); }
+  .login-subtitle { font-size:0.85rem; color:var(--muted); margin-bottom:28px; }
+  .login-label { display:block; font-size:0.75rem; color:var(--muted); text-align:left; margin-bottom:6px; font-family:'Syne',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+  .login-input { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:10px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; margin-bottom:16px; }
+  .login-input:focus { border-color:var(--teal); }
+  .login-btn { width:100%; background:var(--teal); color:var(--white); border:none; padding:13px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; cursor:pointer; transition:all 0.2s; }
+  .login-btn:hover { background:var(--teal-dark); }
+  .login-error { background:#fee2e2; border:1px solid #fecaca; border-radius:8px; padding:10px; font-size:0.82rem; color:#dc2626; margin-bottom:14px; display:none; }
+  .login-error.show { display:block; }
+  .login-badge { display:inline-flex; align-items:center; gap:6px; background:var(--light-teal); border:1px solid rgba(14,165,160,0.3); padding:4px 12px; border-radius:999px; font-size:0.75rem; color:var(--teal); margin-bottom:20px; }
+
+  /* MAIN DASHBOARD */
+  .dashboard { display:none; }
   nav { position:fixed; top:0; width:100%; z-index:100; background:var(--white); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:68px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
   .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
   .logo span { color:var(--text); }
@@ -16,12 +34,13 @@
   .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:7px 14px; border-radius:8px; transition:all 0.2s; }
   .nav-links a:hover, .nav-links a.active { color:var(--teal); background:var(--light-teal); }
   .nav-cta { background:var(--teal) !important; color:var(--white) !important; font-weight:600; }
+  .logout-btn { background:#fee2e2; color:#dc2626; border:1px solid #fecaca; padding:6px 14px; border-radius:8px; font-size:0.8rem; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; }
 
   main { padding:88px 5vw 60px; max-width:1200px; margin:0 auto; }
   .page-label { font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
   h1 { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; margin-bottom:28px; color:var(--text); }
 
-  .kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:28px; }
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
   .kpi { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); transition:transform 0.2s; }
   .kpi:hover { transform:translateY(-2px); }
   .kpi-icon { font-size:1.6rem; margin-bottom:10px; }
@@ -37,9 +56,13 @@
   td { padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text); }
   tr:last-child td { border-bottom:none; }
   tr:hover td { background:var(--bg); }
-  .status-badge { font-size:0.7rem; padding:3px 9px; border-radius:999px; font-weight:600; }
+
+  .status-select { font-size:0.75rem; padding:4px 8px; border-radius:6px; border:1px solid var(--border); font-family:'DM Sans',sans-serif; background:var(--bg); cursor:pointer; outline:none; }
+  .status-select:focus { border-color:var(--teal); }
   .status-pending { background:#fef9c3; color:#ca8a04; }
   .status-confirmed { background:#dcfce7; color:#16a34a; }
+  .status-done { background:#e0f2fe; color:#0369a1; }
+  .status-cancelled { background:#fee2e2; color:#dc2626; }
 
   .doctor-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
   .doctor-row:last-child { border-bottom:none; }
@@ -60,12 +83,30 @@
   .pay-amt { font-family:'Syne',sans-serif; font-weight:700; color:var(--teal); }
 
   footer { background:#1a2332; color:#94a3b8; padding:24px 5vw; text-align:center; font-size:0.8rem; }
-  @media(max-width:900px) { .kpis { grid-template-columns:repeat(3,1fr); } .dash-grid { grid-template-columns:1fr; } }
+  @media(max-width:900px) { .kpis { grid-template-columns:repeat(2,1fr); } .dash-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Med<span>Ease</span></div>
+    <div class="login-subtitle">Admin & Receptionist Panel</div>
+    <div class="login-badge">🔒 Authorized Personnel Only</div>
+    <div class="login-error" id="loginError">❌ Incorrect username or password. Please try again.</div>
+    <label class="login-label">Username</label>
+    <input class="login-input" type="text" id="loginUser" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()">
+    <label class="login-label">Password</label>
+    <input class="login-input" type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">🔐 Login to Dashboard</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
 <nav>
-  <div class="logo">Med<span>Ease</span></div>
+  <div class="logo">Med<span>Ease</span> <span style="font-size:0.75rem;color:var(--muted);font-weight:400;margin-left:8px">Admin Panel</span></div>
   <div class="nav-links">
     <a href="/">Home</a>
     <a href="/appointment">Appointments</a>
@@ -74,7 +115,7 @@
     <a href="/admin" class="active">Admin</a>
     <a href="/about">About Us</a>
     <a href="/chatbot">💬 Chatbot</a>
-    <a href="/appointment" class="nav-cta">Book Now</a>
+    <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
   </div>
 </nav>
 
@@ -87,7 +128,6 @@
     <div class="kpi"><div class="kpi-icon">🗓️</div><div class="kpi-val" id="kToday">–</div><div class="kpi-label">Today's Appointments</div></div>
     <div class="kpi"><div class="kpi-icon">👨‍⚕️</div><div class="kpi-val" id="kDocs">–</div><div class="kpi-label">Active Doctors</div></div>
     <div class="kpi"><div class="kpi-icon">⏳</div><div class="kpi-val" id="kQueue">–</div><div class="kpi-label">In Queue</div></div>
-    <div class="kpi"><div class="kpi-icon">💰</div><div class="kpi-val" id="kRev">–</div><div class="kpi-label">Total Revenue</div></div>
   </div>
 
   <div class="dash-grid">
@@ -117,15 +157,48 @@
 </main>
 
 <footer>© MedEase OPD Management System · Vasai, Maharashtra</footer>
+</div>
 
 <script>
+  const ADMIN_CREDENTIALS = { receptionist: 'MedEase@2024', admin: 'MedEase#Admin1' };
+
+  function doLogin() {
+    const user = document.getElementById('loginUser').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+    if (ADMIN_CREDENTIALS[user] && ADMIN_CREDENTIALS[user] === pass) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      sessionStorage.setItem('medease_admin', '1');
+      loadDashboard(); loadDoctors();
+    } else {
+      document.getElementById('loginError').classList.add('show');
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem('medease_admin');
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+  }
+
+  if (sessionStorage.getItem('medease_admin')) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+  }
+
+  function updateStatus(apptId, newStatus) {
+    fetch(`/api/appointments/${apptId}/status`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ status: newStatus }) })
+    .then(()=>loadDashboard());
+  }
+
   function loadDashboard() {
     fetch('/api/stats').then(r=>r.json()).then(d => {
       document.getElementById('kTotal').textContent = d.total_appointments;
       document.getElementById('kToday').textContent = d.today_appointments;
       document.getElementById('kDocs').textContent = d.active_doctors;
       document.getElementById('kQueue').textContent = d.in_queue;
-      document.getElementById('kRev').textContent = '₹' + parseFloat(d.total_revenue).toLocaleString();
 
       document.getElementById('apptTable').innerHTML = d.recent_appointments.length
         ? d.recent_appointments.map(a=>`<tr>
@@ -133,7 +206,14 @@
             <td style="color:var(--muted);font-size:0.8rem">${a.doctor_name}</td>
             <td style="color:var(--muted);font-size:0.8rem">${a.date}</td>
             <td style="color:var(--teal);font-family:'Syne',sans-serif;font-weight:700">${a.token}</td>
-            <td><span class="status-badge status-${a.status}">${a.status}</span></td>
+            <td>
+              <select class="status-select" onchange="updateStatus(${a.id}, this.value)">
+                <option value="pending" ${a.status==='pending'?'selected':''}>Pending</option>
+                <option value="confirmed" ${a.status==='confirmed'?'selected':''}>Confirmed</option>
+                <option value="done" ${a.status==='done'?'selected':''}>Done</option>
+                <option value="cancelled" ${a.status==='cancelled'?'selected':''}>Cancelled</option>
+              </select>
+            </td>
           </tr>`).join('')
         : '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">No appointments yet</td></tr>';
 
@@ -183,8 +263,10 @@
     fetch(`/api/doctors/${id}/toggle`,{method:'POST'}).then(()=>{ loadDoctors(); loadDashboard(); });
   }
 
-  loadDashboard(); loadDoctors();
-  setInterval(()=>{ loadDashboard(); loadDoctors(); }, 20000);
+  if (sessionStorage.getItem('medease_admin')) {
+    loadDashboard(); loadDoctors();
+    setInterval(()=>{ loadDashboard(); loadDoctors(); }, 20000);
+  }
 </script>
 </body>
 </html>
