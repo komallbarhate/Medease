@@ -165,7 +165,7 @@
     <div class="login-logo">Med<span>Ease</span></div>
     <div class="login-subtitle">Admin & Receptionist Panel</div>
     <div class="login-badge">🔒 Authorized Personnel Only</div>
-    <div class="login-error" id="loginError">❌ Incorrect username or password. Please try again.</div>
+    <div class="login-error" id="loginError">❌ Please enter a username to continue.</div>
     <label class="login-label">Username</label>
     <input class="login-input" type="text" id="loginUser" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()">
     <label class="login-label">Password</label>
@@ -370,17 +370,20 @@
   function doLogin() {
     const user = document.getElementById('loginUser').value.trim().toLowerCase();
     const pass = document.getElementById('loginPass').value;
-    if (CREDS[user] && CREDS[user].pass === pass) {
-      currentRole = CREDS[user].role;
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      sessionStorage.setItem('medease_admin', '1');
-      sessionStorage.setItem('medease_role', currentRole);
-      applyRoleUI();
-      loadDashboard(); loadDoctors(); loadQueue();
+    if (!user) { document.getElementById('loginError').classList.add('show'); return; }
+    // Set role based on username if known, else default to receptionist
+    if (user === 'admin') {
+      currentRole = 'admin';
     } else {
-      document.getElementById('loginError').classList.add('show');
+      currentRole = 'receptionist';
     }
+    document.getElementById('loginError').classList.remove('show');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    sessionStorage.setItem('medease_admin', '1');
+    sessionStorage.setItem('medease_role', currentRole);
+    applyRoleUI();
+    loadDashboard(); loadDoctors(); loadQueue(); loadAnalytics(); loadLeaves(); loadFeedback();
   }
 
   function doLogout() {
