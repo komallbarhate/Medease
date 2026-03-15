@@ -42,6 +42,7 @@ def init_db():
             time_slot TEXT,
             token TEXT,
             status TEXT DEFAULT 'pending',
+            intake_data TEXT DEFAULT '{}',
             created_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
         CREATE TABLE IF NOT EXISTS payments (
@@ -63,6 +64,13 @@ def init_db():
             created_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
     """)
+
+    # Migrate: add intake_data column if it doesn't exist yet
+    try:
+        db.execute("ALTER TABLE appointments ADD COLUMN intake_data TEXT DEFAULT '{}'")
+        db.commit()
+    except Exception:
+        pass  # column already exists
 
     count = db.execute("SELECT COUNT(*) FROM doctors").fetchone()[0]
     if count == 0:
@@ -109,16 +117,7 @@ def chatbot():
 def about():
     return render_template("about.html")
 
-@app.route("/api/appointments/<int:appt_id>/status", methods=["POST"])
-def update_appointment_status(appt_id):
-    data = request.get_json()
-    new_status = data.get("status", "pending")
-    db = get_db()
-    db.execute("UPDATE appointments SET status=? WHERE id=?", (new_status, appt_id))
-    db.commit()
-    db.close()
-    return jsonify({"success": True})
-
+# DOCTORS
 @app.route("/api/doctors")
 def get_doctors():
     db = get_db()
@@ -136,6 +135,7 @@ def toggle_doctor(doc_id):
     db.close()
     return jsonify({"success": True, "available": new_val})
 
+# APPOINTMENTS
 @app.route("/api/appointments", methods=["GET"])
 def get_appointments():
     db = get_db()
@@ -147,21 +147,19 @@ def get_appointments():
 def book_appointment():
     data = request.json
     db = get_db()
-
     existing = db.execute(
         "SELECT id FROM appointments WHERE doctor_id=? AND date=? AND time_slot=?",
         (data["doctor_id"], data["date"], data["time_slot"])
     ).fetchone()
-
     if existing:
         db.close()
         return jsonify({"success": False, "message": "This time slot is already booked for this doctor. Please choose a different time."})
-
     token = "TKN" + "".join(random.choices(string.digits, k=4))
+    intake_json = data.get("intake_data", "{}")
     db.execute(
-        "INSERT INTO appointments (patient_name, patient_phone, doctor_id, doctor_name, date, time_slot, token) VALUES (?,?,?,?,?,?,?)",
+        "INSERT INTO appointments (patient_name, patient_phone, doctor_id, doctor_name, date, time_slot, token, intake_data) VALUES (?,?,?,?,?,?,?,?)",
         (data["patient_name"], data["patient_phone"], data["doctor_id"],
-         data["doctor_name"], data["date"], data["time_slot"], token)
+         data["doctor_name"], data["date"], data["time_slot"], token, intake_json)
     )
     pos = db.execute("SELECT COUNT(*) FROM queue WHERE doctor_id=? AND status='waiting'", (data["doctor_id"],)).fetchone()[0] + 1
     db.execute(
@@ -173,6 +171,38 @@ def book_appointment():
     db.close()
     return jsonify({"success": True, "token": token})
 
+@app.route("/api/appointments/<int:appt_id>/status", methods=["POST"])
+def update_appointment_status(appt_id):
+    data = request.get_json()
+    new_status = data.get("status", "pending")
+    db = get_db()
+    db.execute("UPDATE appointments SET status=? WHERE id=?", (new_status, appt_id))
+    db.commit()
+    db.close()
+    return jsonify({"success": True})
+
+@app.route("/api/appointments/<int:appt_id>/edit", methods=["POST"])
+def edit_appointment(appt_id):
+    data = request.get_json()
+    db = get_db()
+    db.execute(
+        "UPDATE appointments SET patient_name=?, patient_phone=?, doctor_name=?, date=?, time_slot=?, status=? WHERE id=?",
+        (data.get("patient_name"), data.get("patient_phone"), data.get("doctor_name"),
+         data.get("date"), data.get("time_slot"), data.get("status"), appt_id)
+    )
+    db.commit()
+    db.close()
+    return jsonify({"success": True})
+
+@app.route("/api/appointments/<int:appt_id>/delete", methods=["POST"])
+def delete_appointment(appt_id):
+    db = get_db()
+    db.execute("DELETE FROM appointments WHERE id=?", (appt_id,))
+    db.commit()
+    db.close()
+    return jsonify({"success": True})
+
+# QUEUE
 @app.route("/api/queue")
 def get_queue():
     db = get_db()
@@ -196,6 +226,7 @@ def next_patient(qid):
     db.close()
     return jsonify({"success": True})
 
+# PAYMENTS
 @app.route("/api/payments", methods=["GET"])
 def get_payments():
     db = get_db()
@@ -215,27 +246,50 @@ def submit_payment():
     db.close()
     return jsonify({"success": True})
 
+@app.route("/api/payments/<int:pay_id>/edit", methods=["POST"])
+def edit_payment(pay_id):
+    data = request.get_json()
+    db = get_db()
+    db.execute(
+        "UPDATE payments SET patient_name=?, amount=?, status=?, transaction_id=? WHERE id=?",
+        (data.get("patient_name"), data.get("amount"), data.get("status"),
+         data.get("transaction_id"), pay_id)
+    )
+    db.commit()
+    db.close()
+    return jsonify({"success": True})
+
+@app.route("/api/payments/<int:pay_id>/delete", methods=["POST"])
+def delete_payment(pay_id):
+    db = get_db()
+    db.execute("DELETE FROM payments WHERE id=?", (pay_id,))
+    db.commit()
+    db.close()
+    return jsonify({"success": True})
+
+# STATS
 @app.route("/api/stats")
 def get_stats():
     db = get_db()
-    total_appts = db.execute("SELECT COUNT(*) FROM appointments").fetchone()[0]
-    today_appts = db.execute("SELECT COUNT(*) FROM appointments WHERE date=?", (str(date.today()),)).fetchone()[0]
-    total_revenue = db.execute("SELECT COALESCE(SUM(amount),0) FROM payments WHERE status='confirmed'").fetchone()[0]
+    total_appts    = db.execute("SELECT COUNT(*) FROM appointments").fetchone()[0]
+    today_appts    = db.execute("SELECT COUNT(*) FROM appointments WHERE date=?", (str(date.today()),)).fetchone()[0]
+    total_revenue  = db.execute("SELECT COALESCE(SUM(amount),0) FROM payments WHERE status='confirmed'").fetchone()[0]
     active_doctors = db.execute("SELECT COUNT(*) FROM doctors WHERE available=1").fetchone()[0]
-    in_queue = db.execute("SELECT COUNT(*) FROM queue WHERE status='waiting'").fetchone()[0]
-    recent_appts = db.execute("SELECT * FROM appointments ORDER BY created_at DESC LIMIT 8").fetchall()
-    recent_payments = db.execute("SELECT * FROM payments ORDER BY created_at DESC LIMIT 6").fetchall()
+    in_queue       = db.execute("SELECT COUNT(*) FROM queue WHERE status='waiting'").fetchone()[0]
+    recent_appts   = db.execute("SELECT * FROM appointments ORDER BY created_at DESC LIMIT 8").fetchall()
+    recent_payments= db.execute("SELECT * FROM payments ORDER BY created_at DESC LIMIT 6").fetchall()
     db.close()
     return jsonify({
-        "total_appointments": total_appts,
-        "today_appointments": today_appts,
-        "total_revenue": total_revenue,
-        "active_doctors": active_doctors,
-        "in_queue": in_queue,
+        "total_appointments":  total_appts,
+        "today_appointments":  today_appts,
+        "total_revenue":       total_revenue,
+        "active_doctors":      active_doctors,
+        "in_queue":            in_queue,
         "recent_appointments": [dict(a) for a in recent_appts],
-        "recent_payments": [dict(p) for p in recent_payments],
+        "recent_payments":     [dict(p) for p in recent_payments],
     })
 
+# CHATBOT
 @app.route("/api/chat", methods=["POST"])
 def chat():
     msg = request.json.get("message", "").lower()
@@ -246,28 +300,22 @@ def chat():
         db.close()
         lines = "\n".join([f"• {d['name']} ({d['specialty']}) — ₹{d['fee']}" for d in docs])
         return jsonify({"reply": f"Currently available doctors:\n{lines}\n\nWould you like to book an appointment?"})
-
     elif any(w in msg for w in ["book", "appointment", "schedule"]):
         db.close()
         return jsonify({"reply": "To book an appointment:\n1. Go to the Appointment page\n2. Enter your details\n3. Choose a doctor & time slot\n4. You'll receive a token number\n\nShall I take you there? Click 'Book Appointment' in the menu."})
-
     elif any(w in msg for w in ["pay", "payment", "fee", "cost", "upi"]):
         db.close()
         return jsonify({"reply": "MedEase supports UPI payments. OPD fees vary by department:\n• General Medicine: ₹300\n• Pediatrics: ₹450\n• Dermatology: ₹500\n• Orthopedics: ₹600\n• Cardiology: ₹700\n• Neurology: ₹800\n\nYou can pay via UPI QR on the Payment page."})
-
     elif any(w in msg for w in ["queue", "wait", "token", "how long"]):
         in_queue = db.execute("SELECT COUNT(*) FROM queue WHERE status='waiting'").fetchone()[0]
         db.close()
         return jsonify({"reply": f"Currently {in_queue} patient(s) are waiting in queue. Average wait time is approximately {in_queue * 10} minutes.\n\nYou can check live queue status on the Queue page."})
-
     elif any(w in msg for w in ["hello", "hi", "hey", "help"]):
         db.close()
         return jsonify({"reply": "Hello! I'm MedBot 🏥 — your MedEase virtual assistant.\n\nI can help you with:\n• Finding available doctors\n• Booking appointments\n• Payment information\n• Queue status\n• General hospital queries\n\nWhat do you need help with?"})
-
     elif any(w in msg for w in ["timing", "hour", "open", "time"]):
         db.close()
         return jsonify({"reply": "MedEase OPD Hours:\n🕗 Morning: 8:00 AM – 1:00 PM\n🕔 Evening: 4:00 PM – 8:00 PM\n\nEmergency services are available 24/7.\n\nOnline appointments can be booked anytime!"})
-
     else:
         db.close()
         return jsonify({"reply": "I'm not sure about that. I can help with:\n• Doctor availability\n• Appointment booking\n• Payment info\n• Queue status\n• Hospital timings\n\nPlease try asking about one of these topics!"})

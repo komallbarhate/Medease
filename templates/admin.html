@@ -12,7 +12,7 @@
 
   /* LOGIN SCREEN */
   .login-screen { position:fixed; inset:0; background:linear-gradient(135deg,#e6f7f6,#f0f4f8,#e8f4fd); display:flex; align-items:center; justify-content:center; z-index:9999; }
-  .login-box { background:var(--white); border:1px solid var(--border); border-radius:20px; padding:40px; width:380px; box-shadow:0 8px 32px rgba(0,0,0,0.1); text-align:center; }
+  .login-box { background:var(--white); border:1px solid var(--border); border-radius:20px; padding:40px; width:400px; box-shadow:0 8px 32px rgba(0,0,0,0.1); text-align:center; }
   .login-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.6rem; color:var(--teal); margin-bottom:4px; }
   .login-logo span { color:var(--text); }
   .login-subtitle { font-size:0.85rem; color:var(--muted); margin-bottom:28px; }
@@ -24,8 +24,37 @@
   .login-error { background:#fee2e2; border:1px solid #fecaca; border-radius:8px; padding:10px; font-size:0.82rem; color:#dc2626; margin-bottom:14px; display:none; }
   .login-error.show { display:block; }
   .login-badge { display:inline-flex; align-items:center; gap:6px; background:var(--light-teal); border:1px solid rgba(14,165,160,0.3); padding:4px 12px; border-radius:999px; font-size:0.75rem; color:var(--teal); margin-bottom:20px; }
+  .forgot-link { display:block; text-align:right; font-size:0.8rem; color:var(--teal); text-decoration:none; cursor:pointer; margin-top:-8px; margin-bottom:16px; }
+  .forgot-link:hover { text-decoration:underline; }
 
-  /* MAIN DASHBOARD */
+  /* FORGOT PASSWORD MODAL */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; align-items:center; justify-content:center; }
+  .modal-overlay.show { display:flex; }
+  .modal-box { background:var(--white); border-radius:20px; padding:36px; width:420px; max-width:95vw; box-shadow:0 24px 60px rgba(0,0,0,0.15); }
+  .modal-box h3 { font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; margin-bottom:6px; color:var(--text); }
+  .modal-box p { font-size:0.85rem; color:var(--muted); margin-bottom:20px; }
+  .modal-input { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:10px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; margin-bottom:12px; }
+  .modal-input:focus { border-color:var(--teal); }
+  .modal-btn-row { display:flex; gap:10px; margin-top:8px; }
+  .btn-teal { flex:1; background:var(--teal); color:var(--white); border:none; padding:11px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; font-size:0.9rem; }
+  .btn-teal:hover { background:var(--teal-dark); }
+  .btn-outline { flex:1; background:transparent; color:var(--muted); border:1px solid var(--border); padding:11px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; font-size:0.9rem; }
+  .btn-outline:hover { border-color:var(--teal); color:var(--teal); }
+  .modal-success { background:#dcfce7; border:1px solid #bbf7d0; border-radius:10px; padding:12px; font-size:0.85rem; color:#16a34a; margin-top:12px; display:none; }
+  .modal-success.show { display:block; }
+  .modal-err { background:#fee2e2; border:1px solid #fecaca; border-radius:10px; padding:12px; font-size:0.85rem; color:#dc2626; margin-top:12px; display:none; }
+  .modal-err.show { display:block; }
+
+  /* EDIT MODAL */
+  .edit-modal-box { background:var(--white); border-radius:20px; padding:36px; width:500px; max-width:95vw; max-height:90vh; overflow-y:auto; box-shadow:0 24px 60px rgba(0,0,0,0.15); }
+  .edit-modal-box h3 { font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; margin-bottom:20px; color:var(--text); }
+  .ef-group { margin-bottom:14px; }
+  .ef-label { display:block; font-size:0.75rem; color:var(--muted); margin-bottom:5px; font-family:'Syne',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+  .ef-input { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:10px 13px; border-radius:9px; font-size:0.88rem; font-family:'DM Sans',sans-serif; outline:none; }
+  .ef-input:focus { border-color:var(--teal); }
+  .ef-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+  /* DASHBOARD */
   .dashboard { display:none; }
   nav { position:fixed; top:0; width:100%; z-index:100; background:var(--white); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:68px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
   .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:var(--teal); }
@@ -59,10 +88,15 @@
 
   .status-select { font-size:0.75rem; padding:4px 8px; border-radius:6px; border:1px solid var(--border); font-family:'DM Sans',sans-serif; background:var(--bg); cursor:pointer; outline:none; }
   .status-select:focus { border-color:var(--teal); }
-  .status-pending { background:#fef9c3; color:#ca8a04; }
-  .status-confirmed { background:#dcfce7; color:#16a34a; }
-  .status-done { background:#e0f2fe; color:#0369a1; }
-  .status-cancelled { background:#fee2e2; color:#dc2626; }
+
+  /* ACTION BUTTONS */
+  .btn-done-queue { background:var(--light-teal); color:var(--teal); border:1px solid rgba(14,165,160,0.3); padding:4px 10px; border-radius:6px; font-size:0.72rem; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .btn-done-queue:hover { background:var(--teal); color:var(--white); }
+  .btn-edit-row { background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; padding:4px 9px; border-radius:6px; font-size:0.72rem; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; transition:all 0.2s; }
+  .btn-edit-row:hover { background:#2563eb; color:white; }
+  .btn-del-row { background:#fff1f2; color:#e11d48; border:1px solid #fecdd3; padding:4px 9px; border-radius:6px; font-size:0.72rem; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; transition:all 0.2s; }
+  .btn-del-row:hover { background:#e11d48; color:white; }
+  .action-cell { display:flex; gap:5px; flex-wrap:wrap; align-items:center; }
 
   .doctor-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
   .doctor-row:last-child { border-bottom:none; }
@@ -76,11 +110,16 @@
   .toggle-off { background:#fee2e2; color:#dc2626; border:1px solid #fecaca; }
   .toggle-off:hover { background:#dc2626; color:white; }
 
-  .pay-item { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); }
+  .pay-item { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); gap:8px; }
   .pay-item:last-child { border-bottom:none; }
   .pay-name { font-size:0.875rem; color:var(--text); }
   .pay-txn { font-size:0.72rem; color:var(--muted); }
-  .pay-amt { font-family:'Syne',sans-serif; font-weight:700; color:var(--teal); }
+  .pay-amt { font-family:'Syne',sans-serif; font-weight:700; color:var(--teal); white-space:nowrap; }
+
+  /* Role badge */
+  .role-badge { display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; padding:3px 10px; border-radius:999px; font-family:'Syne',sans-serif; font-weight:700; margin-left:8px; }
+  .role-admin { background:#ede9fe; color:#7c3aed; border:1px solid #ddd6fe; }
+  .role-receptionist { background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; }
 
   footer { background:#1a2332; color:#94a3b8; padding:24px 5vw; text-align:center; font-size:0.8rem; }
   @media(max-width:900px) { .kpis { grid-template-columns:repeat(2,1fr); } .dash-grid { grid-template-columns:1fr; } }
@@ -99,14 +138,90 @@
     <input class="login-input" type="text" id="loginUser" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()">
     <label class="login-label">Password</label>
     <input class="login-input" type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    <span class="forgot-link" onclick="openForgotModal()">🔑 Forgot password?</span>
     <button class="login-btn" onclick="doLogin()">🔐 Login to Dashboard</button>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div class="modal-overlay" id="forgotOverlay">
+  <div class="modal-box" id="forgotBox">
+    <h3>🔑 Reset Receptionist Password</h3>
+    <p>Admin can reset the receptionist password instantly. Enter the admin password to authorize, then set a new receptionist password.</p>
+    <label class="login-label" style="text-align:left;display:block;font-size:0.75rem;color:var(--muted);margin-bottom:5px;">Admin Password (for verification)</label>
+    <input class="modal-input" type="password" id="adminVerifyPass" placeholder="Enter admin password">
+    <label class="login-label" style="text-align:left;display:block;font-size:0.75rem;color:var(--muted);margin-bottom:5px;margin-top:8px;">New Receptionist Password</label>
+    <input class="modal-input" type="password" id="newReceptPass" placeholder="Enter new password">
+    <label class="login-label" style="text-align:left;display:block;font-size:0.75rem;color:var(--muted);margin-bottom:5px;margin-top:8px;">Confirm New Password</label>
+    <input class="modal-input" type="password" id="confirmReceptPass" placeholder="Confirm new password">
+    <div class="modal-btn-row">
+      <button class="btn-outline" onclick="closeForgotModal()">Cancel</button>
+      <button class="btn-teal" onclick="doResetPassword()">✅ Reset Password</button>
+    </div>
+    <div class="modal-success" id="forgotSuccess">✅ Receptionist password updated successfully! You can now log in with the new password.</div>
+    <div class="modal-err" id="forgotErr"></div>
+  </div>
+</div>
+
+<!-- EDIT APPOINTMENT MODAL -->
+<div class="modal-overlay" id="editApptOverlay">
+  <div class="edit-modal-box">
+    <h3>✏️ Edit Appointment</h3>
+    <input type="hidden" id="editApptId">
+    <div class="ef-row">
+      <div class="ef-group"><label class="ef-label">Patient Name</label><input class="ef-input" type="text" id="editApptName"></div>
+      <div class="ef-group"><label class="ef-label">Phone</label><input class="ef-input" type="text" id="editApptPhone"></div>
+    </div>
+    <div class="ef-row">
+      <div class="ef-group"><label class="ef-label">Doctor Name</label><input class="ef-input" type="text" id="editApptDoctor"></div>
+      <div class="ef-group"><label class="ef-label">Date</label><input class="ef-input" type="date" id="editApptDate"></div>
+    </div>
+    <div class="ef-row">
+      <div class="ef-group"><label class="ef-label">Time Slot</label><input class="ef-input" type="text" id="editApptSlot"></div>
+      <div class="ef-group"><label class="ef-label">Status</label>
+        <select class="ef-input" id="editApptStatus">
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="done">Done</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-btn-row" style="margin-top:16px">
+      <button class="btn-outline" onclick="closeModal('editApptOverlay')">Cancel</button>
+      <button class="btn-teal" onclick="saveEditAppt()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PAYMENT MODAL -->
+<div class="modal-overlay" id="editPayOverlay">
+  <div class="edit-modal-box">
+    <h3>✏️ Edit Payment</h3>
+    <input type="hidden" id="editPayId">
+    <div class="ef-group"><label class="ef-label">Patient Name</label><input class="ef-input" type="text" id="editPayName"></div>
+    <div class="ef-row">
+      <div class="ef-group"><label class="ef-label">Amount (₹)</label><input class="ef-input" type="number" id="editPayAmount"></div>
+      <div class="ef-group"><label class="ef-label">Status</label>
+        <select class="ef-input" id="editPayStatus">
+          <option value="confirmed">Confirmed</option>
+          <option value="pending">Pending</option>
+          <option value="refunded">Refunded</option>
+        </select>
+      </div>
+    </div>
+    <div class="ef-group"><label class="ef-label">Transaction ID</label><input class="ef-input" type="text" id="editPayTxn"></div>
+    <div class="modal-btn-row" style="margin-top:16px">
+      <button class="btn-outline" onclick="closeModal('editPayOverlay')">Cancel</button>
+      <button class="btn-teal" onclick="saveEditPay()">💾 Save Changes</button>
+    </div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
 <nav>
-  <div class="logo">Med<span>Ease</span> <span style="font-size:0.75rem;color:var(--muted);font-weight:400;margin-left:8px">Admin Panel</span></div>
+  <div class="logo">Med<span>Ease</span> <span style="font-size:0.75rem;color:var(--muted);font-weight:400;margin-left:8px" id="roleLabel">Admin Panel</span></div>
   <div class="nav-links">
     <a href="/">Home</a>
     <a href="/appointment">Appointments</a>
@@ -121,7 +236,7 @@
 
 <main>
   <div class="page-label">Hospital Admin</div>
-  <h1>📊 Dashboard</h1>
+  <h1>📊 Dashboard <span id="dashRoleBadge"></span></h1>
 
   <div class="kpis">
     <div class="kpi"><div class="kpi-icon">📅</div><div class="kpi-val" id="kTotal">–</div><div class="kpi-label">Total Appointments</div></div>
@@ -134,8 +249,8 @@
     <div class="panel">
       <div class="panel-title">📋 Recent Appointments</div>
       <table>
-        <thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Token</th><th>Status</th></tr></thead>
-        <tbody id="apptTable"><tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">Loading...</td></tr></tbody>
+        <thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Token</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="apptTable"><tr><td colspan="6" style="color:var(--muted);text-align:center;padding:20px">Loading...</td></tr></tbody>
       </table>
     </div>
     <div class="panel">
@@ -154,22 +269,43 @@
       <div id="statsPanel">Loading...</div>
     </div>
   </div>
-</main>
 
-<footer>© MedEase OPD Management System · Vasai, Maharashtra</footer>
+  <!-- LIVE QUEUE PANEL (receptionist sees this prominently) -->
+  <div class="panel" style="margin-bottom:20px">
+    <div class="panel-title" style="display:flex;align-items:center;justify-content:space-between">
+      <span>🔢 Live Queue <span id="queueCountBadge" style="background:var(--light-teal);color:var(--teal);font-size:0.75rem;padding:2px 10px;border-radius:999px;margin-left:8px">–</span></span>
+      <button onclick="loadQueue()" style="background:transparent;border:1px solid var(--border);padding:5px 12px;border-radius:8px;font-size:0.78rem;cursor:pointer;color:var(--muted)">🔄 Refresh</button>
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Patient</th><th>Token</th><th>Doctor</th><th>Action</th></tr></thead>
+      <tbody id="liveQueueTable"><tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">Loading queue...</td></tr></tbody>
+    </table>
+  </div>
+
+</main>
+<footer>© MedEase OPD Management System</footer>
 </div>
 
 <script>
-  const ADMIN_CREDENTIALS = { receptionist: 'MedEase@2024', admin: 'MedEase#Admin1' };
+  // ── CREDENTIALS (in-memory; receptionist password can be reset) ──────────
+  let CREDS = {
+    receptionist: { pass: 'MedEase@2024', role: 'receptionist' },
+    admin:        { pass: 'MedEase#Admin1', role: 'admin' }
+  };
+  let currentRole = null;
 
+  // ── LOGIN ────────────────────────────────────────────────────────────────
   function doLogin() {
-    const user = document.getElementById('loginUser').value.trim();
-    const pass = document.getElementById('loginPass').value.trim();
-    if (ADMIN_CREDENTIALS[user] && ADMIN_CREDENTIALS[user] === pass) {
+    const user = document.getElementById('loginUser').value.trim().toLowerCase();
+    const pass = document.getElementById('loginPass').value;
+    if (CREDS[user] && CREDS[user].pass === pass) {
+      currentRole = CREDS[user].role;
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
       sessionStorage.setItem('medease_admin', '1');
-      loadDashboard(); loadDoctors();
+      sessionStorage.setItem('medease_role', currentRole);
+      applyRoleUI();
+      loadDashboard(); loadDoctors(); loadQueue();
     } else {
       document.getElementById('loginError').classList.add('show');
     }
@@ -177,27 +313,199 @@
 
   function doLogout() {
     sessionStorage.removeItem('medease_admin');
+    sessionStorage.removeItem('medease_role');
+    currentRole = null;
     document.getElementById('loginScreen').style.display = 'flex';
     document.getElementById('dashboard').style.display = 'none';
     document.getElementById('loginUser').value = '';
     document.getElementById('loginPass').value = '';
   }
 
-  if (sessionStorage.getItem('medease_admin')) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
+  function applyRoleUI() {
+    const isAdmin = currentRole === 'admin';
+    const badge = document.getElementById('dashRoleBadge');
+    const roleLabel = document.getElementById('roleLabel');
+    if (isAdmin) {
+      badge.innerHTML = '<span class="role-badge role-admin">👑 Admin</span>';
+      roleLabel.textContent = 'Admin Panel';
+    } else {
+      badge.innerHTML = '<span class="role-badge role-receptionist">🖥️ Receptionist</span>';
+      roleLabel.textContent = 'Receptionist Panel';
+    }
   }
 
+  if (sessionStorage.getItem('medease_admin')) {
+    currentRole = sessionStorage.getItem('medease_role') || 'receptionist';
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    applyRoleUI();
+  }
+
+  // ── FORGOT / RESET PASSWORD ───────────────────────────────────────────────
+  function openForgotModal() {
+    document.getElementById('adminVerifyPass').value = '';
+    document.getElementById('newReceptPass').value = '';
+    document.getElementById('confirmReceptPass').value = '';
+    document.getElementById('forgotSuccess').classList.remove('show');
+    document.getElementById('forgotErr').classList.remove('show');
+    document.getElementById('forgotOverlay').classList.add('show');
+  }
+  function closeForgotModal() {
+    document.getElementById('forgotOverlay').classList.remove('show');
+  }
+  function doResetPassword() {
+    const adminPass = document.getElementById('adminVerifyPass').value;
+    const newPass   = document.getElementById('newReceptPass').value;
+    const confirm   = document.getElementById('confirmReceptPass').value;
+    const errEl = document.getElementById('forgotErr');
+    const okEl  = document.getElementById('forgotSuccess');
+    errEl.classList.remove('show'); okEl.classList.remove('show');
+    if (adminPass !== CREDS.admin.pass) { errEl.textContent = '❌ Incorrect admin password.'; errEl.classList.add('show'); return; }
+    if (newPass.length < 6) { errEl.textContent = '❌ New password must be at least 6 characters.'; errEl.classList.add('show'); return; }
+    if (newPass !== confirm) { errEl.textContent = '❌ Passwords do not match.'; errEl.classList.add('show'); return; }
+    CREDS.receptionist.pass = newPass;
+    okEl.classList.add('show');
+    setTimeout(() => closeForgotModal(), 2500);
+  }
+
+  // ── GENERIC MODAL CLOSE ───────────────────────────────────────────────────
+  function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+  // Close on backdrop click
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show'); });
+  });
+
+  // ── APPOINTMENTS ──────────────────────────────────────────────────────────
   function updateStatus(apptId, newStatus) {
     fetch(`/api/appointments/${apptId}/status`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ status: newStatus }) })
     .then(()=>loadDashboard());
   }
 
+  function openEditAppt(a) {
+    document.getElementById('editApptId').value    = a.id;
+    document.getElementById('editApptName').value  = a.patient_name;
+    document.getElementById('editApptPhone').value = a.patient_phone;
+    document.getElementById('editApptDoctor').value= a.doctor_name;
+    document.getElementById('editApptDate').value  = a.date;
+    document.getElementById('editApptSlot').value  = a.time_slot;
+    document.getElementById('editApptStatus').value= a.status;
+    document.getElementById('editApptOverlay').classList.add('show');
+  }
+
+  function saveEditAppt() {
+    const id = document.getElementById('editApptId').value;
+    const payload = {
+      patient_name:  document.getElementById('editApptName').value,
+      patient_phone: document.getElementById('editApptPhone').value,
+      doctor_name:   document.getElementById('editApptDoctor').value,
+      date:          document.getElementById('editApptDate').value,
+      time_slot:     document.getElementById('editApptSlot').value,
+      status:        document.getElementById('editApptStatus').value,
+    };
+    fetch(`/api/appointments/${id}/edit`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+    .then(r=>r.json()).then(d=>{
+      if(d.success){ closeModal('editApptOverlay'); loadDashboard(); }
+      else alert('Error saving: ' + (d.message||'unknown'));
+    });
+  }
+
+  function deleteAppt(id, name) {
+    if (!confirm(`Delete appointment for ${name}? This cannot be undone.`)) return;
+    fetch(`/api/appointments/${id}/delete`, { method:'POST' })
+    .then(r=>r.json()).then(()=>loadDashboard());
+  }
+
+  // ── PAYMENTS ──────────────────────────────────────────────────────────────
+  function openEditPay(p) {
+    document.getElementById('editPayId').value     = p.id;
+    document.getElementById('editPayName').value   = p.patient_name;
+    document.getElementById('editPayAmount').value = p.amount;
+    document.getElementById('editPayStatus').value = p.status;
+    document.getElementById('editPayTxn').value    = p.transaction_id;
+    document.getElementById('editPayOverlay').classList.add('show');
+  }
+
+  function saveEditPay() {
+    const id = document.getElementById('editPayId').value;
+    const payload = {
+      patient_name:   document.getElementById('editPayName').value,
+      amount:         parseFloat(document.getElementById('editPayAmount').value),
+      status:         document.getElementById('editPayStatus').value,
+      transaction_id: document.getElementById('editPayTxn').value,
+    };
+    fetch(`/api/payments/${id}/edit`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+    .then(r=>r.json()).then(d=>{
+      if(d.success){ closeModal('editPayOverlay'); loadDashboard(); }
+      else alert('Error: ' + (d.message||'unknown'));
+    });
+  }
+
+  function deletePay(id, name) {
+    if (!confirm(`Delete payment record for ${name}?`)) return;
+    fetch(`/api/payments/${id}/delete`, { method:'POST' })
+    .then(r=>r.json()).then(()=>loadDashboard());
+  }
+
+  // ── LIVE QUEUE ─────────────────────────────────────────────────────────────
+  function loadQueue() {
+    Promise.all([fetch('/api/queue').then(r=>r.json()), fetch('/api/doctors').then(r=>r.json())])
+    .then(([queue, doctors]) => {
+      const tbody = document.getElementById('liveQueueTable');
+      document.getElementById('queueCountBadge').textContent = queue.length + ' waiting';
+      if (!queue.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">✅ No patients in queue</td></tr>';
+        return;
+      }
+      const docMap = {};
+      doctors.forEach(d => docMap[d.id] = d.name);
+      tbody.innerHTML = queue.map((q, i) => `
+        <tr id="qrow-${q.id}">
+          <td style="font-family:'Syne',sans-serif;font-weight:800;color:${i===0?'#ca8a04':'var(--muted)'}">${i+1}</td>
+          <td>${q.patient_name}</td>
+          <td style="color:var(--teal);font-family:'Syne',sans-serif;font-weight:700">${q.token}</td>
+          <td style="color:var(--muted);font-size:0.82rem">${q.doctor_name || docMap[q.doctor_id] || '—'}</td>
+          <td><button class="btn-done-queue" onclick="markQueueDone(${q.id}, this)">✅ Done</button></td>
+        </tr>`).join('');
+    });
+  }
+
+  function markQueueDone(qid, btn) {
+    btn.disabled = true;
+    btn.textContent = '...';
+    fetch(`/api/queue/${qid}/next`, { method:'POST' })
+    .then(r=>r.json()).then(d=>{
+      if (d.success) {
+        const row = document.getElementById('qrow-' + qid);
+        if (row) {
+          row.style.transition = 'opacity 0.3s';
+          row.style.opacity = '0';
+          setTimeout(() => { row.remove(); renumberQueue(); updateQueueBadge(); }, 320);
+        }
+      }
+    });
+  }
+
+  function renumberQueue() {
+    const rows = document.querySelectorAll('#liveQueueTable tr');
+    if (!rows.length) {
+      document.getElementById('liveQueueTable').innerHTML =
+        '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:16px">✅ No patients in queue</td></tr>';
+    }
+    rows.forEach((r, i) => { const first = r.querySelector('td'); if (first) first.textContent = i+1; });
+  }
+
+  function updateQueueBadge() {
+    const rows = document.querySelectorAll('#liveQueueTable tr[id]');
+    document.getElementById('queueCountBadge').textContent = rows.length + ' waiting';
+    document.getElementById('kQueue').textContent = rows.length;
+  }
+
+  // ── DASHBOARD ─────────────────────────────────────────────────────────────
   function loadDashboard() {
     fetch('/api/stats').then(r=>r.json()).then(d => {
       document.getElementById('kTotal').textContent = d.total_appointments;
       document.getElementById('kToday').textContent = d.today_appointments;
-      document.getElementById('kDocs').textContent = d.active_doctors;
+      document.getElementById('kDocs').textContent  = d.active_doctors;
       document.getElementById('kQueue').textContent = d.in_queue;
 
       document.getElementById('apptTable').innerHTML = d.recent_appointments.length
@@ -208,19 +516,27 @@
             <td style="color:var(--teal);font-family:'Syne',sans-serif;font-weight:700">${a.token}</td>
             <td>
               <select class="status-select" onchange="updateStatus(${a.id}, this.value)">
-                <option value="pending" ${a.status==='pending'?'selected':''}>Pending</option>
-                <option value="confirmed" ${a.status==='confirmed'?'selected':''}>Confirmed</option>
-                <option value="done" ${a.status==='done'?'selected':''}>Done</option>
-                <option value="cancelled" ${a.status==='cancelled'?'selected':''}>Cancelled</option>
+                <option value="pending"   ${a.status==='pending'   ?'selected':''}>Pending</option>
+                <option value="confirmed" ${a.status==='confirmed' ?'selected':''}>Confirmed</option>
+                <option value="done"      ${a.status==='done'      ?'selected':''}>Done</option>
+                <option value="cancelled" ${a.status==='cancelled' ?'selected':''}>Cancelled</option>
               </select>
             </td>
+            <td><div class="action-cell">
+              <button class="btn-edit-row" onclick='openEditAppt(${JSON.stringify(a)})'>✏️</button>
+              <button class="btn-del-row"  onclick="deleteAppt(${a.id},'${a.patient_name.replace(/'/g,"\\'")}')">🗑️</button>
+            </div></td>
           </tr>`).join('')
-        : '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">No appointments yet</td></tr>';
+        : '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:20px">No appointments yet</td></tr>';
 
       document.getElementById('payRows').innerHTML = d.recent_payments.length
         ? d.recent_payments.map(p=>`<div class="pay-item">
             <div><div class="pay-name">${p.patient_name}</div><div class="pay-txn">${p.transaction_id}</div></div>
             <div class="pay-amt">₹${parseFloat(p.amount).toLocaleString()}</div>
+            <div class="action-cell">
+              <button class="btn-edit-row" onclick='openEditPay(${JSON.stringify(p)})'>✏️</button>
+              <button class="btn-del-row"  onclick="deletePay(${p.id},'${p.patient_name.replace(/'/g,"\\'")}')">🗑️</button>
+            </div>
           </div>`).join('')
         : '<p style="color:var(--muted);font-size:0.875rem">No payments yet.</p>';
 
@@ -264,8 +580,9 @@
   }
 
   if (sessionStorage.getItem('medease_admin')) {
-    loadDashboard(); loadDoctors();
+    loadDashboard(); loadDoctors(); loadQueue();
     setInterval(()=>{ loadDashboard(); loadDoctors(); }, 20000);
+    setInterval(loadQueue, 15000);
   }
 </script>
 </body>

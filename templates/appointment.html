@@ -17,11 +17,11 @@
   .nav-links a:hover, .nav-links a.active { color:var(--teal); background:var(--light-teal); }
   .nav-cta { background:var(--teal) !important; color:var(--white) !important; font-weight:600; }
 
-  main { padding:88px 5vw 60px; max-width:1100px; margin:0 auto; }
+  main { padding:88px 5vw 60px; max-width:1200px; margin:0 auto; }
   .page-label { font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
   h1 { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; margin-bottom:28px; color:var(--text); }
 
-  .two-col { display:grid; grid-template-columns:1fr 1.2fr; gap:24px; }
+  .three-col { display:grid; grid-template-columns:1fr 1.2fr 1.1fr; gap:20px; }
   .panel { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
   .panel-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:16px; color:var(--teal); }
 
@@ -41,13 +41,24 @@
 
   .form-group { margin-bottom:16px; }
   label { display:block; font-size:0.8rem; color:var(--muted); margin-bottom:6px; font-family:'Syne',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
-  input, select { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:10px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; }
-  input:focus, select:focus { border-color:var(--teal); background:var(--white); }
+  input, select, textarea { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:10px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; }
+  textarea { resize:vertical; min-height:72px; }
+  input:focus, select:focus, textarea:focus { border-color:var(--teal); background:var(--white); }
   .two-inputs { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
   .btn-submit { width:100%; background:var(--teal); color:var(--white); border:none; padding:13px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; cursor:pointer; transition:all 0.2s; margin-top:8px; box-shadow:0 4px 16px rgba(14,165,160,0.25); }
   .btn-submit:hover { background:var(--teal-dark); transform:translateY(-1px); }
   .selected-doc-info { background:var(--light-teal); border:1px solid rgba(14,165,160,0.3); border-radius:10px; padding:12px 16px; margin-bottom:16px; font-size:0.875rem; color:var(--text); display:none; }
   .selected-doc-info.show { display:block; }
+
+  /* INTAKE FORM PANEL */
+  .intake-panel { display:none; }
+  .intake-panel.show { display:block; }
+  .intake-banner { background:linear-gradient(135deg,var(--light-teal),#e8f4fd); border:1px solid rgba(14,165,160,0.25); border-radius:12px; padding:12px 16px; margin-bottom:16px; font-size:0.82rem; color:var(--teal); font-family:'Syne',sans-serif; font-weight:600; }
+  .radio-group { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .radio-option { display:flex; align-items:center; gap:6px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:7px 12px; cursor:pointer; transition:all 0.2s; font-size:0.83rem; }
+  .radio-option:hover { border-color:var(--teal); background:var(--light-teal); }
+  .radio-option input[type=radio], .radio-option input[type=checkbox] { width:auto; margin:0; accent-color:var(--teal); }
+  .checkbox-group { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
 
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center; }
   .modal-overlay.show { display:flex; }
@@ -60,7 +71,8 @@
   .modal-btn { background:var(--teal); color:var(--white); border:none; padding:12px 28px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; width:100%; font-size:0.95rem; }
 
   footer { background:#1a2332; color:#94a3b8; padding:24px 5vw; text-align:center; font-size:0.8rem; }
-  @media(max-width:768px) { .two-col,.two-inputs { grid-template-columns:1fr; } }
+  @media(max-width:900px) { .three-col { grid-template-columns:1fr; } }
+  @media(max-width:768px) { .two-inputs { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -81,11 +93,15 @@
 <main>
   <div class="page-label">OPD Booking</div>
   <h1>📅 Book an Appointment</h1>
-  <div class="two-col">
+  <div class="three-col">
+
+    <!-- COLUMN 1: Doctor Selection -->
     <div class="panel">
       <div class="panel-title">🩺 Select a Doctor</div>
       <div id="doctorList">Loading doctors...</div>
     </div>
+
+    <!-- COLUMN 2: Patient Details -->
     <div class="panel">
       <div class="panel-title">📋 Patient Details</div>
       <div class="selected-doc-info" id="selectedDocInfo">
@@ -110,6 +126,14 @@
       </div>
       <button class="btn-submit" onclick="bookAppointment()">📅 Confirm Appointment</button>
     </div>
+
+    <!-- COLUMN 3: Specialty Intake Form -->
+    <div class="panel intake-panel" id="intakePanel">
+      <div class="panel-title" id="intakeTitle">🏥 Medical Intake Form</div>
+      <div class="intake-banner" id="intakeBanner">Please answer a few questions for your doctor.</div>
+      <div id="intakeFields"></div>
+    </div>
+
   </div>
 </main>
 
@@ -127,7 +151,7 @@
   </div>
 </div>
 
-<footer>© MedEase OPD Management System · Vasai, Maharashtra</footer>
+<footer>© MedEase OPD Management System</footer>
 
 <script>
   let selectedDoctor = null;
@@ -137,6 +161,139 @@
   document.getElementById('apptDate').min = today;
   document.getElementById('apptDate').value = today;
 
+  // ── SPECIALTY INTAKE FORMS ─────────────────────────────────────────────────
+  const intakeForms = {
+    "Cardiology": {
+      icon: "❤️",
+      banner: "Heart-related intake form for Dr. Priya Sharma (Cardiologist)",
+      fields: [
+        { id:"chest_pain", label:"Do you experience chest pain or pressure?", type:"radio", options:["Yes – at rest","Yes – during activity","Occasionally","No"] },
+        { id:"breathlessness", label:"Do you feel breathless while walking or climbing stairs?", type:"radio", options:["Yes, often","Sometimes","Rarely","No"] },
+        { id:"palpitations", label:"Do you notice irregular or fast heartbeats (palpitations)?", type:"radio", options:["Yes, frequently","Occasionally","No"] },
+        { id:"bp_history", label:"Do you have a history of high blood pressure?", type:"radio", options:["Yes, on medication","Yes, uncontrolled","No","Not sure"] },
+        { id:"diabetes", label:"Do you have diabetes?", type:"radio", options:["Yes, Type 1","Yes, Type 2","No","Pre-diabetic"] },
+        { id:"smoking", label:"Do you smoke or consume tobacco?", type:"radio", options:["Yes, currently","Previously","Never"] },
+        { id:"family_heart", label:"Family history of heart disease?", type:"radio", options:["Yes (parent/sibling)","Yes (grandparent)","No","Unknown"] },
+        { id:"prev_cardiac", label:"Any previous cardiac events? (heart attack, angioplasty, bypass)", type:"radio", options:["Yes","No"] },
+        { id:"current_meds", label:"Current medications (if any)", type:"text", placeholder:"e.g. Amlodipine 5mg, Metformin..." },
+      ]
+    },
+    "Orthopedics": {
+      icon: "🦴",
+      banner: "Bone & joint intake form for Dr. Rahul Mehta (Orthopaedic Surgeon)",
+      fields: [
+        { id:"pain_location", label:"Where is your pain / problem?", type:"checkbox", options:["Knee","Hip","Shoulder","Back","Spine","Ankle","Wrist","Neck","Elbow","Other"] },
+        { id:"pain_duration", label:"How long have you had this problem?", type:"radio", options:["Less than 1 week","1–4 weeks","1–6 months","More than 6 months","Years"] },
+        { id:"pain_type", label:"Describe the pain", type:"radio", options:["Sharp & sudden","Dull & constant","Throbbing","Burning","Stiffness only"] },
+        { id:"injury", label:"Was there a recent injury or fall?", type:"radio", options:["Yes","No","Not sure"] },
+        { id:"mobility", label:"How does the pain affect your mobility?", type:"radio", options:["Cannot walk/move","Difficulty walking","Difficulty with stairs","Minor limitation","No limitation"] },
+        { id:"swelling", label:"Do you have swelling or redness over the affected area?", type:"radio", options:["Yes, significant","Mild","No"] },
+        { id:"prev_surgery", label:"Any previous orthopaedic surgery?", type:"radio", options:["Yes","No"] },
+        { id:"xray_done", label:"Have you had X-ray/MRI done for this problem?", type:"radio", options:["Yes, bringing reports","Yes, no reports","No"] },
+        { id:"ortho_meds", label:"Current pain medications (if any)", type:"text", placeholder:"e.g. Diclofenac, Pantoprazole..." },
+      ]
+    },
+    "Dermatology": {
+      icon: "🧴",
+      banner: "Skin intake form for Dr. Sneha Kulkarni (Dermatologist)",
+      fields: [
+        { id:"skin_concern", label:"What is your main skin concern?", type:"checkbox", options:["Acne","Rash/Redness","Itching","Hair loss","Pigmentation","Dry skin","Warts","Fungal infection","Eczema","Other"] },
+        { id:"duration_skin", label:"How long have you had this problem?", type:"radio", options:["A few days","1–4 weeks","1–6 months","More than 6 months"] },
+        { id:"skin_spread", label:"Is the problem spreading or worsening?", type:"radio", options:["Yes, rapidly","Slowly","Stable","Improving"] },
+        { id:"itching", label:"Do you experience itching?", type:"radio", options:["Severe","Moderate","Mild","None"] },
+        { id:"allergy", label:"Do you have known allergies (food/cosmetics/medicine)?", type:"radio", options:["Yes","No","Not sure"] },
+        { id:"allergy_detail", label:"If yes, specify allergy triggers", type:"text", placeholder:"e.g. dust, perfume, penicillin..." },
+        { id:"topical_used", label:"Have you applied any cream or medicine on it?", type:"radio", options:["Yes – prescribed","Yes – self-applied","No"] },
+        { id:"family_skin", label:"Family history of skin conditions (eczema, psoriasis)?", type:"radio", options:["Yes","No","Unknown"] },
+      ]
+    },
+    "Neurology": {
+      icon: "🧠",
+      banner: "Neurological intake form for Dr. Amit Desai (Neurologist)",
+      fields: [
+        { id:"neuro_symptom", label:"What is your main symptom?", type:"checkbox", options:["Headache","Dizziness","Memory loss","Tremors","Seizures","Weakness (arm/leg)","Numbness/tingling","Vision problems","Difficulty speaking","Fainting"] },
+        { id:"headache_freq", label:"If headache: how often?", type:"radio", options:["Daily","Several times a week","Weekly","Occasionally","No headache"] },
+        { id:"seizure_history", label:"Have you ever had a seizure or fit?", type:"radio", options:["Yes, diagnosed epilepsy","Yes, once/twice","No"] },
+        { id:"stroke_symptoms", label:"Have you ever had sudden weakness, speech difficulty, or facial drooping?", type:"radio", options:["Yes, currently","Yes, in the past","No"] },
+        { id:"neuro_duration", label:"How long have symptoms been present?", type:"radio", options:["Just started (today)","Few days","Weeks","Months","Years"] },
+        { id:"memory_concern", label:"Are you or family concerned about memory or confusion?", type:"radio", options:["Yes, significant","Mildly","No"] },
+        { id:"neuro_meds", label:"Any current neurological medications?", type:"text", placeholder:"e.g. Levetiracetam, Propranolol..." },
+        { id:"prev_neuro", label:"Previous neurological diagnosis?", type:"radio", options:["Epilepsy","Migraine","Parkinson's","Stroke","None","Other"] },
+      ]
+    },
+    "Pediatrics": {
+      icon: "👶",
+      banner: "Child health intake form for Dr. Pooja Joshi (Paediatrician)",
+      fields: [
+        { id:"child_age", label:"Child's exact age", type:"text", placeholder:"e.g. 3 years 2 months" },
+        { id:"chief_complaint", label:"Main reason for visit today", type:"radio", options:["Fever","Cold/Cough","Diarrhoea/Vomiting","Skin rash","Vaccination","Poor growth","Behaviour concern","General checkup","Other"] },
+        { id:"fever_present", label:"Does the child have fever right now?", type:"radio", options:["Yes, above 102°F","Yes, mild (99–101°F)","No"] },
+        { id:"duration_child", label:"How long has the child been unwell?", type:"radio", options:["Today","2–3 days","4–7 days","More than a week"] },
+        { id:"vaccination", label:"Are vaccinations up to date?", type:"radio", options:["Yes, fully vaccinated","Partially done","No/Not sure"] },
+        { id:"birth_history", label:"Any complications at birth?", type:"radio", options:["Premature birth","Low birth weight","NICU admission","Normal birth","Not sure"] },
+        { id:"allergies_child", label:"Known allergies (food/medicine)?", type:"radio", options:["Yes","No","Not sure"] },
+        { id:"allergy_detail_child", label:"If yes, specify", type:"text", placeholder:"e.g. penicillin, milk protein..." },
+        { id:"prev_hosp", label:"Any previous hospitalisations?", type:"radio", options:["Yes","No"] },
+      ]
+    },
+    "General Medicine": {
+      icon: "🩺",
+      banner: "General health intake form for Dr. Vijay Nair (General Physician)",
+      fields: [
+        { id:"gp_complaint", label:"What brings you in today?", type:"checkbox", options:["Fever","Cold/Flu","Cough","Fatigue","Body ache","Digestive issues","Diabetes check","Thyroid check","BP check","General checkup","Other"] },
+        { id:"fever_gp", label:"Do you have fever currently?", type:"radio", options:["Yes, high (>102°F)","Yes, mild","No"] },
+        { id:"symptom_duration_gp", label:"How long have you had these symptoms?", type:"radio", options:["Today","2–3 days","4–7 days","More than a week","Chronic/ongoing"] },
+        { id:"diabetes_gp", label:"Do you have diabetes?", type:"radio", options:["Yes, on medication","Yes, diet-controlled","No","Getting tested today"] },
+        { id:"bp_gp", label:"Do you have blood pressure issues?", type:"radio", options:["Yes, high BP","Yes, low BP","No","Unknown"] },
+        { id:"thyroid_gp", label:"Do you have thyroid disease?", type:"radio", options:["Yes, hypothyroid","Yes, hyperthyroid","No","Getting tested"] },
+        { id:"gp_meds", label:"Current medications (if any)", type:"text", placeholder:"e.g. Metformin, Levothyroxine..." },
+        { id:"smoking_gp", label:"Do you smoke or consume alcohol?", type:"radio", options:["Smoke only","Alcohol only","Both","Neither"] },
+      ]
+    }
+  };
+
+  function renderIntakeForm(specialty) {
+    const form = intakeForms[specialty];
+    if (!form) return;
+    document.getElementById('intakePanel').classList.add('show');
+    document.getElementById('intakeTitle').innerHTML = form.icon + ' ' + specialty + ' Intake Form';
+    document.getElementById('intakeBanner').textContent = form.banner;
+    const container = document.getElementById('intakeFields');
+    container.innerHTML = form.fields.map(f => {
+      let inputHTML = '';
+      if (f.type === 'radio') {
+        inputHTML = `<div class="radio-group">${f.options.map(o => `<label class="radio-option"><input type="radio" name="${f.id}" value="${o}"> ${o}</label>`).join('')}</div>`;
+      } else if (f.type === 'checkbox') {
+        inputHTML = `<div class="checkbox-group">${f.options.map(o => `<label class="radio-option"><input type="checkbox" name="${f.id}" value="${o}"> ${o}</label>`).join('')}</div>`;
+      } else if (f.type === 'text') {
+        inputHTML = `<input type="text" id="${f.id}" placeholder="${f.placeholder || ''}">`;
+      } else if (f.type === 'textarea') {
+        inputHTML = `<textarea id="${f.id}" placeholder="${f.placeholder || ''}"></textarea>`;
+      }
+      return `<div class="form-group"><label>${f.label}</label>${inputHTML}</div>`;
+    }).join('');
+  }
+
+  function collectIntakeData(specialty) {
+    const form = intakeForms[specialty];
+    if (!form) return {};
+    const data = {};
+    form.fields.forEach(f => {
+      if (f.type === 'radio') {
+        const checked = document.querySelector(`input[name="${f.id}"]:checked`);
+        data[f.id] = checked ? checked.value : '';
+      } else if (f.type === 'checkbox') {
+        const checked = [...document.querySelectorAll(`input[name="${f.id}"]:checked`)];
+        data[f.id] = checked.map(c => c.value).join(', ');
+      } else {
+        const el = document.getElementById(f.id);
+        data[f.id] = el ? el.value : '';
+      }
+    });
+    return data;
+  }
+
+  // ── TIME SLOTS ─────────────────────────────────────────────────────────────
   function filterTimeSlots() {
     const selectedDate = document.getElementById('apptDate').value;
     const slotSelect = document.getElementById('timeSlot');
@@ -160,6 +317,7 @@
   }
   filterTimeSlots();
 
+  // ── LOAD DOCTORS ──────────────────────────────────────────────────────────
   fetch('/api/doctors').then(r=>r.json()).then(docs => {
     document.getElementById('doctorList').innerHTML = docs.map(d => `
       <div class="doctor-card" onclick="selectDoc(${d.id},'${d.name}','${d.specialty}',${d.fee},${d.available})" id="doc-${d.id}">
@@ -184,6 +342,7 @@
     document.getElementById('selectedDocInfo').classList.add('show');
     document.getElementById('selDocName').textContent = name + ' (' + spec + ')';
     document.getElementById('selDocFee').textContent = '₹' + fee;
+    renderIntakeForm(spec);
   }
 
   function bookAppointment() {
@@ -192,9 +351,15 @@
     const date = document.getElementById('apptDate').value;
     const slot = document.getElementById('timeSlot').value;
     if (!name || !phone || !date || !slot || !selectedDoctor) { alert('Please fill all fields and select a doctor.'); return; }
+    const intakeData = collectIntakeData(selectedDoctor.spec);
     fetch('/api/appointments', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ patient_name:name, patient_phone:phone, doctor_id:selectedDoctor.id, doctor_name:selectedDoctor.name, date, time_slot:slot })
+      body: JSON.stringify({
+        patient_name:name, patient_phone:phone,
+        doctor_id:selectedDoctor.id, doctor_name:selectedDoctor.name,
+        date, time_slot:slot,
+        intake_data: JSON.stringify(intakeData)
+      })
     }).then(r=>r.json()).then(d => {
       if(!d.success) { alert('❌ ' + d.message); return; }
       document.getElementById('tokenNum').textContent = d.token;
