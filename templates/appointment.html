@@ -14,130 +14,180 @@
   .logo span { color:var(--text); }
   .nav-links { display:flex; gap:4px; align-items:center; }
   .nav-links a { color:var(--muted); text-decoration:none; font-size:0.875rem; padding:7px 14px; border-radius:8px; transition:all 0.2s; }
-  .nav-links a:hover, .nav-links a.active { color:var(--teal); background:var(--light-teal); }
+  .nav-links a:hover,.nav-links a.active { color:var(--teal); background:var(--light-teal); }
   .nav-cta { background:var(--teal) !important; color:var(--white) !important; font-weight:600; }
-
-  main { padding:88px 5vw 60px; max-width:1200px; margin:0 auto; }
+  main { padding:88px 5vw 60px; max-width:960px; margin:0 auto; }
   .page-label { font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--teal); font-family:'Syne',sans-serif; margin-bottom:8px; }
   h1 { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; margin-bottom:28px; color:var(--text); }
-
-  .three-col { display:grid; grid-template-columns:1fr 1.2fr 1.1fr; gap:20px; }
-  .panel { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-  .panel-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:16px; color:var(--teal); }
-
-  .doctor-card { background:var(--bg); border:2px solid var(--border); border-radius:12px; padding:16px; margin-bottom:12px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:14px; }
-  .doctor-card:hover { border-color:var(--teal); background:var(--light-teal); }
-  .doctor-card.selected { border-color:var(--teal); background:var(--light-teal); }
-  .doctor-avatar { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--teal),#0ea5e9); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
-  .doctor-info { flex:1; }
-  .doctor-name { font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; color:var(--text); }
-  .doctor-spec { font-size:0.8rem; color:var(--muted); }
-  .doctor-meta { display:flex; align-items:center; gap:8px; margin-top:4px; flex-wrap:wrap; }
-  .badge { font-size:0.7rem; padding:2px 8px; border-radius:999px; font-weight:600; }
+  /* STEPS */
+  .steps { display:flex; align-items:center; margin-bottom:32px; }
+  .step { display:flex; align-items:center; gap:8px; }
+  .step-num { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; font-size:0.78rem; border:2px solid var(--border); color:var(--muted); background:var(--white); transition:all 0.3s; flex-shrink:0; }
+  .step-num.active { background:var(--teal); color:white; border-color:var(--teal); }
+  .step-num.done { background:#1a2332; color:white; border-color:#1a2332; }
+  .step-label { font-size:0.78rem; color:var(--muted); font-family:'Syne',sans-serif; font-weight:600; white-space:nowrap; }
+  .step-label.active { color:var(--teal); }
+  .step-label.done { color:#1a2332; }
+  .step-line { flex:1; height:2px; background:var(--border); margin:0 10px; min-width:16px; transition:background 0.3s; }
+  .step-line.done { background:#1a2332; }
+  /* PANELS */
+  .step-panel { display:none; }
+  .step-panel.active { display:block; }
+  /* DOCTOR GRID */
+  .doctor-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .doctor-card { background:var(--white); border:2px solid var(--border); border-radius:12px; padding:14px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:12px; }
+  .doctor-card:hover { border-color:var(--teal); }
+  .doctor-card.selected { border-color:#1a2332; background:#f8fafc; }
+  .doctor-avatar { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,var(--teal),#0ea5e9); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+  .doctor-name { font-family:'Syne',sans-serif; font-weight:700; font-size:0.88rem; color:var(--text); }
+  .doctor-spec { font-size:0.76rem; color:var(--muted); }
+  .doctor-meta { display:flex; gap:6px; margin-top:4px; flex-wrap:wrap; align-items:center; }
+  .badge { font-size:0.66rem; padding:2px 7px; border-radius:999px; font-weight:600; }
   .badge-avail { background:#dcfce7; color:#16a34a; border:1px solid #bbf7d0; }
   .badge-busy { background:#fee2e2; color:#dc2626; border:1px solid #fecaca; }
-  .doctor-fee { font-size:0.8rem; color:var(--accent); font-weight:600; }
-  .queue-info { font-size:0.75rem; color:var(--muted); }
-
+  .doctor-fee { font-size:0.76rem; color:var(--accent); font-weight:700; }
+  /* CARD */
+  .card { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:20px; }
+  .card-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1rem; color:var(--text); margin-bottom:20px; padding-bottom:12px; border-bottom:2px solid #f0f4f8; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
   .form-group { margin-bottom:16px; }
-  label { display:block; font-size:0.8rem; color:var(--muted); margin-bottom:6px; font-family:'Syne',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
-  input, select, textarea { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:11px 14px; border-radius:10px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; }
-  textarea { resize:vertical; min-height:72px; }
-  input:focus, select:focus, textarea:focus { border-color:var(--teal); background:var(--white); }
-  .two-inputs { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .btn-submit { width:100%; background:var(--teal); color:var(--white); border:none; padding:13px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; cursor:pointer; transition:all 0.2s; margin-top:8px; box-shadow:0 4px 16px rgba(14,165,160,0.25); }
-  .btn-submit:hover { background:var(--teal-dark); transform:translateY(-1px); }
-  .selected-doc-info { background:var(--light-teal); border:1px solid rgba(14,165,160,0.3); border-radius:10px; padding:12px 16px; margin-bottom:16px; font-size:0.875rem; color:var(--text); display:none; }
-  .selected-doc-info.show { display:block; }
-
-  /* INTAKE FORM PANEL */
-  .intake-panel { display:none; }
-  .intake-panel.show { display:block; }
-  .intake-banner { background:linear-gradient(135deg,var(--light-teal),#e8f4fd); border:1px solid rgba(14,165,160,0.25); border-radius:12px; padding:12px 16px; margin-bottom:16px; font-size:0.82rem; color:var(--teal); font-family:'Syne',sans-serif; font-weight:600; }
-  .radio-group { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
-  .radio-option { display:flex; align-items:center; gap:6px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:7px 12px; cursor:pointer; transition:all 0.2s; font-size:0.83rem; }
-  .radio-option:hover { border-color:var(--teal); background:var(--light-teal); }
-  .radio-option input[type=radio], .radio-option input[type=checkbox] { width:auto; margin:0; accent-color:var(--teal); }
-  .checkbox-group { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
-
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center; }
+  label { display:block; font-size:0.76rem; font-weight:700; color:#1a2332; margin-bottom:6px; font-family:'Syne',sans-serif; text-transform:uppercase; letter-spacing:0.5px; }
+  label .req { color:#dc2626; margin-left:2px; }
+  label .hint { color:var(--muted); font-weight:400; text-transform:none; letter-spacing:0; font-size:0.72rem; margin-left:4px; }
+  input,select,textarea { width:100%; background:#fff; border:1.5px solid #d1d5db; color:var(--text); padding:10px 13px; border-radius:8px; font-size:0.9rem; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; }
+  textarea { resize:vertical; min-height:68px; }
+  input:focus,select:focus,textarea:focus { border-color:#1a2332; }
+  input.error,select.error { border-color:#dc2626; background:#fff5f5; }
+  /* SELECTED BANNER */
+  .sel-banner { background:#1a2332; color:white; border-radius:10px; padding:12px 18px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; font-size:0.88rem; }
+  .sel-banner .sel-name { font-family:'Syne',sans-serif; font-weight:700; }
+  .sel-banner .sel-fee { background:rgba(255,255,255,0.15); padding:3px 10px; border-radius:999px; font-size:0.78rem; }
+  /* INTAKE — BLACK & WHITE */
+  .intake-q { margin-bottom:20px; border-bottom:1px solid #f0f4f8; padding-bottom:18px; }
+  .intake-q:last-child { border-bottom:none; padding-bottom:0; }
+  .intake-q .iq-label { font-size:0.88rem; font-weight:600; color:#1a2332; margin-bottom:10px; display:block; line-height:1.4; }
+  .intake-q .iq-label .req { color:#dc2626; }
+  .opts { display:flex; flex-wrap:wrap; gap:7px; }
+  .opt { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border:1.5px solid #d1d5db; border-radius:6px; font-size:0.8rem; cursor:pointer; background:#fff; color:#374151; transition:all 0.15s; font-family:'DM Sans',sans-serif; user-select:none; }
+  .opt:hover { border-color:#1a2332; }
+  .opt.sel { background:#1a2332; color:#fff; border-color:#1a2332; }
+  .opt input { display:none; }
+  .intake-text { width:100%; border:1.5px solid #d1d5db; border-radius:8px; padding:9px 13px; font-size:0.875rem; font-family:'DM Sans',sans-serif; outline:none; margin-top:2px; }
+  .intake-text:focus { border-color:#1a2332; }
+  /* BUTTONS */
+  .btn-row { display:flex; gap:12px; margin-top:20px; }
+  .btn-next { background:#1a2332; color:white; border:none; padding:12px 28px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.92rem; cursor:pointer; transition:all 0.2s; }
+  .btn-next:hover { background:#0f172a; }
+  .btn-back { background:transparent; color:var(--muted); border:1.5px solid var(--border); padding:12px 22px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.92rem; cursor:pointer; transition:all 0.2s; }
+  .btn-back:hover { border-color:#1a2332; color:#1a2332; }
+  .btn-confirm { background:var(--teal); color:white; border:none; padding:12px 28px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.92rem; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 16px rgba(14,165,160,0.3); }
+  .btn-confirm:hover { background:var(--teal-dark); }
+  /* ERROR */
+  .err { background:#fff5f5; border:1px solid #fecaca; border-radius:8px; padding:10px 16px; font-size:0.84rem; color:#dc2626; margin-bottom:14px; display:none; }
+  .err.show { display:block; }
+  /* MODAL */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:999; align-items:center; justify-content:center; }
   .modal-overlay.show { display:flex; }
-  .modal { background:var(--white); border:1px solid var(--border); border-radius:20px; padding:40px; max-width:420px; width:90%; text-align:center; box-shadow:0 24px 60px rgba(0,0,0,0.15); }
+  .modal { background:var(--white); border-radius:20px; padding:40px; max-width:420px; width:90%; text-align:center; box-shadow:0 24px 60px rgba(0,0,0,0.15); }
   .modal-icon { font-size:3rem; margin-bottom:16px; }
   .modal-title { font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:800; margin-bottom:8px; color:var(--text); }
-  .token-display { background:var(--bg); border:2px dashed var(--teal); border-radius:12px; padding:20px; margin:20px 0; }
+  .token-display { background:#f8fafc; border:2px dashed var(--teal); border-radius:12px; padding:20px; margin:18px 0; }
   .token-number { font-family:'Syne',sans-serif; font-size:2.5rem; font-weight:800; color:var(--teal); }
-  .token-label { font-size:0.8rem; color:var(--muted); }
-  .modal-btn { background:var(--teal); color:var(--white); border:none; padding:12px 28px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; width:100%; font-size:0.95rem; }
-
+  .token-label { font-size:0.8rem; color:var(--muted); margin-top:4px; }
+  .email-note { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px 14px; font-size:0.82rem; color:#16a34a; margin-bottom:16px; display:none; }
+  .modal-btn { background:var(--teal); color:white; border:none; padding:12px 28px; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; width:100%; font-size:0.95rem; }
   footer { background:#1a2332; color:#94a3b8; padding:24px 5vw; text-align:center; font-size:0.8rem; }
-  @media(max-width:900px) { .three-col { grid-template-columns:1fr; } }
-  @media(max-width:768px) { .two-inputs { grid-template-columns:1fr; } }
+  @media(max-width:700px) { .doctor-grid,.form-row { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 <nav>
   <div class="logo">Med<span>Ease</span></div>
   <div class="nav-links">
-    <a href="/">Home</a>
-    <a href="/appointment" class="active">Appointments</a>
-    <a href="/queue">Queue</a>
-    <a href="/payment">Payment</a>
-    <a href="/admin">Admin</a>
-    <a href="/about">About Us</a>
-    <a href="/chatbot">💬 Chatbot</a>
+    <a href="/">Home</a><a href="/appointment" class="active">Appointments</a><a href="/queue">Queue</a><a href="/payment">Payment</a><a href="/admin">Admin</a><a href="/about">About Us</a><a href="/chatbot">💬 Chatbot</a>
     <a href="/appointment" class="nav-cta">Book Now</a>
   </div>
 </nav>
-
 <main>
   <div class="page-label">OPD Booking</div>
   <h1>📅 Book an Appointment</h1>
-  <div class="three-col">
+  <!-- STEP INDICATOR -->
+  <div class="steps">
+    <div class="step"><div class="step-num active" id="snum1">1</div><div class="step-label active" id="slbl1">Select Doctor</div></div>
+    <div class="step-line" id="sline1"></div>
+    <div class="step"><div class="step-num" id="snum2">2</div><div class="step-label" id="slbl2">Your Details</div></div>
+    <div class="step-line" id="sline2"></div>
+    <div class="step"><div class="step-num" id="snum3">3</div><div class="step-label" id="slbl3">Medical Form</div></div>
+    <div class="step-line" id="sline3"></div>
+    <div class="step"><div class="step-num" id="snum4">4</div><div class="step-label" id="slbl4">Confirm</div></div>
+  </div>
 
-    <!-- COLUMN 1: Doctor Selection -->
-    <div class="panel">
-      <div class="panel-title">🩺 Select a Doctor</div>
-      <div id="doctorList">Loading doctors...</div>
+  <!-- STEP 1 -->
+  <div class="step-panel active" id="panel1">
+    <div class="card">
+      <div class="card-title">🩺 Choose a Doctor</div>
+      <div class="doctor-grid" id="doctorList">Loading...</div>
     </div>
+    <div class="err" id="err1">Please select a doctor to continue.</div>
+    <div class="btn-row"><button class="btn-next" onclick="goStep(2)">Next → Patient Details</button></div>
+  </div>
 
-    <!-- COLUMN 2: Patient Details -->
-    <div class="panel">
-      <div class="panel-title">📋 Patient Details</div>
-      <div class="selected-doc-info" id="selectedDocInfo">
-        Selected: <strong id="selDocName">–</strong> · Fee: <span id="selDocFee">–</span>
-      </div>
-      <div class="form-group two-inputs">
-        <div><label>Full Name</label><input type="text" id="patientName" placeholder="e.g. Rahul Sharma"></div>
-        <div><label>Phone Number</label><input type="tel" id="patientPhone" placeholder="9876543210"></div>
+  <!-- STEP 2 -->
+  <div class="step-panel" id="panel2">
+    <div class="sel-banner"><span class="sel-name" id="selName2">–</span><span class="sel-fee" id="selFee2">–</span></div>
+    <div class="card">
+      <div class="card-title">👤 Patient Details</div>
+      <div class="err" id="err2"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Full Name <span class="req">*</span></label><input type="text" id="patientName" placeholder="e.g. Rahul Sharma"></div>
+        <div class="form-group"><label>Phone Number <span class="req">*</span></label><input type="tel" id="patientPhone" placeholder="9876543210" maxlength="10"></div>
       </div>
       <div class="form-group">
-        <label>Email Address <span style="color:#16a34a;font-size:0.72rem;font-weight:600">✉️ Reminders will be sent here</span></label>
+        <label>Email Address <span class="req">*</span> <span class="hint">— reminder emails will be sent here</span></label>
         <input type="email" id="patientEmail" placeholder="e.g. rahul@gmail.com">
       </div>
-      <div class="form-group two-inputs">
-        <div><label>Age</label><input type="number" id="patientAge" placeholder="25" min="1" max="120"></div>
-        <div><label>Gender</label>
-          <select id="patientGender">
-            <option value="">Select</option>
-            <option>Male</option><option>Female</option><option>Other</option>
-          </select>
+      <div class="form-row">
+        <div class="form-group"><label>Age <span class="req">*</span></label><input type="number" id="patientAge" placeholder="25" min="1" max="120"></div>
+        <div class="form-group"><label>Gender <span class="req">*</span></label>
+          <select id="patientGender"><option value="">Select gender</option><option>Male</option><option>Female</option><option>Other</option></select>
         </div>
       </div>
-      <div class="form-group two-inputs">
-        <div><label>Date</label><input type="date" id="apptDate" onchange="filterTimeSlots()"></div>
-        <div><label>Time Slot</label><select id="timeSlot"><option value="">Select</option></select></div>
+      <div class="form-row">
+        <div class="form-group"><label>Appointment Date <span class="req">*</span></label><input type="date" id="apptDate" onchange="filterTimeSlots()"></div>
+        <div class="form-group"><label>Time Slot <span class="req">*</span></label><select id="timeSlot"><option value="">Select time slot</option></select></div>
       </div>
-      <button class="btn-submit" onclick="bookAppointment()">📅 Confirm Appointment</button>
     </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(1)">← Back</button>
+      <button class="btn-next" onclick="goStep(3)">Next → Medical Form</button>
+    </div>
+  </div>
 
-    <!-- COLUMN 3: Specialty Intake Form -->
-    <div class="panel intake-panel" id="intakePanel">
-      <div class="panel-title" id="intakeTitle">🏥 Medical Intake Form</div>
-      <div class="intake-banner" id="intakeBanner">Please answer a few questions for your doctor.</div>
+  <!-- STEP 3 -->
+  <div class="step-panel" id="panel3">
+    <div class="sel-banner"><span class="sel-name" id="selName3">–</span><span class="sel-fee" id="selFee3">–</span></div>
+    <div class="card">
+      <div class="card-title" id="intakeTitle">🏥 Medical Intake Form</div>
+      <p style="font-size:0.84rem;color:var(--muted);margin-bottom:20px" id="intakeSub">Please answer all questions. Fields marked <span style="color:#dc2626">*</span> are required.</p>
+      <div class="err" id="err3"></div>
       <div id="intakeFields"></div>
     </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(2)">← Back</button>
+      <button class="btn-next" onclick="goStep(4)">Next → Review & Confirm</button>
+    </div>
+  </div>
 
+  <!-- STEP 4 -->
+  <div class="step-panel" id="panel4">
+    <div class="card">
+      <div class="card-title">✅ Review Your Appointment</div>
+      <div id="reviewContent"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(3)">← Back</button>
+      <button class="btn-confirm" onclick="bookAppointment()">📅 Confirm & Book</button>
+    </div>
   </div>
 </main>
 
@@ -145,12 +195,13 @@
   <div class="modal">
     <div class="modal-icon">✅</div>
     <div class="modal-title">Appointment Confirmed!</div>
-    <p style="color:var(--muted);font-size:0.9rem">Your token number is:</p>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:4px">Your token number is:</p>
     <div class="token-display">
       <div class="token-number" id="tokenNum">–</div>
       <div class="token-label">Show this at the reception</div>
     </div>
-    <p style="color:var(--muted);font-size:0.8rem;margin-bottom:20px" id="apptSummary"></p>
+    <p style="color:var(--muted);font-size:0.82rem;margin-bottom:14px" id="apptSummary"></p>
+    <div class="email-note" id="emailNote">✉️ Reminders will be sent to <strong id="emailShown"></strong> at 12hrs, 5hrs, 2hrs &amp; 1hr before your appointment.</div>
     <button class="modal-btn" onclick="closeModal()">Done</button>
   </div>
 </div>
@@ -158,222 +209,245 @@
 <footer>© MedEase OPD Management System</footer>
 
 <script>
-  let selectedDoctor = null;
-  const allSlots = ["8:00 AM","8:30 AM","9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","6:00 PM"];
-  const now = new Date();
-  const today = now.toISOString().split('T')[0];
-  document.getElementById('apptDate').min = today;
-  document.getElementById('apptDate').value = today;
+let selectedDoctor = null;
+let currentStep = 1;
+const allSlots = ["8:00 AM","8:30 AM","9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","4:00 PM","4:30 PM","5:00 PM","5:30 PM","6:00 PM"];
+const now = new Date();
+const today = now.toISOString().split('T')[0];
+document.getElementById('apptDate').min = today;
+document.getElementById('apptDate').value = today;
+filterTimeSlots();
 
-  // ── SPECIALTY INTAKE FORMS ─────────────────────────────────────────────────
-  const intakeForms = {
-    "Cardiology": {
-      icon: "❤️",
-      banner: "Heart-related intake form for Dr. Priya Sharma (Cardiologist)",
-      fields: [
-        { id:"chest_pain", label:"Do you experience chest pain or pressure?", type:"radio", options:["Yes – at rest","Yes – during activity","Occasionally","No"] },
-        { id:"breathlessness", label:"Do you feel breathless while walking or climbing stairs?", type:"radio", options:["Yes, often","Sometimes","Rarely","No"] },
-        { id:"palpitations", label:"Do you notice irregular or fast heartbeats (palpitations)?", type:"radio", options:["Yes, frequently","Occasionally","No"] },
-        { id:"bp_history", label:"Do you have a history of high blood pressure?", type:"radio", options:["Yes, on medication","Yes, uncontrolled","No","Not sure"] },
-        { id:"diabetes", label:"Do you have diabetes?", type:"radio", options:["Yes, Type 1","Yes, Type 2","No","Pre-diabetic"] },
-        { id:"smoking", label:"Do you smoke or consume tobacco?", type:"radio", options:["Yes, currently","Previously","Never"] },
-        { id:"family_heart", label:"Family history of heart disease?", type:"radio", options:["Yes (parent/sibling)","Yes (grandparent)","No","Unknown"] },
-        { id:"prev_cardiac", label:"Any previous cardiac events? (heart attack, angioplasty, bypass)", type:"radio", options:["Yes","No"] },
-        { id:"current_meds", label:"Current medications (if any)", type:"text", placeholder:"e.g. Amlodipine 5mg, Metformin..." },
-      ]
-    },
-    "Orthopedics": {
-      icon: "🦴",
-      banner: "Bone & joint intake form for Dr. Rahul Mehta (Orthopaedic Surgeon)",
-      fields: [
-        { id:"pain_location", label:"Where is your pain / problem?", type:"checkbox", options:["Knee","Hip","Shoulder","Back","Spine","Ankle","Wrist","Neck","Elbow","Other"] },
-        { id:"pain_duration", label:"How long have you had this problem?", type:"radio", options:["Less than 1 week","1–4 weeks","1–6 months","More than 6 months","Years"] },
-        { id:"pain_type", label:"Describe the pain", type:"radio", options:["Sharp & sudden","Dull & constant","Throbbing","Burning","Stiffness only"] },
-        { id:"injury", label:"Was there a recent injury or fall?", type:"radio", options:["Yes","No","Not sure"] },
-        { id:"mobility", label:"How does the pain affect your mobility?", type:"radio", options:["Cannot walk/move","Difficulty walking","Difficulty with stairs","Minor limitation","No limitation"] },
-        { id:"swelling", label:"Do you have swelling or redness over the affected area?", type:"radio", options:["Yes, significant","Mild","No"] },
-        { id:"prev_surgery", label:"Any previous orthopaedic surgery?", type:"radio", options:["Yes","No"] },
-        { id:"xray_done", label:"Have you had X-ray/MRI done for this problem?", type:"radio", options:["Yes, bringing reports","Yes, no reports","No"] },
-        { id:"ortho_meds", label:"Current pain medications (if any)", type:"text", placeholder:"e.g. Diclofenac, Pantoprazole..." },
-      ]
-    },
-    "Dermatology": {
-      icon: "🧴",
-      banner: "Skin intake form for Dr. Sneha Kulkarni (Dermatologist)",
-      fields: [
-        { id:"skin_concern", label:"What is your main skin concern?", type:"checkbox", options:["Acne","Rash/Redness","Itching","Hair loss","Pigmentation","Dry skin","Warts","Fungal infection","Eczema","Other"] },
-        { id:"duration_skin", label:"How long have you had this problem?", type:"radio", options:["A few days","1–4 weeks","1–6 months","More than 6 months"] },
-        { id:"skin_spread", label:"Is the problem spreading or worsening?", type:"radio", options:["Yes, rapidly","Slowly","Stable","Improving"] },
-        { id:"itching", label:"Do you experience itching?", type:"radio", options:["Severe","Moderate","Mild","None"] },
-        { id:"allergy", label:"Do you have known allergies (food/cosmetics/medicine)?", type:"radio", options:["Yes","No","Not sure"] },
-        { id:"allergy_detail", label:"If yes, specify allergy triggers", type:"text", placeholder:"e.g. dust, perfume, penicillin..." },
-        { id:"topical_used", label:"Have you applied any cream or medicine on it?", type:"radio", options:["Yes – prescribed","Yes – self-applied","No"] },
-        { id:"family_skin", label:"Family history of skin conditions (eczema, psoriasis)?", type:"radio", options:["Yes","No","Unknown"] },
-      ]
-    },
-    "Neurology": {
-      icon: "🧠",
-      banner: "Neurological intake form for Dr. Amit Desai (Neurologist)",
-      fields: [
-        { id:"neuro_symptom", label:"What is your main symptom?", type:"checkbox", options:["Headache","Dizziness","Memory loss","Tremors","Seizures","Weakness (arm/leg)","Numbness/tingling","Vision problems","Difficulty speaking","Fainting"] },
-        { id:"headache_freq", label:"If headache: how often?", type:"radio", options:["Daily","Several times a week","Weekly","Occasionally","No headache"] },
-        { id:"seizure_history", label:"Have you ever had a seizure or fit?", type:"radio", options:["Yes, diagnosed epilepsy","Yes, once/twice","No"] },
-        { id:"stroke_symptoms", label:"Have you ever had sudden weakness, speech difficulty, or facial drooping?", type:"radio", options:["Yes, currently","Yes, in the past","No"] },
-        { id:"neuro_duration", label:"How long have symptoms been present?", type:"radio", options:["Just started (today)","Few days","Weeks","Months","Years"] },
-        { id:"memory_concern", label:"Are you or family concerned about memory or confusion?", type:"radio", options:["Yes, significant","Mildly","No"] },
-        { id:"neuro_meds", label:"Any current neurological medications?", type:"text", placeholder:"e.g. Levetiracetam, Propranolol..." },
-        { id:"prev_neuro", label:"Previous neurological diagnosis?", type:"radio", options:["Epilepsy","Migraine","Parkinson's","Stroke","None","Other"] },
-      ]
-    },
-    "Pediatrics": {
-      icon: "👶",
-      banner: "Child health intake form for Dr. Pooja Joshi (Paediatrician)",
-      fields: [
-        { id:"child_age", label:"Child's exact age", type:"text", placeholder:"e.g. 3 years 2 months" },
-        { id:"chief_complaint", label:"Main reason for visit today", type:"radio", options:["Fever","Cold/Cough","Diarrhoea/Vomiting","Skin rash","Vaccination","Poor growth","Behaviour concern","General checkup","Other"] },
-        { id:"fever_present", label:"Does the child have fever right now?", type:"radio", options:["Yes, above 102°F","Yes, mild (99–101°F)","No"] },
-        { id:"duration_child", label:"How long has the child been unwell?", type:"radio", options:["Today","2–3 days","4–7 days","More than a week"] },
-        { id:"vaccination", label:"Are vaccinations up to date?", type:"radio", options:["Yes, fully vaccinated","Partially done","No/Not sure"] },
-        { id:"birth_history", label:"Any complications at birth?", type:"radio", options:["Premature birth","Low birth weight","NICU admission","Normal birth","Not sure"] },
-        { id:"allergies_child", label:"Known allergies (food/medicine)?", type:"radio", options:["Yes","No","Not sure"] },
-        { id:"allergy_detail_child", label:"If yes, specify", type:"text", placeholder:"e.g. penicillin, milk protein..." },
-        { id:"prev_hosp", label:"Any previous hospitalisations?", type:"radio", options:["Yes","No"] },
-      ]
-    },
-    "General Medicine": {
-      icon: "🩺",
-      banner: "General health intake form for Dr. Vijay Nair (General Physician)",
-      fields: [
-        { id:"gp_complaint", label:"What brings you in today?", type:"checkbox", options:["Fever","Cold/Flu","Cough","Fatigue","Body ache","Digestive issues","Diabetes check","Thyroid check","BP check","General checkup","Other"] },
-        { id:"fever_gp", label:"Do you have fever currently?", type:"radio", options:["Yes, high (>102°F)","Yes, mild","No"] },
-        { id:"symptom_duration_gp", label:"How long have you had these symptoms?", type:"radio", options:["Today","2–3 days","4–7 days","More than a week","Chronic/ongoing"] },
-        { id:"diabetes_gp", label:"Do you have diabetes?", type:"radio", options:["Yes, on medication","Yes, diet-controlled","No","Getting tested today"] },
-        { id:"bp_gp", label:"Do you have blood pressure issues?", type:"radio", options:["Yes, high BP","Yes, low BP","No","Unknown"] },
-        { id:"thyroid_gp", label:"Do you have thyroid disease?", type:"radio", options:["Yes, hypothyroid","Yes, hyperthyroid","No","Getting tested"] },
-        { id:"gp_meds", label:"Current medications (if any)", type:"text", placeholder:"e.g. Metformin, Levothyroxine..." },
-        { id:"smoking_gp", label:"Do you smoke or consume alcohol?", type:"radio", options:["Smoke only","Alcohol only","Both","Neither"] },
-      ]
+function goStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+  currentStep = n;
+  document.querySelectorAll('.step-panel').forEach((p,i) => p.classList.toggle('active', i+1===n));
+  for (let i=1;i<=4;i++) {
+    const num=document.getElementById('snum'+i), lbl=document.getElementById('slbl'+i);
+    if(i<n){num.className='step-num done';num.textContent='✓';lbl.className='step-label done';}
+    else if(i===n){num.className='step-num active';num.textContent=i;lbl.className='step-label active';}
+    else{num.className='step-num';num.textContent=i;lbl.className='step-label';}
+  }
+  for(let i=1;i<=3;i++) document.getElementById('sline'+i).className='step-line'+(i<n?' done':'');
+  if(n===3) renderIntakeForm(selectedDoctor.spec);
+  if(n===4) renderReview();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showErr(id,msg){const e=document.getElementById(id);e.textContent=msg;e.classList.add('show');}
+function hideErr(id){document.getElementById(id).classList.remove('show');}
+
+function validateStep(step) {
+  if(step===1){
+    if(!selectedDoctor){showErr('err1','Please select a doctor to continue.');return false;}
+    hideErr('err1');return true;
+  }
+  if(step===2){
+    const v={patientName:document.getElementById('patientName').value.trim(),patientPhone:document.getElementById('patientPhone').value.trim(),patientEmail:document.getElementById('patientEmail').value.trim(),patientAge:document.getElementById('patientAge').value,patientGender:document.getElementById('patientGender').value,apptDate:document.getElementById('apptDate').value,timeSlot:document.getElementById('timeSlot').value};
+    const checks=[['patientName',!v.patientName,'Full name is required'],['patientPhone',v.patientPhone.length<10,'Valid 10-digit phone number is required'],['patientEmail',!v.patientEmail||!v.patientEmail.includes('@'),'Valid email address is required'],['patientAge',!v.patientAge,'Age is required'],['patientGender',!v.patientGender,'Gender is required'],['apptDate',!v.apptDate,'Date is required'],['timeSlot',!v.timeSlot,'Time slot is required']];
+    let firstErr=null;
+    checks.forEach(([id,bad,msg])=>{const el=document.getElementById(id);if(bad){el.classList.add('error');if(!firstErr)firstErr=msg;}else el.classList.remove('error');});
+    if(firstErr){showErr('err2','❌ '+firstErr);return false;}
+    hideErr('err2');return true;
+  }
+  if(step===3){
+    const form=intakeForms[selectedDoctor.spec];
+    if(!form)return true;
+    for(const f of form.fields.filter(f=>f.required&&f.type==='radio')){
+      if(!document.querySelector(`input[name="${f.id}"]:checked`)){
+        showErr('err3','❌ Please answer: "'+f.label+'"');
+        const el=document.querySelector(`input[name="${f.id}"]`);
+        if(el)el.closest('.intake-q').scrollIntoView({behavior:'smooth',block:'center'});
+        return false;
+      }
     }
-  };
-
-  function renderIntakeForm(specialty) {
-    const form = intakeForms[specialty];
-    if (!form) return;
-    document.getElementById('intakePanel').classList.add('show');
-    document.getElementById('intakeTitle').innerHTML = form.icon + ' ' + specialty + ' Intake Form';
-    document.getElementById('intakeBanner').textContent = form.banner;
-    const container = document.getElementById('intakeFields');
-    container.innerHTML = form.fields.map(f => {
-      let inputHTML = '';
-      if (f.type === 'radio') {
-        inputHTML = `<div class="radio-group">${f.options.map(o => `<label class="radio-option"><input type="radio" name="${f.id}" value="${o}"> ${o}</label>`).join('')}</div>`;
-      } else if (f.type === 'checkbox') {
-        inputHTML = `<div class="checkbox-group">${f.options.map(o => `<label class="radio-option"><input type="checkbox" name="${f.id}" value="${o}"> ${o}</label>`).join('')}</div>`;
-      } else if (f.type === 'text') {
-        inputHTML = `<input type="text" id="${f.id}" placeholder="${f.placeholder || ''}">`;
-      } else if (f.type === 'textarea') {
-        inputHTML = `<textarea id="${f.id}" placeholder="${f.placeholder || ''}"></textarea>`;
-      }
-      return `<div class="form-group"><label>${f.label}</label>${inputHTML}</div>`;
-    }).join('');
+    hideErr('err3');return true;
   }
+  return true;
+}
 
-  function collectIntakeData(specialty) {
-    const form = intakeForms[specialty];
-    if (!form) return {};
-    const data = {};
-    form.fields.forEach(f => {
-      if (f.type === 'radio') {
-        const checked = document.querySelector(`input[name="${f.id}"]:checked`);
-        data[f.id] = checked ? checked.value : '';
-      } else if (f.type === 'checkbox') {
-        const checked = [...document.querySelectorAll(`input[name="${f.id}"]:checked`)];
-        data[f.id] = checked.map(c => c.value).join(', ');
-      } else {
-        const el = document.getElementById(f.id);
-        data[f.id] = el ? el.value : '';
-      }
-    });
-    return data;
-  }
-
-  // ── TIME SLOTS ─────────────────────────────────────────────────────────────
-  function filterTimeSlots() {
-    const selectedDate = document.getElementById('apptDate').value;
-    const slotSelect = document.getElementById('timeSlot');
-    const currentHour = now.getHours();
-    const currentMin = now.getMinutes();
-    slotSelect.innerHTML = '<option value="">Select</option>';
-    allSlots.forEach(slot => {
-      const [time, period] = slot.split(' ');
-      let [h, m] = time.split(':').map(Number);
-      if (period === 'PM' && h !== 12) h += 12;
-      if (period === 'AM' && h === 12) h = 0;
-      if (selectedDate === today) {
-        const slotMins = h * 60 + m;
-        const nowMins = currentHour * 60 + currentMin + 30;
-        if (slotMins <= nowMins) return;
-      }
-      const option = document.createElement('option');
-      option.value = slot; option.textContent = slot;
-      slotSelect.appendChild(option);
-    });
-  }
-  filterTimeSlots();
-
-  // ── LOAD DOCTORS ──────────────────────────────────────────────────────────
-  fetch('/api/doctors').then(r=>r.json()).then(docs => {
-    document.getElementById('doctorList').innerHTML = docs.map(d => `
-      <div class="doctor-card" onclick="selectDoc(${d.id},'${d.name}','${d.specialty}',${d.fee},${d.available})" id="doc-${d.id}">
-        <div class="doctor-avatar">👨‍⚕️</div>
-        <div class="doctor-info">
-          <div class="doctor-name">${d.name}</div>
-          <div class="doctor-spec">${d.specialty}</div>
-          <div class="doctor-meta">
-            <span class="badge ${d.available?'badge-avail':'badge-busy'}">${d.available?'Available':'Unavailable'}</span>
-            <span class="doctor-fee">₹${d.fee}</span>
-            <span class="queue-info">Queue: ${d.queue_count}</span>
-          </div>
-        </div>
-      </div>`).join('');
+function filterTimeSlots(){
+  const sel=document.getElementById('apptDate').value,sl=document.getElementById('timeSlot');
+  sl.innerHTML='<option value="">Select time slot</option>';
+  allSlots.forEach(slot=>{
+    const[t,p]=slot.split(' ');let[h,m]=t.split(':').map(Number);
+    if(p==='PM'&&h!==12)h+=12;if(p==='AM'&&h===12)h=0;
+    if(sel===today&&(h*60+m)<=(now.getHours()*60+now.getMinutes()+30))return;
+    const o=document.createElement('option');o.value=slot;o.textContent=slot;sl.appendChild(o);
   });
+}
 
-  function selectDoc(id, name, spec, fee, avail) {
-    if (!avail) { alert('This doctor is currently unavailable.'); return; }
-    selectedDoctor = { id, name, spec, fee };
-    document.querySelectorAll('.doctor-card').forEach(c => c.classList.remove('selected'));
-    document.getElementById('doc-' + id).classList.add('selected');
-    document.getElementById('selectedDocInfo').classList.add('show');
-    document.getElementById('selDocName').textContent = name + ' (' + spec + ')';
-    document.getElementById('selDocFee').textContent = '₹' + fee;
-    renderIntakeForm(spec);
+fetch('/api/doctors').then(r=>r.json()).then(docs=>{
+  document.getElementById('doctorList').innerHTML=docs.map(d=>`
+    <div class="doctor-card" onclick="selectDoc(${d.id},'${d.name}','${d.specialty}',${d.fee},${d.available})" id="doc-${d.id}">
+      <div class="doctor-avatar">👨‍⚕️</div>
+      <div><div class="doctor-name">${d.name}</div><div class="doctor-spec">${d.specialty}</div>
+      <div class="doctor-meta"><span class="badge ${d.available?'badge-avail':'badge-busy'}">${d.available?'Available':'Unavailable'}</span><span class="doctor-fee">₹${d.fee}</span></div></div>
+    </div>`).join('');
+});
+
+function selectDoc(id,name,spec,fee,avail){
+  if(!avail){alert('This doctor is currently unavailable.');return;}
+  selectedDoctor={id,name,spec,fee};
+  document.querySelectorAll('.doctor-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('doc-'+id).classList.add('selected');
+  ['selName2','selName3'].forEach(x=>document.getElementById(x).textContent=name+' · '+spec);
+  ['selFee2','selFee3'].forEach(x=>document.getElementById(x).textContent='₹'+fee);
+  hideErr('err1');
+}
+
+const intakeForms = {
+  "Cardiology":{subtitle:"Heart-related questions for Dr. Priya Sharma",fields:[
+    {id:"chest_pain",label:"Do you experience chest pain or pressure?",type:"radio",required:true,options:["Yes – at rest","Yes – during activity","Occasionally","No"]},
+    {id:"breathless",label:"Breathlessness while walking or climbing stairs?",type:"radio",required:true,options:["Yes, often","Sometimes","Rarely","No"]},
+    {id:"palpitations",label:"Irregular or fast heartbeats (palpitations)?",type:"radio",required:true,options:["Yes, frequently","Occasionally","No"]},
+    {id:"bp_history",label:"History of high blood pressure?",type:"radio",required:true,options:["Yes, on medication","Yes, uncontrolled","No","Not sure"]},
+    {id:"diabetes",label:"Do you have diabetes?",type:"radio",required:true,options:["Yes, Type 1","Yes, Type 2","No","Pre-diabetic"]},
+    {id:"smoking",label:"Do you smoke or consume tobacco?",type:"radio",required:true,options:["Yes, currently","Previously","Never"]},
+    {id:"family_heart",label:"Family history of heart disease?",type:"radio",required:false,options:["Yes (parent/sibling)","Yes (grandparent)","No","Unknown"]},
+    {id:"prev_cardiac",label:"Previous cardiac events? (heart attack, angioplasty, bypass)",type:"radio",required:true,options:["Yes","No"]},
+    {id:"current_meds",label:"Current medications (if any)",type:"text",required:false,placeholder:"e.g. Amlodipine 5mg..."}
+  ]},
+  "Orthopedics":{subtitle:"Bone & joint questions for Dr. Rahul Mehta",fields:[
+    {id:"pain_location",label:"Where is your pain / problem? (select all)",type:"checkbox",required:false,options:["Knee","Hip","Shoulder","Back","Spine","Ankle","Wrist","Neck","Elbow","Other"]},
+    {id:"pain_duration",label:"How long have you had this problem?",type:"radio",required:true,options:["Less than 1 week","1–4 weeks","1–6 months","More than 6 months","Years"]},
+    {id:"pain_type",label:"Describe the pain",type:"radio",required:true,options:["Sharp & sudden","Dull & constant","Throbbing","Burning","Stiffness only"]},
+    {id:"injury",label:"Was there a recent injury or fall?",type:"radio",required:true,options:["Yes","No","Not sure"]},
+    {id:"mobility",label:"How does pain affect your mobility?",type:"radio",required:true,options:["Cannot walk/move","Difficulty walking","Difficulty with stairs","Minor limitation","No limitation"]},
+    {id:"swelling",label:"Swelling or redness over affected area?",type:"radio",required:true,options:["Yes, significant","Mild","No"]},
+    {id:"prev_surgery",label:"Any previous orthopaedic surgery?",type:"radio",required:true,options:["Yes","No"]},
+    {id:"xray_done",label:"Have you had X-ray/MRI done for this?",type:"radio",required:true,options:["Yes, bringing reports","Yes, no reports","No"]},
+    {id:"ortho_meds",label:"Current pain medications (if any)",type:"text",required:false,placeholder:"e.g. Diclofenac..."}
+  ]},
+  "Dermatology":{subtitle:"Skin questions for Dr. Sneha Kulkarni",fields:[
+    {id:"skin_concern",label:"Main skin concern (select all)",type:"checkbox",required:false,options:["Acne","Rash/Redness","Itching","Hair loss","Pigmentation","Dry skin","Warts","Fungal infection","Eczema","Other"]},
+    {id:"duration_skin",label:"How long have you had this problem?",type:"radio",required:true,options:["A few days","1–4 weeks","1–6 months","More than 6 months"]},
+    {id:"skin_spread",label:"Is the problem spreading or worsening?",type:"radio",required:true,options:["Yes, rapidly","Slowly","Stable","Improving"]},
+    {id:"itching",label:"Do you experience itching?",type:"radio",required:true,options:["Severe","Moderate","Mild","None"]},
+    {id:"allergy",label:"Known allergies (food/cosmetics/medicine)?",type:"radio",required:true,options:["Yes","No","Not sure"]},
+    {id:"allergy_detail",label:"If yes, specify allergy triggers",type:"text",required:false,placeholder:"e.g. dust, perfume..."},
+    {id:"topical_used",label:"Applied any cream or medicine on it?",type:"radio",required:true,options:["Yes – prescribed","Yes – self-applied","No"]},
+    {id:"family_skin",label:"Family history of skin conditions?",type:"radio",required:false,options:["Yes","No","Unknown"]}
+  ]},
+  "Neurology":{subtitle:"Neurological questions for Dr. Amit Desai",fields:[
+    {id:"neuro_symptom",label:"Main symptom (select all)",type:"checkbox",required:false,options:["Headache","Dizziness","Memory loss","Tremors","Seizures","Weakness","Numbness/tingling","Vision problems","Difficulty speaking","Fainting"]},
+    {id:"headache_freq",label:"If headache — how often?",type:"radio",required:true,options:["Daily","Several times a week","Weekly","Occasionally","No headache"]},
+    {id:"seizure_history",label:"Have you ever had a seizure or fit?",type:"radio",required:true,options:["Yes, diagnosed epilepsy","Yes, once/twice","No"]},
+    {id:"stroke_symptoms",label:"Sudden weakness, speech difficulty, or facial drooping?",type:"radio",required:true,options:["Yes, currently","Yes, in the past","No"]},
+    {id:"neuro_duration",label:"How long have symptoms been present?",type:"radio",required:true,options:["Just started","Few days","Weeks","Months","Years"]},
+    {id:"memory_concern",label:"Concern about memory or confusion?",type:"radio",required:true,options:["Yes, significant","Mildly","No"]},
+    {id:"neuro_meds",label:"Current neurological medications (if any)",type:"text",required:false,placeholder:"e.g. Levetiracetam..."},
+    {id:"prev_neuro",label:"Previous neurological diagnosis?",type:"radio",required:false,options:["Epilepsy","Migraine","Parkinson's","Stroke","None","Other"]}
+  ]},
+  "Pediatrics":{subtitle:"Child health questions for Dr. Pooja Joshi",fields:[
+    {id:"child_age",label:"Child's exact age",type:"text",required:true,placeholder:"e.g. 3 years 2 months"},
+    {id:"chief_complaint",label:"Main reason for visit today",type:"radio",required:true,options:["Fever","Cold/Cough","Diarrhoea/Vomiting","Skin rash","Vaccination","Poor growth","Behaviour concern","General checkup","Other"]},
+    {id:"fever_present",label:"Does the child have fever right now?",type:"radio",required:true,options:["Yes, above 102°F","Yes, mild (99–101°F)","No"]},
+    {id:"duration_child",label:"How long has the child been unwell?",type:"radio",required:true,options:["Today","2–3 days","4–7 days","More than a week"]},
+    {id:"vaccination",label:"Are vaccinations up to date?",type:"radio",required:true,options:["Yes, fully vaccinated","Partially done","No/Not sure"]},
+    {id:"birth_history",label:"Any complications at birth?",type:"radio",required:false,options:["Premature birth","Low birth weight","NICU admission","Normal birth","Not sure"]},
+    {id:"allergies_child",label:"Known allergies (food/medicine)?",type:"radio",required:true,options:["Yes","No","Not sure"]},
+    {id:"allergy_child_detail",label:"If yes, specify",type:"text",required:false,placeholder:"e.g. penicillin, milk..."},
+    {id:"prev_hosp",label:"Any previous hospitalisations?",type:"radio",required:true,options:["Yes","No"]}
+  ]},
+  "General Medicine":{subtitle:"General health questions for Dr. Vijay Nair",fields:[
+    {id:"gp_complaint",label:"What brings you in today? (select all)",type:"checkbox",required:false,options:["Fever","Cold/Flu","Cough","Fatigue","Body ache","Digestive issues","Diabetes check","Thyroid check","BP check","General checkup","Other"]},
+    {id:"fever_gp",label:"Do you have fever currently?",type:"radio",required:true,options:["Yes, high (>102°F)","Yes, mild","No"]},
+    {id:"symptom_duration",label:"How long have you had these symptoms?",type:"radio",required:true,options:["Today","2–3 days","4–7 days","More than a week","Chronic/ongoing"]},
+    {id:"diabetes_gp",label:"Do you have diabetes?",type:"radio",required:true,options:["Yes, on medication","Yes, diet-controlled","No","Getting tested today"]},
+    {id:"bp_gp",label:"Blood pressure issues?",type:"radio",required:true,options:["Yes, high BP","Yes, low BP","No","Unknown"]},
+    {id:"thyroid_gp",label:"Do you have thyroid disease?",type:"radio",required:true,options:["Yes, hypothyroid","Yes, hyperthyroid","No","Getting tested"]},
+    {id:"gp_meds",label:"Current medications (if any)",type:"text",required:false,placeholder:"e.g. Metformin..."},
+    {id:"smoking_gp",label:"Do you smoke or consume alcohol?",type:"radio",required:true,options:["Smoke only","Alcohol only","Both","Neither"]}
+  ]}
+};
+
+function renderIntakeForm(spec){
+  const form=intakeForms[spec];
+  if(!form){document.getElementById('intakeFields').innerHTML='<p style="color:var(--muted)">No special intake form for this specialty.</p>';return;}
+  document.getElementById('intakeTitle').textContent='🏥 Medical Intake Form — '+spec;
+  document.getElementById('intakeSub').innerHTML=form.subtitle+'. Fields marked <span style="color:#dc2626">*</span> are required.';
+  document.getElementById('intakeFields').innerHTML=form.fields.map(f=>{
+    const req=f.required?'<span class="req"> *</span>':'';
+    let inp='';
+    if(f.type==='radio'){
+      inp=`<div class="opts">${f.options.map(o=>`<label class="opt" onclick="pickOpt(this,'radio','${f.id}')"><input type="radio" name="${f.id}" value="${o}">${o}</label>`).join('')}</div>`;
+    }else if(f.type==='checkbox'){
+      inp=`<div class="opts">${f.options.map(o=>`<label class="opt" onclick="pickOpt(this,'checkbox','${f.id}')"><input type="checkbox" name="${f.id}" value="${o}">${o}</label>`).join('')}</div>`;
+    }else{
+      inp=`<input class="intake-text" type="text" id="${f.id}" placeholder="${f.placeholder||''}">`;
+    }
+    return`<div class="intake-q"><span class="iq-label">${f.label}${req}</span>${inp}</div>`;
+  }).join('');
+}
+
+function pickOpt(label,type,name){
+  if(type==='radio'){
+    document.querySelectorAll(`input[name="${name}"]`).forEach(i=>{i.checked=false;i.closest('.opt').classList.remove('sel');});
+    const i=label.querySelector('input');i.checked=true;label.classList.add('sel');
+  }else{
+    const i=label.querySelector('input');i.checked=!i.checked;label.classList.toggle('sel',i.checked);
   }
+}
 
-  function bookAppointment() {
-    const name = document.getElementById('patientName').value.trim();
-    const phone = document.getElementById('patientPhone').value.trim();
-    const email = document.getElementById('patientEmail').value.trim();
-    const date = document.getElementById('apptDate').value;
-    const slot = document.getElementById('timeSlot').value;
-    if (!name || !phone || !date || !slot || !selectedDoctor) { alert('Please fill all fields and select a doctor.'); return; }
-    const intakeData = collectIntakeData(selectedDoctor.spec);
-    fetch('/api/appointments', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        patient_name:name, patient_phone:phone, patient_email:email,
-        doctor_id:selectedDoctor.id, doctor_name:selectedDoctor.name,
-        date, time_slot:slot,
-        intake_data: JSON.stringify(intakeData)
-      })
-    }).then(r=>r.json()).then(d => {
-      if(!d.success) { alert('❌ ' + d.message); return; }
-      document.getElementById('tokenNum').textContent = d.token;
-      document.getElementById('apptSummary').textContent = `Dr. ${selectedDoctor.name} · ${date} · ${slot}`;
-      document.getElementById('modal').classList.add('show');
-    });
-  }
+function collectIntake(spec){
+  const form=intakeForms[spec];if(!form)return{};
+  const d={};
+  form.fields.forEach(f=>{
+    if(f.type==='radio'){const c=document.querySelector(`input[name="${f.id}"]:checked`);d[f.label]=c?c.value:'';}
+    else if(f.type==='checkbox'){d[f.label]=[...document.querySelectorAll(`input[name="${f.id}"]:checked`)].map(c=>c.value).join(', ');}
+    else{const e=document.getElementById(f.id);d[f.label]=e?e.value:'';}
+  });
+  return d;
+}
 
-  function closeModal() { document.getElementById('modal').classList.remove('show'); location.reload(); }
+function renderReview(){
+  const name=document.getElementById('patientName').value;
+  const phone=document.getElementById('patientPhone').value;
+  const email=document.getElementById('patientEmail').value;
+  const age=document.getElementById('patientAge').value;
+  const gender=document.getElementById('patientGender').value;
+  const date=document.getElementById('apptDate').value;
+  const slot=document.getElementById('timeSlot').value;
+  const intake=collectIntake(selectedDoctor.spec);
+  const rows=Object.entries(intake).filter(([k,v])=>v).map(([k,v])=>`<tr><td style="padding:7px 12px;border-bottom:1px solid #f0f4f8;font-size:0.81rem;color:#64748b;width:45%">${k}</td><td style="padding:7px 12px;border-bottom:1px solid #f0f4f8;font-size:0.81rem;color:#1a2332;font-weight:500">${v}</td></tr>`).join('');
+  document.getElementById('reviewContent').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px">
+        <div style="font-size:0.7rem;font-family:'Syne',sans-serif;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Appointment</div>
+        <div style="font-size:0.86rem;color:#1a2332;line-height:2.1">
+          <div>👨‍⚕️ <strong>${selectedDoctor.name}</strong></div><div>🏥 ${selectedDoctor.spec}</div><div>📅 ${date}</div><div>🕐 ${slot}</div><div>💰 ₹${selectedDoctor.fee}</div>
+        </div>
+      </div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px">
+        <div style="font-size:0.7rem;font-family:'Syne',sans-serif;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Patient</div>
+        <div style="font-size:0.86rem;color:#1a2332;line-height:2.1">
+          <div>👤 <strong>${name}</strong></div><div>📱 ${phone}</div><div>✉️ ${email}</div><div>🎂 ${age} yrs, ${gender}</div>
+        </div>
+      </div>
+    </div>
+    ${rows?`<div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden"><div style="background:#1a2332;padding:10px 14px;font-size:0.75rem;font-family:'Syne',sans-serif;font-weight:700;color:white;letter-spacing:1px;text-transform:uppercase">Medical Intake Summary</div><table style="width:100%;border-collapse:collapse">${rows}</table></div>`:''}`;
+}
+
+function bookAppointment(){
+  const name=document.getElementById('patientName').value.trim();
+  const phone=document.getElementById('patientPhone').value.trim();
+  const email=document.getElementById('patientEmail').value.trim();
+  const date=document.getElementById('apptDate').value;
+  const slot=document.getElementById('timeSlot').value;
+  const intake=collectIntake(selectedDoctor.spec);
+  fetch('/api/appointments',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({patient_name:name,patient_phone:phone,patient_email:email,doctor_id:selectedDoctor.id,doctor_name:selectedDoctor.name,date,time_slot:slot,intake_data:JSON.stringify(intake)})
+  }).then(r=>r.json()).then(d=>{
+    if(!d.success){alert('❌ '+d.message);return;}
+    document.getElementById('tokenNum').textContent=d.token;
+    document.getElementById('apptSummary').textContent=selectedDoctor.name+' · '+date+' · '+slot;
+    if(email){document.getElementById('emailNote').style.display='block';document.getElementById('emailShown').textContent=email;}
+    document.getElementById('modal').classList.add('show');
+  });
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('show');location.reload();}
 </script>
 </body>
 </html>
