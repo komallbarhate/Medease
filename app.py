@@ -262,6 +262,108 @@ def send_email(to_email, subject, html_body):
         print(f"[EMAIL] ❌ Failed: {e}")
         return False
 
+
+# ── BOOKING CONFIRMATION EMAIL ────────────────────────────────────────────────
+def send_booking_confirmation(appt):
+    if not appt.get("patient_email","").strip():
+        return
+    try:
+        intake = json.loads(appt.get("intake_data","{}"))
+    except:
+        intake = {}
+    intake_rows = "".join([f"<tr><td style='padding:7px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;width:45%'>{k}</td><td style='padding:7px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#1a2332;font-weight:500'>{v}</td></tr>" for k,v in intake.items() if v])
+    intake_section = f"""
+    <div style='margin-bottom:24px'>
+      <div style='font-size:12px;font-weight:700;color:#1a2332;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px'>📋 Your Medical Intake Form</div>
+      <table style='width:100%;border-collapse:collapse;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden'>
+        <tr style='background:#0ea5a0'><th colspan='2' style='padding:9px 14px;color:white;text-align:left;font-size:12px'>Submitted Answers</th></tr>
+        {intake_rows}
+      </table>
+    </div>""" if intake_rows else ""
+
+    html = f"""<!DOCTYPE html><html><body style='margin:0;padding:0;background:#f0f4f8;font-family:Arial,sans-serif'>
+  <div style='max-width:580px;margin:30px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)'>
+    <div style='background:#0ea5a0;padding:28px 32px'>
+      <div style='font-size:24px;font-weight:800;color:white'>MedEase 🏥</div>
+      <div style='font-size:17px;color:rgba(255,255,255,0.95);margin-top:6px'>✅ Appointment Confirmed!</div>
+    </div>
+    <div style='padding:28px 32px'>
+      <p style='font-size:15px;color:#1a2332;margin-bottom:6px'>Dear <strong>{appt['patient_name']}</strong>,</p>
+      <p style='font-size:14px;color:#64748b;margin-bottom:24px;line-height:1.6'>Your appointment at MedEase has been successfully booked. Please find your details below.</p>
+      <div style='background:#e6f7f6;border:1px solid rgba(14,165,160,0.25);border-radius:12px;padding:20px;margin-bottom:24px'>
+        <div style='font-size:12px;font-weight:700;color:#0ea5a0;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px'>📋 Appointment Details</div>
+        <table style='width:100%;border-collapse:collapse'>
+          <tr><td style='padding:5px 0;font-size:13px;color:#64748b;width:40%'>👨‍⚕️ Doctor</td><td style='padding:5px 0;font-size:13px;font-weight:600;color:#1a2332'>{appt['doctor_name']}</td></tr>
+          <tr><td style='padding:5px 0;font-size:13px;color:#64748b'>📅 Date</td><td style='padding:5px 0;font-size:13px;font-weight:600;color:#1a2332'>{appt['date']}</td></tr>
+          <tr><td style='padding:5px 0;font-size:13px;color:#64748b'>🕐 Time</td><td style='padding:5px 0;font-size:13px;font-weight:600;color:#1a2332'>{appt['time_slot']}</td></tr>
+          <tr><td style='padding:5px 0;font-size:13px;color:#64748b'>🎫 Token</td><td style='padding:5px 0;font-size:20px;font-weight:800;color:#0ea5a0'>{appt['token']}</td></tr>
+          <tr><td style='padding:5px 0;font-size:13px;color:#64748b'>📱 Phone</td><td style='padding:5px 0;font-size:13px;font-weight:600;color:#1a2332'>{appt['patient_phone']}</td></tr>
+        </table>
+      </div>
+      {intake_section}
+      <div style='background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px;margin-bottom:24px'>
+        <div style='font-size:13px;font-weight:700;color:#92400e;margin-bottom:8px'>💡 Please Remember</div>
+        <ul style='margin:0;padding-left:18px;font-size:13px;color:#78350f;line-height:1.9'>
+          <li>Show token <strong>{appt['token']}</strong> at the reception</li>
+          <li>Carry previous medical reports or prescriptions</li>
+          <li>Arrive 10 minutes before your slot</li>
+          <li>Wear a mask inside the hospital</li>
+          <li>You will receive reminder messages before your appointment</li>
+        </ul>
+      </div>
+      <p style='font-size:13px;color:#64748b'>Need help? Call <strong>+91 94045 01044</strong> or email medeasecaree@gmail.com</p>
+    </div>
+    <div style='background:#1a2332;padding:18px 32px;text-align:center'>
+      <p style='color:#94a3b8;font-size:12px;margin:0'>© MedEase OPD Management System · Automated confirmation</p>
+    </div>
+  </div>
+</body></html>"""
+    threading.Thread(
+        target=send_email,
+        args=(appt["patient_email"], f"✅ Appointment Confirmed — Token {appt['token']} | MedEase", html),
+        daemon=True
+    ).start()
+
+# ── CANCELLATION EMAIL ────────────────────────────────────────────────────────
+def send_cancellation_email(appt):
+    if not appt.get("patient_email","").strip():
+        return
+    html = f"""<!DOCTYPE html><html><body style='margin:0;padding:0;background:#f0f4f8;font-family:Arial,sans-serif'>
+  <div style='max-width:580px;margin:30px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)'>
+    <div style='background:#dc2626;padding:28px 32px'>
+      <div style='font-size:24px;font-weight:800;color:white'>MedEase 🏥</div>
+      <div style='font-size:17px;color:rgba(255,255,255,0.95);margin-top:6px'>❌ Appointment Cancelled</div>
+    </div>
+    <div style='padding:28px 32px'>
+      <p style='font-size:15px;color:#1a2332;margin-bottom:6px'>Dear <strong>{appt['patient_name']}</strong>,</p>
+      <p style='font-size:14px;color:#64748b;margin-bottom:24px;line-height:1.6'>Your appointment has been successfully cancelled. Here are the details of the cancelled appointment.</p>
+      <div style='background:#fee2e2;border:1px solid #fecaca;border-radius:12px;padding:20px;margin-bottom:24px'>
+        <div style='font-size:12px;font-weight:700;color:#dc2626;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px'>❌ Cancelled Appointment</div>
+        <table style='width:100%;border-collapse:collapse'>
+          <tr><td style='padding:5px 0;font-size:13px;color:#64748b;width:40%'>👨‍⚕️ Doctor</td><td style='padding:5px 0;font-size:13px;font-weight:600;color:#1a2332'>{appt['doctor_name']}</td></tr>
+          <tr><td style='padding:5px 0;font-size:13px;color:#64748b'>📅 Date</td><td style='padding:5px 0;font-size:13px;font-weight:600;color:#1a2332'>{appt['date']}</td></tr>
+          <tr><td style='padding:5px 0;font-size:13px;color:#64748b'>🕐 Time</td><td style='padding:5px 0;font-size:13px;font-weight:600;color:#1a2332'>{appt['time_slot']}</td></tr>
+          <tr><td style='padding:5px 0;font-size:13px;color:#64748b'>🎫 Token</td><td style='padding:5px 0;font-size:16px;font-weight:800;color:#dc2626'>{appt['token']}</td></tr>
+        </table>
+      </div>
+      <div style='background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px;margin-bottom:24px'>
+        <div style='font-size:13px;font-weight:700;color:#166534;margin-bottom:8px'>📅 Want to rebook?</div>
+        <p style='font-size:13px;color:#166534;margin:0;line-height:1.6'>You can book a new appointment anytime at <strong>medeasecaree@gmail.com</strong> or visit our website.</p>
+      </div>
+      <p style='font-size:13px;color:#64748b'>Need help? Call <strong>+91 94045 01044</strong> or email medeasecaree@gmail.com</p>
+    </div>
+    <div style='background:#1a2332;padding:18px 32px;text-align:center'>
+      <p style='color:#94a3b8;font-size:12px;margin:0'>© MedEase OPD Management System · Automated notification</p>
+    </div>
+  </div>
+</body></html>"""
+    threading.Thread(
+        target=send_email,
+        args=(appt["patient_email"], f"❌ Appointment Cancelled — {appt['token']} | MedEase", html),
+        daemon=True
+    ).start()
+
+
 def schedule_reminders(appointment_id):
     def _run():
         import time
@@ -350,6 +452,9 @@ def chatbot(): return render_template("chatbot.html")
 @app.route("/about")
 def about(): return render_template("about.html")
 
+@app.route("/patient")
+def patient(): return render_template("patient.html")
+
 # ── DOCTORS ───────────────────────────────────────────────────────────────────
 @app.route("/api/doctors")
 def get_doctors():
@@ -430,6 +535,12 @@ def book_appointment():
     db.execute("UPDATE doctors SET queue_count=queue_count+1 WHERE id=?", (data["doctor_id"],))
     db.commit(); db.close()
     schedule_reminders(appt_id)
+    # Send booking confirmation email
+    new_appt = {"patient_name": data["patient_name"], "patient_phone": data["patient_phone"],
+                "patient_email": data.get("patient_email",""), "doctor_name": data["doctor_name"],
+                "date": data["date"], "time_slot": data["time_slot"], "token": token,
+                "intake_data": data.get("intake_data","{}")}
+    send_booking_confirmation(new_appt)
     return jsonify({"success": True, "token": token})
 
 @app.route("/api/appointments/<int:appt_id>/status", methods=["POST"])
@@ -471,6 +582,7 @@ def cancel_appointment(appt_id):
     db.execute("UPDATE queue SET status='done' WHERE token=?", (appt["token"],))
     db.execute("UPDATE doctors SET queue_count=MAX(0,queue_count-1) WHERE id=?", (appt["doctor_id"],))
     db.commit(); db.close()
+    send_cancellation_email(dict(appt))
     return jsonify({"success": True})
 
 # ── QUEUE ─────────────────────────────────────────────────────────────────────
@@ -610,6 +722,57 @@ def chat():
     else:
         db.close()
         return jsonify({"reply": "I can help with:\n• Doctor availability\n• Appointment booking\n• Payment info\n• Queue status\n• Hospital timings\n• Cancellations"})
+
+
+# ── PATIENT AUTH ──────────────────────────────────────────────────────────────
+@app.route("/api/patient/register", methods=["POST"])
+def patient_register():
+    data = request.json
+    phone    = data.get("phone","").strip()
+    name     = data.get("name","").strip()
+    email    = data.get("email","").strip()
+    password = data.get("password","").strip()
+    if not phone or not name or not password:
+        return jsonify({"success": False, "message": "Name, phone and password are required."})
+    db = get_db()
+    existing = db.execute("SELECT id FROM patients WHERE phone=?", (phone,)).fetchone()
+    if existing:
+        db.close()
+        return jsonify({"success": False, "message": "An account with this phone number already exists. Please login."})
+    db.execute("INSERT INTO patients (name, phone, email, password) VALUES (?,?,?,?)",
+               (name, phone, email, password))
+    db.commit()
+    patient = db.execute("SELECT id, name, phone, email FROM patients WHERE phone=?", (phone,)).fetchone()
+    db.close()
+    return jsonify({"success": True, "patient": dict(patient)})
+
+@app.route("/api/patient/login", methods=["POST"])
+def patient_login():
+    data = request.json
+    phone    = data.get("phone","").strip()
+    password = data.get("password","").strip()
+    db = get_db()
+    patient = db.execute("SELECT * FROM patients WHERE phone=?", (phone,)).fetchone()
+    db.close()
+    if not patient:
+        return jsonify({"success": False, "message": "No account found with this phone number. Please register."})
+    if patient["password"] != password:
+        return jsonify({"success": False, "message": "Incorrect password. Please try again."})
+    return jsonify({"success": True, "patient": {"id": patient["id"], "name": patient["name"], "phone": patient["phone"], "email": patient["email"]}})
+
+@app.route("/api/patient/appointments")
+def patient_appointments():
+    phone = request.args.get("phone","").strip()
+    if not phone:
+        return jsonify([])
+    db = get_db()
+    appts = db.execute(
+        "SELECT * FROM appointments WHERE patient_phone=? ORDER BY date DESC, created_at DESC",
+        (phone,)
+    ).fetchall()
+    db.close()
+    return jsonify([dict(a) for a in appts])
+
 
 if __name__ == "__main__":
     os.makedirs("database", exist_ok=True)
