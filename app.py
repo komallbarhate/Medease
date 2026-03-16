@@ -10,8 +10,8 @@ app.secret_key = "medease_secret_key_2024"
 DB = "database/medease.db"
 
 # ── EMAIL CONFIG ──────────────────────────────────────────────────────────────
-EMAIL_SENDER   = "medeasecaree@gmail.com"
-EMAIL_PASSWORD = "dzdz qacd jqub kxnr"
+EMAIL_SENDER   = "komalplegend@gmail.com"
+EMAIL_PASSWORD = "ykim vkta qgja vuaz"
 
 # ── TWILIO WHATSAPP CONFIG ────────────────────────────────────────────────────
 TWILIO_SID     = "ACf36b03e9c2c996760f1533cbf3f"
