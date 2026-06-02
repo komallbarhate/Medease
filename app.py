@@ -177,7 +177,7 @@ def build_whatsapp_reminder(appt, hours_before):
 • Arrive 10 minutes early
 
 📞 Help: +91 9404501044
-✉️ medeasecaree@gmail.com"""
+✉️ barhate.komal12@gmail.com"""
     return msg
 
 # ── EMAIL HELPER ──────────────────────────────────────────────────────────────
@@ -238,7 +238,7 @@ def build_reminder_email(appt, hours_before):
           <li>Wear a mask inside the hospital</li>
         </ul>
       </div>
-      <p style="font-size:13px;color:#64748b">Need help? Call <strong>+91 94045 01044</strong> or email medeasecaree@gmail.com</p>
+      <p style='font-size:13px;color:#64748b'>Need help? Call <strong>+91 9404278044</strong> or email barhate.komal12@gmail.com</p>
     </div>
     <div style="background:#1a2332;padding:18px 32px;text-align:center">
       <p style="color:#94a3b8;font-size:12px;margin:0">© MedEase OPD Management System · Automated reminder</p>
@@ -311,7 +311,7 @@ def send_booking_confirmation(appt):
           <li>You will receive reminder messages before your appointment</li>
         </ul>
       </div>
-      <p style='font-size:13px;color:#64748b'>Need help? Call <strong>+91 94045 01044</strong> or email medeasecaree@gmail.com</p>
+      <p style='font-size:13px;color:#64748b'>Need help? Call <strong>+91 9404278044</strong> or email barhate.komal12@gmail.com</p>
     </div>
     <div style='background:#1a2332;padding:18px 32px;text-align:center'>
       <p style='color:#94a3b8;font-size:12px;margin:0'>© MedEase OPD Management System · Automated confirmation</p>
@@ -348,9 +348,9 @@ def send_cancellation_email(appt):
       </div>
       <div style='background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px;margin-bottom:24px'>
         <div style='font-size:13px;font-weight:700;color:#166534;margin-bottom:8px'>📅 Want to rebook?</div>
-        <p style='font-size:13px;color:#166534;margin:0;line-height:1.6'>You can book a new appointment anytime at <strong>medeasecaree@gmail.com</strong> or visit our website.</p>
+        <p style='font-size:13px;color:#166534;margin:0;line-height:1.6'>You can book a new appointment anytime at <strong>barhate.komal12@gmail.com</strong> or visit our website.</p>
       </div>
-      <p style='font-size:13px;color:#64748b'>Need help? Call <strong>+91 94045 01044</strong> or email medeasecaree@gmail.com</p>
+      <p style='font-size:13px;color:#64748b'>Need help? Call <strong>+91 9404278044</strong> or email barhate.komal12@gmail.com</p>
     </div>
     <div style='background:#1a2332;padding:18px 32px;text-align:center'>
       <p style='color:#94a3b8;font-size:12px;margin:0'>© MedEase OPD Management System · Automated notification</p>

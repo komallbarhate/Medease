@@ -298,6 +298,22 @@ const allSlots = ["8:00 AM","8:30 AM","9:00 AM","9:30 AM","10:00 AM","10:30 AM",
 const now = new Date();
 const today = now.toISOString().split('T')[0];
 document.getElementById('apptDate').min = today;
+
+// ── DARK MODE ──
+(function() {
+  const t = localStorage.getItem('medease_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  const btn = document.getElementById('darkToggle');
+  if(btn) btn.textContent = t === 'dark' ? '☀️' : '🌙';
+})();
+function toggleDark() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('medease_theme', next);
+  const btn = document.getElementById('darkToggle');
+  if(btn) btn.textContent = next === 'dark' ? '☀️' : '🌙';
+}
 document.getElementById('apptDate').value = today;
 filterTimeSlots();
 
